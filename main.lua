@@ -10,15 +10,17 @@ function love.load()
     lives = {}
     enemies = {}
     
-    local y = love.graphics.getHeight() - 36
-    for i=0,2 do
-        table.insert(lives, Player(i*20,y))
+    local spacePerPlayer = 18*2
+    local y = love.graphics.getHeight() - spacePerPlayer
+    for i=1,3 do
+        table.insert(lives, Player(((3-i)*spacePerPlayer)+20,y))
     end
     lives[1].activate(lives[1])
 
     table.insert(enemies, GreenEnemy(100,200))
     table.insert(enemies, RedEnemy(200,200))
     table.insert(enemies, BlueEnemy(300,200))
+    table.insert(enemies, YellowEnemy(400,200))    
 end
 
 function love.update(dt)

@@ -1,7 +1,7 @@
 Player = Character:extend()
 
 function Player:new( x, y )
-    Player.super.new( self, 0, 7, x, y )
+    Player.super.new( self, 0, 7, x, y, 0 )
     self.speed = 500
     self.isActive = false
     self.currentFrame = 7
@@ -9,7 +9,7 @@ end
 
 function Player:moveToStartingPosition()
     self.x = (love.graphics.getWidth())/2
-    self.y = love.graphics.getHeight() - (self.height*4)
+    self.y = love.graphics.getHeight() - (self.height*2.2)
 end
 
 function Player:activate()
