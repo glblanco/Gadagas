@@ -40,6 +40,7 @@ end
 
 function Character:lookUp()
     self.currentFrame = #self.frames - 1
+    self.orientation = 0
 end
 
 function Character:lookDown()
@@ -54,6 +55,7 @@ end
 
 function Character:lookLeft()
     self.currentFrame = 1
+    self.orientation = 0
 end
 
 function Character:update(dt)

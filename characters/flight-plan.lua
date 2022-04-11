@@ -53,3 +53,19 @@ function StraightLeftFlightPlan:doUpdate(character, dt)
         self.completed = true
     end
 end
+
+RightAndUpInTheMiddleFlightPlan = FlightPlan:extend()
+function RightAndUpInTheMiddleFlightPlan:doUpdate(character, dt)
+
+    local screenWidth = love.graphics.getWidth()
+    if character.x + character.width < (screenWidth/2) - character.width then
+        character.lookRight(character)
+        character.x = character.x + character.speed * dt         
+    else
+        character.lookUp(character)
+        character.y = character.y - character.speed * dt 
+        if character.y + character.height < 0 then
+            self.completed = true
+        end
+    end
+end

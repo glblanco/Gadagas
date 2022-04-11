@@ -20,7 +20,7 @@ function love.load()
     end
     lives[1].activate(lives[1])
 
-    table.insert(enemies, RedEnemy(100,100,120,StraightRightFlightPlan()))
+    table.insert(enemies, BlueEnemy(10,500,40,RightAndUpInTheMiddleFlightPlan()))
     table.insert(enemies, DownwardYellowSquadron())
 
 end
@@ -45,7 +45,7 @@ function love.draw()
         enemy:draw()
         if debug then
             if not enemy:isSquadron() then
-                love.graphics.print("enemy " .. i .. " ->  x:" .. enemy.x .. " y:" .. enemy.y .. " w:" .. enemy.width .. " h: " .. enemy.height , 10, (15*#lives+10)+(15*i+10))
+                love.graphics.print("enemy " .. i .. " ->  x:" .. enemy.x .. " y:" .. enemy.y .. " w:" .. enemy.width .. " h: " .. enemy.height .. " cf: " .. enemy.currentFrame, 10, (15*#lives+10)+(15*i+10))
             end
         end
     end
