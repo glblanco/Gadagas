@@ -20,7 +20,7 @@ function love.load()
     end
     lives[1].activate(lives[1])
 
-    table.insert(enemies, TestCrazySquadron())
+    table.insert(enemies, RedEnemy(100,100,120,StraightRightFlightPlan()))
     table.insert(enemies, DownwardYellowSquadron())
 
 end

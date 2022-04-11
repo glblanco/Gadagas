@@ -31,10 +31,13 @@ end
 DownwardYellowSquadron = Squadron:extend()
 function DownwardYellowSquadron:new()
     DownwardYellowSquadron.super.new( self )
+    local screenWidth = love.graphics.getWidth()
+    local step = screenWidth / 7
+    local speed = 40
     for i=1,6 do
-        table.insert(self.enemies, YellowEnemy(100*i,0,40,NeverEndingStraightDownFlightPlan()))
+        table.insert(self.enemies, YellowEnemy(step*i,0,speed,NeverEndingStraightDownFlightPlan()))
     end
     for i=1,5 do
-        table.insert(self.enemies, YellowEnemy(100*i+50,-50,40,NeverEndingStraightDownFlightPlan()))
+        table.insert(self.enemies, YellowEnemy(step*i+(step/2),-50,speed,NeverEndingStraightDownFlightPlan()))
     end
 end
