@@ -1,7 +1,7 @@
 Enemy = Character:extend()
 
-function Enemy:new( spriteRow, maxFrames, x, y, column, speed, flightPlan )
-    Player.super.new( self, spriteRow, maxFrames, x, y, column )
+function Enemy:new( spriteInfo, x, y, speed, flightPlan )
+    Player.super.new( self, spriteInfo, x, y )
     self.speed = speed
     self.flightPlan = flightPlan
 end
@@ -22,20 +22,24 @@ end
 
 GreenEnemy = Enemy:extend()
 function GreenEnemy:new( x, y, speed, flightPlan )
-    GreenEnemy.super.new( self, 2, 8, x, y, 0, speed, flightPlan )
+    local info = SpriteInfo( 2, 8, 0 )
+    GreenEnemy.super.new( self, info, x, y, speed, flightPlan )
 end
 
 BlueEnemy = Enemy:extend()
 function BlueEnemy:new( x, y, speed, flightPlan )
-    BlueEnemy.super.new( self, 3, 8, x, y, 0, speed, flightPlan )
+    local info = SpriteInfo( 3, 8, 0 )
+    BlueEnemy.super.new( self, info, x, y, speed, flightPlan )
 end
 
 RedEnemy = Enemy:extend()
 function RedEnemy:new( x, y, speed, flightPlan )
-    RedEnemy.super.new( self, 4, 8, x, y, 0, speed, flightPlan )
+    local info = SpriteInfo( 4, 8, 0 )
+    RedEnemy.super.new( self, info, x, y, speed, flightPlan )
 end
 
 YellowEnemy = Enemy:extend()
 function YellowEnemy:new( x, y, speed, flightPlan )
-    YellowEnemy.super.new( self, 8, 7, x, y, 1, speed, flightPlan )
+    local info = SpriteInfo( 8, 7, 1 )
+    YellowEnemy.super.new( self, info, x, y, speed, flightPlan )
 end

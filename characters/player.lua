@@ -1,7 +1,8 @@
 Player = Character:extend()
 
 function Player:new( x, y )
-    Player.super.new( self, 0, 7, x, y, 0 )
+    local info = SpriteInfo( 0, 7, 0 )
+    Player.super.new( self, info, x, y )
     self.speed = 500
     self.isActive = false
     self.currentFrame = 7
