@@ -8,10 +8,10 @@ end
 function Enemy:update(dt)
     Enemy.super.update(self, dt)
 
-    self.currentFrame = math.floor(self.currentFrame + self.speed * dt)
-    if self.currentFrame > #self.frames then
-        self.currentFrame = 1
-    end    
+    --self.currentFrame = math.floor(self.currentFrame + self.speed * dt)
+    --if self.currentFrame > #self.frames then
+    --    self.currentFrame = 1
+    --end    
 
 end
 
