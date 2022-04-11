@@ -7,7 +7,8 @@ function love.load()
     require "characters/player"
     require "characters/enemy"
     require "characters/flight-plan"
-    
+    require "characters/squadron"
+
     lives = {}
     enemies = {}
     debug = true
@@ -19,10 +20,8 @@ function love.load()
     end
     lives[1].activate(lives[1])
 
-    table.insert(enemies, GreenEnemy(100,200,40,StraightRightFlightPlan()))
-    table.insert(enemies, RedEnemy(200,200,80,StraightLeftFlightPlan()))
-    table.insert(enemies, BlueEnemy(300,200,60,StraightDownFlightPlan()))
-    table.insert(enemies, YellowEnemy(400,200,100,NeverEndingStraightDownFlightPlan()))   
+    table.insert(enemies, TestCrazySquadron())
+    table.insert(enemies, DownwardYellowSquadron())
 
 end
 
@@ -45,7 +44,9 @@ function love.draw()
     for i,enemy in ipairs(enemies) do
         enemy:draw()
         if debug then
-            love.graphics.print("enemy " .. i .. " ->  x:" .. enemy.x .. " y:" .. enemy.y .. " w:" .. enemy.width .. " h: " .. enemy.height , 10, (15*#lives+10)+(15*i+10))
+            if not enemy:isSquadron() then
+                love.graphics.print("enemy " .. i .. " ->  x:" .. enemy.x .. " y:" .. enemy.y .. " w:" .. enemy.width .. " h: " .. enemy.height , 10, (15*#lives+10)+(15*i+10))
+            end
         end
     end
 end

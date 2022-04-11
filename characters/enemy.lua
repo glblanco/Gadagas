@@ -20,6 +20,10 @@ function Enemy:rotateThroughFrames(dt)
     end    
 end
 
+function Enemy:isSquadron()
+    return false
+end
+
 GreenEnemy = Enemy:extend()
 function GreenEnemy:new( x, y, speed, flightPlan )
     local info = SpriteInfo( 2, 8, 0 )

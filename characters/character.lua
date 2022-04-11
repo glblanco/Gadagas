@@ -1,7 +1,7 @@
 SpriteInfo = Object:extend()
-function SpriteInfo:new( spriteRow, maxFrames, column )
+function SpriteInfo:new( row, maxFrames, column )
     self.column = column        -- is the character in the first or second set?
-    self.spriteRow = spriteRow  -- which is the line the character occupies in the sprite - starting at 0
+    self.row = row              -- which is the line the character occupies in the sprite - starting at 0
     self.maxFrames = maxFrames  -- number of images available for the character
 end
 
@@ -14,7 +14,7 @@ function Character:new( spriteInfo, x, y )
     local frame_width = 16
     local frame_height = 16
 
-    Character.super.new( self, x, y, 16*self.scale, 16*self.scale )
+    Character.super.new( self, x, y, frame_width*self.scale, frame_width*self.scale )
 
     image = love.graphics.newImage("resources/sprites.png")
     local width = image:getWidth()
@@ -25,7 +25,7 @@ function Character:new( spriteInfo, x, y )
         table.insert(aframes, 
                 love.graphics.newQuad(
                         (spriteInfo.column * 18 * 8) + 1 + spriteColumn * (frame_width+2), 
-                        1 + spriteInfo.spriteRow * (frame_height+2),
+                        1 + spriteInfo.row * (frame_height+2),
                         frame_width, frame_height, 
                         width, height))
     end
