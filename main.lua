@@ -6,6 +6,7 @@ function love.load()
     require "characters/character"
     require "characters/player"
     require "characters/enemy"
+    require "characters/flight-plan"
     
     lives = {}
     enemies = {}
@@ -18,15 +19,11 @@ function love.load()
     end
     lives[1].activate(lives[1])
 
-    table.insert(enemies, GreenEnemy(100,200))
-    table.insert(enemies, RedEnemy(200,200))
-    table.insert(enemies, BlueEnemy(300,200))
-    table.insert(enemies, YellowEnemy(400,200))   
-    
-    enemies[1].lookUp(enemies[1])
-    enemies[2].lookRight(enemies[2])
-    enemies[3].lookDown(enemies[3])
-    enemies[4].lookLeft(enemies[4])
+    table.insert(enemies, GreenEnemy(100,200,40,StraightRightFlightPlan()))
+    table.insert(enemies, RedEnemy(200,200,80,StraightLeftFlightPlan()))
+    table.insert(enemies, BlueEnemy(300,200,60,StraightDownFlightPlan()))
+    table.insert(enemies, YellowEnemy(400,200,100,NeverEndingStraightDownFlightPlan()))   
+
 end
 
 function love.update(dt)
