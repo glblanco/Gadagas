@@ -14,7 +14,7 @@ https://grumpygamer.com/puzzle_dependency_charts#:~:text=A%20Puzzle%20Dependency
 
 ## To do
 1. ~~Resize the quads~~
-2. Generate movement strategy for enemies - FlightPlan
+2. Generate movement strategy for enemies - FlightPlan - https://love2d.org/wiki/BezierCurve
 3. Controls: Keyboard, Joystick, etc
 4. Shoot bullets
 5. Check collisions

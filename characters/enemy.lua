@@ -1,7 +1,7 @@
 Enemy = Character:extend()
 
 function Enemy:new( spriteInfo, x, y, speed, flightPlan )
-    Player.super.new( self, spriteInfo, x, y )
+    Enemy.super.new( self, spriteInfo, x, y )
     self.speed = speed
     self.flightPlan = flightPlan
 end
@@ -20,9 +20,18 @@ function Enemy:rotateThroughFrames(dt)
     end    
 end
 
+function Enemy:draw()
+    Enemy.super.draw(self)
+    if self.flightPlan then
+        self.flightPlan.drawData(self.flightPlan)
+    end
+end
+
 function Enemy:isSquadron()
     return false
 end
+
+
 
 GreenEnemy = Enemy:extend()
 function GreenEnemy:new( x, y, speed, flightPlan )

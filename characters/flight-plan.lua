@@ -10,6 +10,10 @@ function FlightPlan:update(character, dt)
     end
 end
 
+function FlightPlan:drawData()
+    -- used by subclasses for debugging
+end 
+
 function FlightPlan:doUpdate(character, dt)
     -- subclasses should implement
 end
@@ -84,4 +88,18 @@ function LeftAndUpInTheMiddleFlightPlan:doUpdate(character, dt)
             self.completed = true
         end
     end
+end
+
+BezierFlightPlan = FlightPlan:extend()
+function BezierFlightPlan:new( bezierCurve, timeDelay )
+    BezierFlightPlan.super.new(self)
+    self.bezierCurve = bezierCurve
+    self.timeDelay = timeDelay
+    self.x = 0
+    self.y = 0
+end
+function BezierFlightPlan:doUpdate(character, dt)
+    self.x, self.y = self.bezierCurve:evaluate(((love.timer.getTime()-self.timeDelay)/character.speed)%1)
+    character.x = self.x
+    character.y = self.y
 end

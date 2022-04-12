@@ -67,6 +67,9 @@ function Character:drawableX()
     if self.orientation == math.rad(180) then 
         ret = self.x + self.width 
     end
+    if not ret then
+        ret = 0
+    end
     return ret - self.width/2
 end
 
@@ -75,7 +78,7 @@ function Character:drawableY()
     if self.orientation == math.rad(180) then 
         ret = self.y + self.height 
     end
-    return ret
+    return ret - self.height/2
 end
 
 function Character:draw()

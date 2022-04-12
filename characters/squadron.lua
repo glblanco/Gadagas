@@ -41,3 +41,22 @@ function DownwardYellowSquadron:new()
         table.insert(self.enemies, YellowEnemy(step*i+(step/2),-50,speed,NeverEndingStraightDownFlightPlan()))
     end
 end
+
+SampleBezierGreenSquadron = Squadron:extend()
+function SampleBezierGreenSquadron:new()
+    SampleBezierGreenSquadron.super.new( self )
+    local speed = 50
+    local timeStep = 5
+    local curve = love.math.newBezierCurve({25,425, 25,525, 75,425, 125,525, 300,400, 400,450, 500,0, 550,30, 600,400, 700,200})
+    for i=1,6 do
+        table.insert(self.enemies, GreenEnemy(0,0,speed,BezierFlightPlan(curve,i*timeStep)))
+    end
+end
+
+TwinSquadron = Squadron:extend()
+function TwinSquadron:new() 
+    TwinSquadron.super.new( self )
+    local screenWidth = love.graphics.getWidth()
+    table.insert(enemies, BlueEnemy(10,500,40,RightAndUpInTheMiddleFlightPlan()))
+    table.insert(enemies, RedEnemy(screenWidth-10,500,40,LeftAndUpInTheMiddleFlightPlan()))
+end

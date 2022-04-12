@@ -1,8 +1,8 @@
 function love.load()
     
     -- First require classic, since we use it to create our classes.
-    Object = require "classic"
-    require "entity"
+    Object = require "external/classic"
+    require "external/entity"
     require "characters/character"
     require "characters/player"
     require "characters/enemy"
@@ -18,15 +18,18 @@ function love.load()
 
     local spacePerPlayer = 18*2
     local y = screenHeight - spacePerPlayer
-    for i=1,3 do
-        table.insert(lives, Player(((3-i)*spacePerPlayer)+20,y))
+    local livesCount = 3
+    for i=1,livesCount do
+        table.insert(lives, Player(((livesCount-i)*spacePerPlayer)+20,y))
     end
     lives[1].activate(lives[1])
 
-    table.insert(enemies, BlueEnemy(10,500,40,RightAndUpInTheMiddleFlightPlan()))
-    table.insert(enemies, RedEnemy(screenWidth-10,500,40,LeftAndUpInTheMiddleFlightPlan()))
+    table.insert(enemies, TwinSquadron())
     table.insert(enemies, DownwardYellowSquadron())
+    table.insert(enemies, SampleBezierGreenSquadron())
 
+    curve = love.math.newBezierCurve({25,425, 25,525, 75,425, 125,525, 300,400, 400,450, 500,0, 550,30, 600,400, 700,200})
+    
 end
 
 function love.update(dt)
@@ -39,6 +42,9 @@ function love.update(dt)
 end
 
 function love.draw()
+    
+    love.graphics.line(curve:render())
+
     for i,player in ipairs(lives) do
         player:draw()
         if debug then
@@ -53,6 +59,7 @@ function love.draw()
             end
         end
     end
+
 end
 
 function love.keypressed(key)
