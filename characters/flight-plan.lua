@@ -58,9 +58,25 @@ RightAndUpInTheMiddleFlightPlan = FlightPlan:extend()
 function RightAndUpInTheMiddleFlightPlan:doUpdate(character, dt)
 
     local screenWidth = love.graphics.getWidth()
-    if character.x + character.width < (screenWidth/2) - character.width then
+    if character.x < (screenWidth/2) - character.width then
         character.lookRight(character)
         character.x = character.x + character.speed * dt         
+    else
+        character.lookUp(character)
+        character.y = character.y - character.speed * dt 
+        if character.y + character.height < 0 then
+            self.completed = true
+        end
+    end
+end
+
+LeftAndUpInTheMiddleFlightPlan = FlightPlan:extend()
+function LeftAndUpInTheMiddleFlightPlan:doUpdate(character, dt)
+
+    local screenWidth = love.graphics.getWidth()
+    if character.x > (screenWidth/2) + character.width then
+        character.lookLeft(character)
+        character.x = character.x - character.speed * dt         
     else
         character.lookUp(character)
         character.y = character.y - character.speed * dt 

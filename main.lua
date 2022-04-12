@@ -13,14 +13,18 @@ function love.load()
     enemies = {}
     debug = true
     
+    local screenWidth = love.graphics.getWidth()
+    local screenHeight = love.graphics.getHeight()
+
     local spacePerPlayer = 18*2
-    local y = love.graphics.getHeight() - spacePerPlayer
+    local y = screenHeight - spacePerPlayer
     for i=1,3 do
         table.insert(lives, Player(((3-i)*spacePerPlayer)+20,y))
     end
     lives[1].activate(lives[1])
 
     table.insert(enemies, BlueEnemy(10,500,40,RightAndUpInTheMiddleFlightPlan()))
+    table.insert(enemies, RedEnemy(screenWidth-10,500,40,LeftAndUpInTheMiddleFlightPlan()))
     table.insert(enemies, DownwardYellowSquadron())
 
 end

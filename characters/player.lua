@@ -9,7 +9,7 @@ function Player:new( x, y )
 end
 
 function Player:moveToStartingPosition()
-    self.x = (love.graphics.getWidth())/2
+    self.x = (love.graphics.getWidth())/2 
     self.y = love.graphics.getHeight() - (self.height*2.2)
 end
 
