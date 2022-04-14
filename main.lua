@@ -7,6 +7,9 @@ function love.load()
     require "characters/player"
     require "characters/enemy"
     require "characters/flight-plan"
+    require "characters/flight-plans/demos"
+    require "characters/flight-plans/simple-paths"
+    require "characters/flight-plans/composite-plans"        
     require "characters/squadron"
 
     lives = {}
