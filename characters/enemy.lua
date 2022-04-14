@@ -23,7 +23,9 @@ end
 function Enemy:draw()
     Enemy.super.draw(self)
     if self.flightPlan then
-        self.flightPlan.drawData(self.flightPlan)
+        if debug then
+            self.flightPlan.drawDebugData(self.flightPlan,self)
+        end
     end
 end
 

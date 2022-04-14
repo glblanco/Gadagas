@@ -1,16 +1,23 @@
 FlightPlan = Object:extend()
 
 function FlightPlan:new()
-    self.completed = false
+    self.complete = false
+    self.active = false
 end
 
 function FlightPlan:update(character, dt)
-    if not self.completed then
+    if not self.complete then
+        self.active = true
         self.doUpdate( self, character, dt )
     end
 end
 
-function FlightPlan:drawData()
+function FlightPlan:markComplete()
+    self.complete = true
+    self.active = false
+end
+
+function FlightPlan:drawDebugData(character)
     -- used by subclasses for debugging
 end 
 
@@ -24,7 +31,7 @@ function StraightDownFlightPlan:doUpdate(character, dt)
     character.y = character.y + character.speed * dt 
     local screenHeight = love.graphics.getHeight()
     if character.y > screenHeight + character.height then
-        self.completed = true
+        self.markComplete(self)
     end
 end
 
@@ -44,7 +51,7 @@ function StraightRightFlightPlan:doUpdate(character, dt)
     character.x = character.x + character.speed * dt 
     local screenWidth = love.graphics.getWidth()
     if character.x > screenWidth + character.width then
-        self.completed = true
+        self.markComplete(self)
     end
 end
 
@@ -54,7 +61,7 @@ function StraightLeftFlightPlan:doUpdate(character, dt)
     character.x = character.x - character.speed * dt 
     local screenWidth = love.graphics.getWidth()
     if character.x + character.width < 0 then
-        self.completed = true
+        self.markComplete(self)
     end
 end
 
@@ -85,8 +92,29 @@ function CircularFlightPlan:doUpdate(character, dt)
     nextY = self.radius * math.sin(nextRotation) + self.centerY
     character.orientation = math.atan2(nextY - character.y, nextX - character.x)
 end
+function CircularFlightPlan:drawDebugData(character)
+    setDebugColor()
+    love.graphics.circle( "line", self.centerX, self.centerY, self.radius )
+end 
 
-RightAndUpInTheMiddleFlightPlan = FlightPlan:extend()
+UpInTheMiddleFlightPlan = FlightPlan:extend()
+function UpInTheMiddleFlightPlan:drawDebugData(character)
+    setDebugColor()
+    local screenWidth = love.graphics.getWidth()
+    local screenHeight = love.graphics.getHeight()
+    local x1 = screenWidth/2 - 3*character.width
+    local x2 = screenWidth/2 - character.width
+    local x3 = screenWidth/2 
+    local x4 = screenWidth/2 + character.width
+    local x5 = screenWidth/2 + 3*character.width
+    love.graphics.line( x1, 0, x1, screenHeight )
+    love.graphics.line( x2, 0, x2, screenHeight )
+    love.graphics.line( x3, 0, x3, screenHeight )
+    love.graphics.line( x4, 0, x4, screenHeight )
+    love.graphics.line( x5, 0, x5, screenHeight )
+end 
+
+RightAndUpInTheMiddleFlightPlan = UpInTheMiddleFlightPlan:extend()
 function RightAndUpInTheMiddleFlightPlan:new()
     self.rotation = math.atan2(1, 0)  -- start angle
 end
@@ -114,12 +142,12 @@ function RightAndUpInTheMiddleFlightPlan:doUpdate(character, dt)
         character.lookUp(character)
         character.y = character.y - character.speed * dt 
         if character.y + character.height < 0 then
-            self.completed = true
+            self.markComplete(self)
         end
     end
 end
 
-LeftAndUpInTheMiddleFlightPlan = FlightPlan:extend()
+LeftAndUpInTheMiddleFlightPlan = UpInTheMiddleFlightPlan:extend()
 function LeftAndUpInTheMiddleFlightPlan:new()
     self.rotation = math.atan2(1, 0)  -- start angle
 end
@@ -147,7 +175,7 @@ function LeftAndUpInTheMiddleFlightPlan:doUpdate(character, dt)
         character.lookUp(character)
         character.y = character.y - character.speed * dt 
         if character.y + character.height < 0 then
-            self.completed = true
+            self.markComplete(self)
         end
     end
 end
@@ -156,35 +184,118 @@ BezierFlightPlan = FlightPlan:extend()
 function BezierFlightPlan:new( bezierCurve, timeDelay )
     BezierFlightPlan.super.new(self)
     self.bezierCurve = bezierCurve
-    self.timeDelay = timeDelay
-    self.time = 0
+    self.time = -timeDelay
 end
 function BezierFlightPlan:doUpdate(character, dt)
-    if (self.time - self.timeDelay) <= 0 then
+    if self.time < 0 then
         character.isAlive = false
     else   
         character.isAlive = true
         -- current position
-        local x, y = self.bezierCurve:evaluate(((self.time-self.timeDelay)*character.speed/400)%1)
+        local x, y = self.nextPosition(self,character,dt)
         character.x = x
         character.y = y
         -- next position
-        local nextX, nextY = self.bezierCurve:evaluate(((self.time-self.timeDelay+(dt))*character.speed/400)%1)
-        character.orientation = math.atan2(nextY - y, nextX - x)
+        local nextX, nextY = self.nextPosition(self,character,2*dt)
+        local deltaX = nextX - x
+        local deltaY = nextY - y
+        character.orientation = math.atan2(deltaY, deltaX)
         -- check if plan completed
-        if self.hasCompleted(self,character,dt) then
-            self.completed = true
+        if self.hasCompleted(self,character,dt,deltaY,deltaX) then
+            self.markComplete(self)
         end
     end
-    character.dt = dt
     self.time = self.time + dt
 end
-function BezierFlightPlan:hasCompleted(character, dt)
-    local num = curve:getControlPointCount()
-    local lx,ly = curve:getControlPoint(num)
-    local delta = character.speed * 10 * dt
-    return  lx - delta < character.x and
-            lx + delta > character.x and
-            ly - delta < character.y and
-            ly + delta > character.y   
+function BezierFlightPlan:nextPosition(character, dt)
+    return self.bezierCurve:evaluate(((self.time+dt)*character.speed/400)%1)
+end
+function BezierFlightPlan:hasCompleted(character, dt, deltaY, deltaX)
+    local delta = math.abs(character.speed * 10 * dt)
+    return  math.abs(deltaY) >= delta or math.abs(deltaX) >= delta 
+end
+function BezierFlightPlan:drawDebugData(character)
+    setDebugColor()
+    love.graphics.line(self.bezierCurve:render())
+    -- love.graphics.print(
+    --    ' complete:'..(self.complete and 'true' or 'false')..
+    --    ' active:'..(self.active and 'true' or 'false')
+    --    ,10,400)
+end 
+
+HorizontalHoverFlightPlan = FlightPlan:extend()
+function HorizontalHoverFlightPlan:new(startX,startY)
+    HorizontalHoverFlightPlan.super.new(self)
+    self.startX = startX
+    self.startY = startY
+    self.direction = "right"
+end
+function HorizontalHoverFlightPlan:doUpdate(character, dt)
+    character.lookUp(character)
+    local extent = 1.5*character.width
+    if self.direction == "right" then
+        if character.x < self.startX + extent then
+            character.x = character.x + character.speed * dt
+        else
+            self.direction = "left"
+        end
+    elseif self.direction == "left" then
+        if character.x > self.startX - extent then
+            character.x = character.x - character.speed * dt
+        else
+            self.direction = "right"
+        end
+    end      
+end
+
+CompositeFlightPlan = FlightPlan:extend()
+function CompositeFlightPlan:new( flightPlans )
+    CompositeFlightPlan.super.new(self)
+    self.flightPlans = flightPlans
+end
+function CompositeFlightPlan:doUpdate(character, dt)
+    for i,plan in ipairs(self.flightPlans) do
+        if not plan.complete then
+            plan.update(plan,character, dt)
+            break
+        end
+    end
+end
+function CompositeFlightPlan:drawDebugData(character)
+    for i,plan in ipairs(self.flightPlans) do
+        plan.drawDebugData(plan,character)
+        -- setDebugColor()
+        -- love.graphics.print('plan '..i..
+        --        ': complete:'..(plan.complete and 'true' or 'false')
+        --        ..' active:'..(plan.active and 'true' or 'false'),
+        --        10,400+i*15)
+    end
+end 
+
+Demo1CompositeFlightPlan = CompositeFlightPlan:extend()
+function Demo1CompositeFlightPlan:new()
+    local plans = {}
+    table.insert(plans,StraightRightFlightPlan())
+    table.insert(plans,StraightLeftFlightPlan())
+    table.insert(plans,StraightRightFlightPlan())
+    table.insert(plans,StraightLeftFlightPlan())
+    Demo2CompositeFlightPlan.super.new(self,plans)
+end
+
+Demo2CompositeFlightPlan = CompositeFlightPlan:extend()
+function Demo2CompositeFlightPlan:new( mirrored )
+    local trajectory = {100,0, 200,80, 350,100, 500,250, 1000,400, 500,500, 350,400, 350,100}
+    if mirrored then
+        trajectory = mirrorVertically(trajectory)
+    end
+    local bezierPlan = BezierFlightPlan(love.math.newBezierCurve(trajectory),0)
+    local hoverPlan = HorizontalHoverFlightPlan(350,100)
+    local plans = {}
+    table.insert(plans,bezierPlan)
+    table.insert(plans,hoverPlan)
+    Demo1CompositeFlightPlan.super.new(self,plans)
+end
+
+function mirrorVertically( points )
+    return points
 end

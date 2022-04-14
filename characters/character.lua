@@ -76,6 +76,7 @@ end
 
 function Character:draw()
     if self.isAlive then
+        setWhiteColor()
         love.graphics.draw(image, self.frames[self.currentFrame], 
                 self.drawableX(self), 
                 self.drawableY(self), 
