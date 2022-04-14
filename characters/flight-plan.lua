@@ -110,7 +110,22 @@ function BezierFlightPlan:doUpdate(character, dt)
         -- next position
         local nextX, nextY = self.bezierCurve:evaluate(((self.time-self.timeDelay+dt)/character.speed)%1)
         character.orientation = math.atan2(nextY - y, nextX - x)
+        -- check if plan completed
+        local num = curve:getControlPointCount()
+        local lx,ly = curve:getControlPoint(num)
+        if self.hasCompleted(self,character,dt) then
+            self.completed = true
+        end
     end
     character.dt = dt
     self.time = self.time + dt
+end
+function BezierFlightPlan:hasCompleted(character, dt)
+    local num = curve:getControlPointCount()
+    local lx,ly = curve:getControlPoint(num)
+    local delta = 100 * dt
+    return  lx - delta < character.x and
+            lx + delta > character.x and
+            ly - delta < character.y and
+            ly + delta > character.y   
 end
