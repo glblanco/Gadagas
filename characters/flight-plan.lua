@@ -102,7 +102,6 @@ function BezierFlightPlan:doUpdate(character, dt)
         character.isAlive = false
     else   
         character.isAlive = true
-        -- character.lookRight(character)
         -- current position
         local x, y = self.bezierCurve:evaluate(((self.time-self.timeDelay)/character.speed)%1)
         character.x = x
@@ -111,8 +110,6 @@ function BezierFlightPlan:doUpdate(character, dt)
         local nextX, nextY = self.bezierCurve:evaluate(((self.time-self.timeDelay+dt)/character.speed)%1)
         character.orientation = math.atan2(nextY - y, nextX - x)
         -- check if plan completed
-        local num = curve:getControlPointCount()
-        local lx,ly = curve:getControlPoint(num)
         if self.hasCompleted(self,character,dt) then
             self.completed = true
         end

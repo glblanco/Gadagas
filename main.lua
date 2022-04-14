@@ -11,7 +11,7 @@ function love.load()
 
     lives = {}
     enemies = {}
-    debug = false
+    debug = true
     
     local screenWidth = love.graphics.getWidth()
     local screenHeight = love.graphics.getHeight()
@@ -50,7 +50,7 @@ function love.draw()
     for i,player in ipairs(lives) do
         player:draw()
         if debug then
-            love.graphics.print("player " .. i .. " ->  x:" .. player.x .. " y:" .. player.y .. " w:" .. player.width .. " h: " .. player.height .. " orientation(grad):" .. math.floor(player.orientation * 180 / PI), 10, 15*i + 10)
+            love.graphics.print("player " .. i .. " ->  x:" .. player.x .. " y:" .. player.y .. " w:" .. player.width .. " h: " .. player.height .. " r:" .. math.floor(player.orientation * 180 / PI), 10, 15*i + 10)
         end    
     end
     for i,enemy in ipairs(enemies) do
@@ -61,7 +61,7 @@ function love.draw()
             end
         end
     end
-            
+   
 end
 
 function love.keypressed(key)
