@@ -95,15 +95,22 @@ function BezierFlightPlan:new( bezierCurve, timeDelay )
     BezierFlightPlan.super.new(self)
     self.bezierCurve = bezierCurve
     self.timeDelay = timeDelay
+    self.time = 0
 end
 function BezierFlightPlan:doUpdate(character, dt)
-    
-    character.lookRight(character)
-    -- current position
-    local x, y = self.bezierCurve:evaluate(((love.timer.getTime()-self.timeDelay)/character.speed)%1)
-    character.x = x
-    character.y = y
-    -- next position
-    local nextX, nextY = self.bezierCurve:evaluate(((love.timer.getTime()+dt-self.timeDelay)/character.speed)%1)
-    character.orientation = math.atan2(nextY - y, nextX - x)
+    if (self.time - self.timeDelay) <= 0 then
+        character.isAlive = false
+    else   
+        character.isAlive = true
+        -- character.lookRight(character)
+        -- current position
+        local x, y = self.bezierCurve:evaluate(((self.time-self.timeDelay)/character.speed)%1)
+        character.x = x
+        character.y = y
+        -- next position
+        local nextX, nextY = self.bezierCurve:evaluate(((self.time-self.timeDelay+dt)/character.speed)%1)
+        character.orientation = math.atan2(nextY - y, nextX - x)
+    end
+    character.dt = dt
+    self.time = self.time + dt
 end

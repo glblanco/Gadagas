@@ -39,23 +39,23 @@ function Character:new( spriteInfo, x, y )
 end
 
 function Character:lookUp()
-    self.currentFrame = #self.frames - 1
-    self.orientation = 0
+    self.currentFrame = 1
+    self.orientation = math.atan2(-1, 0)
 end
 
 function Character:lookDown()
-    self.currentFrame = #self.frames - 1
-    self.orientation = math.rad(180)
+    self.currentFrame = 1
+    self.orientation = math.atan2(1, 0)
 end
 
 function Character:lookRight()
     self.currentFrame = 1
-    self.orientation = math.rad(180)
+    self.orientation = math.atan2(0, 1)
 end
 
 function Character:lookLeft()
     self.currentFrame = 1
-    self.orientation = 0
+    self.orientation = math.atan2(0, -1)
 end
 
 function Character:update(dt)
@@ -63,22 +63,16 @@ function Character:update(dt)
 end
 
 function Character:drawableX()
-    ret = self.x
-    if self.orientation == math.rad(180) then 
-        ret = self.x + self.width 
-    end
-    if not ret then
-        ret = 0
-    end
-    return ret - self.width/2
+    return self.x
 end
 
 function Character:drawableY()
-    ret = self.y
-    if self.orientation == math.rad(180) then 
-        ret = self.y + self.height 
-    end
-    return ret - self.height/2
+    return self.y
+end
+
+function Character:drawableOrientation()
+    -- images are looking right, not left
+    return self.orientation + math.rad(180)
 end
 
 function Character:draw()
@@ -86,8 +80,14 @@ function Character:draw()
         love.graphics.draw(image, self.frames[self.currentFrame], 
                 self.drawableX(self), 
                 self.drawableY(self), 
-                self.orientation, 
+                self.drawableOrientation(self), 
                 self.scale, 
-                self.scale )
+                self.scale,
+                self.width/(2*self.scale),
+                self.height/(2*self.scale)) 
+    end
+
+    if debug then
+        love.graphics.rectangle( "line", self.x - self.width/2, self.y - self.height/2, self.width, self.height )
     end
 end

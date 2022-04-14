@@ -11,7 +11,7 @@ function love.load()
 
     lives = {}
     enemies = {}
-    debug = true
+    debug = false
     
     local screenWidth = love.graphics.getWidth()
     local screenHeight = love.graphics.getHeight()
@@ -29,7 +29,8 @@ function love.load()
     table.insert(enemies, SampleBezierGreenSquadron())
 
     curve = love.math.newBezierCurve({25,425, 25,525, 75,425, 125,525, 300,400, 400,450, 500,0, 550,30, 600,400, 700,200})
-    
+    -- flightPlan = BezierFlightPlan(curve,0)
+    -- table.insert(enemies, GreenEnemy(0,0,40, flightPlan))
 end
 
 function love.update(dt)
@@ -44,11 +45,12 @@ end
 function love.draw()
     
     love.graphics.line(curve:render())
+    local PI = 3.14159265358
 
     for i,player in ipairs(lives) do
         player:draw()
         if debug then
-            love.graphics.print("player " .. i .. " ->  x:" .. player.x .. " y:" .. player.y .. " w:" .. player.width .. " h: " .. player.height , 10, 15*i + 10)
+            love.graphics.print("player " .. i .. " ->  x:" .. player.x .. " y:" .. player.y .. " w:" .. player.width .. " h: " .. player.height .. " orientation(grad):" .. math.floor(player.orientation * 180 / PI), 10, 15*i + 10)
         end    
     end
     for i,enemy in ipairs(enemies) do
@@ -59,7 +61,7 @@ function love.draw()
             end
         end
     end
-
+            
 end
 
 function love.keypressed(key)

@@ -6,6 +6,7 @@ function Player:new( x, y )
     self.speed = 500
     self.isActive = false
     self.currentFrame = 7
+    self.lookUp(self)
 end
 
 function Player:moveToStartingPosition()
