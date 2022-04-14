@@ -31,7 +31,7 @@ function love.load()
     curve = love.math.newBezierCurve({25,425, 25,525, 75,425, 125,525, 300,400, 400,450, 500,0, 550,30, 600,400, 700,200})
     flightPlan = BezierFlightPlan(curve,0)
     table.insert(enemies, GreenEnemy(0,0,40, flightPlan))
-    table.insert(enemies, GreenEnemy(200,200,40, CircularFlightPlan(300,300,100)))
+    table.insert(enemies, GreenEnemy(200,200,40, CircularFlightPlan(300,300,100,"counterclockwise")))
     
 end
 

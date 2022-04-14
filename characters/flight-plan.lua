@@ -59,17 +59,28 @@ function StraightLeftFlightPlan:doUpdate(character, dt)
 end
 
 CircularFlightPlan = FlightPlan:extend()
-function CircularFlightPlan:new( centerX, centerY, radius )
+function CircularFlightPlan:new( centerX, centerY, radius, direction )
     self.rotation = 0  -- start angle
     self.centerX = centerX
     self.centerY = centerY
     self.radius = radius
+    self.direction = direction
 end
 function CircularFlightPlan:doUpdate(character, dt)
-    self.rotation = self.rotation - (character.speed/self.radius)*dt   
+    local deltaRotation = (character.speed/self.radius)*dt
+    if self.direction == "clockwise" then
+        self.rotation = self.rotation + deltaRotation
+    else  
+        self.rotation = self.rotation - deltaRotation
+    end
     character.x = self.radius * math.cos(self.rotation) + self.centerX
     character.y = self.radius * math.sin(self.rotation) + self.centerY
-    local nextRotation = self.rotation - dt  
+    local nextRotation = 0
+    if self.direction == "clockwise" then
+        nextRotation = self.rotation + deltaRotation 
+    else
+        nextRotation = self.rotation - deltaRotation   
+    end
     nextX = self.radius * math.cos(nextRotation) + self.centerX
     nextY = self.radius * math.sin(nextRotation) + self.centerY
     character.orientation = math.atan2(nextY - character.y, nextX - character.x)
