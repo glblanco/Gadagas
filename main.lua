@@ -47,7 +47,7 @@ end
 function love.draw()
     
     local PI = 3.14159265358
-    love.graphics.setColor(255,255,255,255)
+    setWhiteColor()
     for i,player in ipairs(lives) do
         player:draw()
         if debug then
@@ -64,7 +64,7 @@ function love.draw()
     end
 
     if debug then
-        love.graphics.setColor(255/255, 200/255, 40/255, 127/255)
+        setDebugColor()
         love.graphics.line(curve:render())
         love.graphics.circle( "line", 300, 300, 100 )
         local character = lives[1]
@@ -81,6 +81,14 @@ function love.draw()
         love.graphics.line( x4, 0, x4, screenHeight )
         love.graphics.line( x5, 0, x5, screenHeight )
     end
+end
+
+function setWhiteColor()
+    love.graphics.setColor(1,1,1)
+end
+
+function setDebugColor()
+    love.graphics.setColor(163/255, 163/255, 155/255)
 end
 
 function love.keypressed(key)
