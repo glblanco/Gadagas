@@ -35,7 +35,6 @@ function Character:new( spriteInfo, x, y )
     self.currentFrame = 1
     self.isAlive = true
     self.orientation = 0
-
 end
 
 function Character:lookUp()

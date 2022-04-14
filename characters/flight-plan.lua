@@ -58,14 +58,48 @@ function StraightLeftFlightPlan:doUpdate(character, dt)
     end
 end
 
-RightAndUpInTheMiddleFlightPlan = FlightPlan:extend()
-function RightAndUpInTheMiddleFlightPlan:doUpdate(character, dt)
+CircularFlightPlan = FlightPlan:extend()
+function CircularFlightPlan:new( centerX, centerY, radius )
+    self.rotation = 0  -- start angle
+    self.centerX = centerX
+    self.centerY = centerY
+    self.radius = radius
+end
+function CircularFlightPlan:doUpdate(character, dt)
+    self.rotation = self.rotation - (character.speed/self.radius)*dt   
+    character.x = self.radius * math.cos(self.rotation) + self.centerX
+    character.y = self.radius * math.sin(self.rotation) + self.centerY
+    local nextRotation = self.rotation - dt  
+    nextX = self.radius * math.cos(nextRotation) + self.centerX
+    nextY = self.radius * math.sin(nextRotation) + self.centerY
+    character.orientation = math.atan2(nextY - character.y, nextX - character.x)
+end
 
+RightAndUpInTheMiddleFlightPlan = FlightPlan:extend()
+function RightAndUpInTheMiddleFlightPlan:new()
+    self.rotation = math.atan2(1, 0)  -- start angle
+end
+function RightAndUpInTheMiddleFlightPlan:doUpdate(character, dt)
     local screenWidth = love.graphics.getWidth()
-    if character.x < (screenWidth/2) - character.width then
+    if character.x < (screenWidth/2) - 3*character.width then
+        -- straight right
         character.lookRight(character)
-        character.x = character.x + character.speed * dt         
+        character.x = character.x + character.speed * dt    
+        self.startY = character.y     
+    elseif character.x < (screenWidth/2) - character.width - 1 then
+        -- circular motion
+        local radius = 2*character.width                 
+        local ox = (screenWidth/2) - 3*character.width   
+        local oy = self.startY - 2*character.height
+        self.rotation = self.rotation - (character.speed/radius)*dt 
+        character.x = radius * math.cos(self.rotation) + ox
+        character.y = radius * math.sin(self.rotation) + oy
+        self.nextRotation = self.rotation - (character.speed/radius)*dt 
+        nextX = radius * math.cos(self.nextRotation) + ox
+        nextY = radius * math.sin(self.nextRotation) + oy
+        character.orientation = math.atan2(nextY - character.y, nextX - character.x)
     else
+        -- straight up
         character.lookUp(character)
         character.y = character.y - character.speed * dt 
         if character.y + character.height < 0 then
@@ -75,13 +109,30 @@ function RightAndUpInTheMiddleFlightPlan:doUpdate(character, dt)
 end
 
 LeftAndUpInTheMiddleFlightPlan = FlightPlan:extend()
+function LeftAndUpInTheMiddleFlightPlan:new()
+    self.rotation = math.atan2(1, 0)  -- start angle
+end
 function LeftAndUpInTheMiddleFlightPlan:doUpdate(character, dt)
-
     local screenWidth = love.graphics.getWidth()
-    if character.x > (screenWidth/2) + character.width then
+    if character.x > (screenWidth/2) + 3*character.width then
+        -- straight left
         character.lookLeft(character)
         character.x = character.x - character.speed * dt         
+        self.startY = character.y   
+    elseif character.x > (screenWidth/2) + character.width + 1 then
+        -- circular motion
+        local radius = 2*character.width                 
+        local ox = (screenWidth/2) + 3*character.width   
+        local oy = self.startY - 2*character.height
+        self.rotation = self.rotation + (character.speed/radius)*dt 
+        character.x = radius * math.cos(self.rotation) + ox
+        character.y = radius * math.sin(self.rotation) + oy
+        self.nextRotation = self.rotation + (character.speed/radius)*dt 
+        nextX = radius * math.cos(self.nextRotation) + ox
+        nextY = radius * math.sin(self.nextRotation) + oy
+        character.orientation = math.atan2(nextY - character.y, nextX - character.x)
     else
+        -- straight up
         character.lookUp(character)
         character.y = character.y - character.speed * dt 
         if character.y + character.height < 0 then
@@ -107,7 +158,7 @@ function BezierFlightPlan:doUpdate(character, dt)
         character.x = x
         character.y = y
         -- next position
-        local nextX, nextY = self.bezierCurve:evaluate(((self.time-self.timeDelay+dt)/character.speed)%1)
+        local nextX, nextY = self.bezierCurve:evaluate(((self.time-self.timeDelay+(dt))*character.speed/400)%1)
         character.orientation = math.atan2(nextY - y, nextX - x)
         -- check if plan completed
         if self.hasCompleted(self,character,dt) then
