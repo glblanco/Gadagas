@@ -103,7 +103,7 @@ function BezierFlightPlan:doUpdate(character, dt)
     else   
         character.isAlive = true
         -- current position
-        local x, y = self.bezierCurve:evaluate(((self.time-self.timeDelay)/character.speed)%1)
+        local x, y = self.bezierCurve:evaluate(((self.time-self.timeDelay)*character.speed/400)%1)
         character.x = x
         character.y = y
         -- next position
@@ -120,7 +120,7 @@ end
 function BezierFlightPlan:hasCompleted(character, dt)
     local num = curve:getControlPointCount()
     local lx,ly = curve:getControlPoint(num)
-    local delta = 100 * dt
+    local delta = character.speed * 10 * dt
     return  lx - delta < character.x and
             lx + delta > character.x and
             ly - delta < character.y and
