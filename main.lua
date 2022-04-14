@@ -14,7 +14,7 @@ function love.load()
 
     lives = {}
     enemies = {}
-    debug = true
+    debug = false
     
     local screenWidth = love.graphics.getWidth()
     local screenHeight = love.graphics.getHeight()
@@ -32,8 +32,9 @@ function love.load()
     table.insert(enemies, SampleBezierGreenSquadron())
     table.insert(enemies, BlueEnemy(200,200,40, CircularFlightPlan(300,300,100,"counterclockwise")))
     table.insert(enemies, RedEnemy(0,400,120, Demo1CompositeFlightPlan()))
-    table.insert(enemies, BlueEnemy(0,400,80, Demo2CompositeFlightPlan(true)))
+    table.insert(enemies, BlueEnemy(0,400,100, Demo2CompositeFlightPlan(true)))
     table.insert(enemies, YellowEnemy(500,100,20, HorizontalHoverFlightPlan(500,100)))
+    table.insert(enemies, RedEnemy(500,200,80, HorizontalHoverFlightPlan(500,100)))
 end
 
 function love.update(dt)
@@ -61,7 +62,7 @@ function love.draw()
         if debug then
             setDebugColor()
             if not enemy:isSquadron() then
-                love.graphics.print("enemy " .. i .. " ->  x:" .. enemy.x .. " y:" .. enemy.y .. " w:" .. enemy.width .. " h: " .. enemy.height .. " cf: " .. enemy.currentFrame .. " s:" .. enemy.speed, 10, (15*#lives+10)+(15*i+10))
+                love.graphics.print("enemy " .. i .. " ->  x:" .. enemy.x .. " y:" .. enemy.y .. " w:" .. enemy.width .. " h: " .. enemy.height .. " cf: " .. enemy.currentFrame .. " s: " .. enemy.speed .. ' nf: ' ..#enemy.frames, 10, (15*#lives+10)+(15*i+10))
             end
         end
     end

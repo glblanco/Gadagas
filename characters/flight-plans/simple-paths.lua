@@ -90,7 +90,7 @@ function HorizontalHoverFlightPlan:new(startX,startY)
     self.direction = "right"
 end
 function HorizontalHoverFlightPlan:doUpdate(character, dt)
-    character.lookUp(character)
+    character.updateHoverMode(character,dt)
     local extent = 1.5*character.width
     if self.direction == "right" then
         if character.x < self.startX + extent then

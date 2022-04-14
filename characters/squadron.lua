@@ -46,8 +46,8 @@ SampleBezierGreenSquadron = Squadron:extend()
 function SampleBezierGreenSquadron:new()
     SampleBezierGreenSquadron.super.new( self )
     local speed = 50
-    local timeStep = 5
-    local curve = love.math.newBezierCurve({25,425, 25,525, 75,425, 125,525, 300,400, 400,450, 500,0, 550,30, 600,400, 700,200})
+    local timeStep = 2
+    local curve = love.math.newBezierCurve({-35,425, 25,525, 75,425, 125,525, 300,400, 400,450, 500,0, 550,30, 600,400, 900,200})
     for i=0,5 do
         table.insert(self.enemies, GreenEnemy(0,0,speed,BezierFlightPlan(curve,i*timeStep)))
     end
