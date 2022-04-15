@@ -16,9 +16,11 @@ function Demo2CompositeFlightPlan:new( mirrored )
         trajectory = mirrorVertically(trajectory)
     end
     local bezierPlan = BezierFlightPlan(love.math.newBezierCurve(trajectory),0)
-    local hoverPlan = HorizontalHoverFlightPlan(350,100)
+    local gotoPlan = GoToCoordinateFlightPlan(350,100,100,500)
+    local hoverPlan = HorizontalHoverFlightPlan(100,500)
     local plans = {}
     table.insert(plans,bezierPlan)
+    table.insert(plans,gotoPlan)    
     table.insert(plans,hoverPlan)
     Demo1CompositeFlightPlan.super.new(self,plans)
 end

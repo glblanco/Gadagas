@@ -26,7 +26,7 @@ function Enemy:updateHoverMode(dt)
     self.orientation = math.atan2(0, -1)
     if #self.frames == 9 then
         self.hoverTime = self.hoverTime + dt
-        if self.hoverTime>2*dt then
+        if self.hoverTime>3*dt then
             if self.currentFrame <= 7 then
                 self.currentFrame = 8
             else 

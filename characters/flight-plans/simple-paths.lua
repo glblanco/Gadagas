@@ -149,3 +149,34 @@ function BezierFlightPlan:drawDebugData(character)
     --    ' active:'..(self.active and 'true' or 'false')
     --    ,10,400)
 end 
+
+GoToCoordinateFlightPlan = FlightPlan:extend()
+function GoToCoordinateFlightPlan:new( startX, startY, endX, endY )
+    GoToCoordinateFlightPlan.super.new(self)
+    self.startX = startX
+    self.startY = startY
+    self.endX = endX
+    self.endY = endY
+end
+function GoToCoordinateFlightPlan:doUpdate(character, dt)
+    local nextX = character.x + math.cos(character.orientation) * character.speed * dt
+    local nextY = character.y + math.sin(character.orientation) * character.speed * dt
+    character.x = nextX
+    character.y = nextY
+    character.orientation = math.atan2(self.endY-nextY, self.endX-nextX)
+    if self.hasCompleted(self,character,dt,self.endY-nextY, self.endX-nextX) then
+        self.markComplete(self)
+    end
+end
+function GoToCoordinateFlightPlan:hasCompleted(character, dt, deltaY, deltaX)
+    local delta = math.abs(character.speed * 1.5 * dt)
+    return  math.abs(deltaY) <= delta and math.abs(deltaX) <= delta 
+end
+function GoToCoordinateFlightPlan:drawDebugData(character)
+    setDebugColor()
+    love.graphics.line( self.startX, self.startY, self.endX, self.endY )
+    love.graphics.print(
+        ' complete:'..(self.complete and 'true' or 'false')..
+        ' active:'..(self.active and 'true' or 'false')
+        ,10,400)
+end 
