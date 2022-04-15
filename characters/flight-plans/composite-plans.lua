@@ -9,9 +9,8 @@ function Demo1CompositeFlightPlan:new()
     Demo2CompositeFlightPlan.super.new(self,plans)
 end
 
-Demo2CompositeFlightPlan = CompositeFlightPlan:extend()
-function Demo2CompositeFlightPlan:new( mirrored, hoverX, hoverY )
-    local trajectory = {100,0, 200,80, 350,100, 500,250, 1000,400, 500,500, 350,400, 350,100}
+BezierAndHoverCompositeFlightPlan = CompositeFlightPlan:extend()
+function BezierAndHoverCompositeFlightPlan:new( trajectory, mirrored, hoverX, hoverY )
     local count = table.getn( trajectory )
     local gotoPlan, hoverPlan
     local bezierEndX = trajectory[count-1]
@@ -32,7 +31,7 @@ function Demo2CompositeFlightPlan:new( mirrored, hoverX, hoverY )
     table.insert(plans,gotoPlan)    
     table.insert(plans,hoverPlan)
 
-    Demo1CompositeFlightPlan.super.new(self,plans)
+    BezierAndHoverCompositeFlightPlan.super.new(self,plans)
 end
 
 function mirrorVertically( points )

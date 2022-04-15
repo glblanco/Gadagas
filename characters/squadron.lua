@@ -45,7 +45,7 @@ end
 SampleBezierGreenSquadron = Squadron:extend()
 function SampleBezierGreenSquadron:new()
     SampleBezierGreenSquadron.super.new( self )
-    local speed = 50
+    local speed = 80
     local timeStep = 2
     local curve = love.math.newBezierCurve({-35,425, 25,525, 75,425, 125,525, 300,400, 400,450, 500,0, 550,30, 600,400, 900,200})
     for i=0,5 do
@@ -57,6 +57,7 @@ TwinSquadron = Squadron:extend()
 function TwinSquadron:new() 
     TwinSquadron.super.new( self )
     local screenWidth = love.graphics.getWidth()
-    table.insert(enemies, BlueEnemy(10,500,40,RightAndUpInTheMiddleFlightPlan()))
-    table.insert(enemies, RedEnemy(screenWidth-10,500,40,LeftAndUpInTheMiddleFlightPlan()))
+    local speed = 100
+    table.insert(enemies, BlueEnemy(10,500,speed,RightAndUpInTheMiddleFlightPlan()))
+    table.insert(enemies, RedEnemy(screenWidth-10,500,speed,LeftAndUpInTheMiddleFlightPlan()))
 end

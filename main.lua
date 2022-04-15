@@ -14,7 +14,7 @@ function love.load()
 
     lives = {}
     enemies = {}
-    debug = true
+    debug = false
     
     local screenWidth = love.graphics.getWidth()
     local screenHeight = love.graphics.getHeight()
@@ -27,16 +27,13 @@ function love.load()
     end
     lives[1].activate(lives[1])
 
-    --table.insert(enemies, TwinSquadron())
+    table.insert(enemies, TwinSquadron())
     --table.insert(enemies, DownwardYellowSquadron())
-    --table.insert(enemies, SampleBezierGreenSquadron())
-    --table.insert(enemies, BlueEnemy(200,200,40, CircularFlightPlan(300,300,100,"counterclockwise")))
-    --table.insert(enemies, RedEnemy(0,400,120, Demo1CompositeFlightPlan()))
-    table.insert(enemies, BlueEnemy(0,400,100, Demo2CompositeFlightPlan(true,200,200)))
-    table.insert(enemies, YellowEnemy(0,400,100, Demo2CompositeFlightPlan(false,200,200)))
-    --table.insert(enemies, YellowEnemy(500,100,20, HorizontalHoverFlightPlan(500,100)))
-    --table.insert(enemies, RedEnemy(500,200,80, HorizontalHoverFlightPlan(500,100)))
-    --table.insert(enemies, GreenEnemy(30,30,50, GoToCoordinateFlightPlan(30,30,600,500)))
+    table.insert(enemies, SampleBezierGreenSquadron())
+    local trajectory = {100,0, 200,80, 350,100, 500,250, 1000,400, 500,500, 350,400, 350,100}
+    table.insert(enemies, BlueEnemy(0,400,100, BezierAndHoverCompositeFlightPlan(trajectory,true,200,200)))
+    table.insert(enemies, YellowEnemy(0,400,100, BezierAndHoverCompositeFlightPlan(trajectory,false,200,200)))
+    
 end
 
 function love.update(dt)
