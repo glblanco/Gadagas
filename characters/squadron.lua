@@ -61,3 +61,24 @@ function TwinSquadron:new()
     table.insert(enemies, BlueEnemy(10,500,speed,RightAndUpInTheMiddleFlightPlan()))
     table.insert(enemies, RedEnemy(screenWidth-10,500,speed,LeftAndUpInTheMiddleFlightPlan()))
 end
+
+A1Squadron = Squadron:extend()
+function A1Squadron:new()
+    A1Squadron.super.new( self )    
+    local trajectory = {100,0, 200,80, 350,100, 500,250, 1000,400, 500,500, 350,400, 350,100}
+    local speed = 120
+    local delay = 0.5
+    for i=1,3 do
+        local hoverX = 50 + 50*i 
+        local hoverY = 150
+        table.insert(enemies, BlueEnemy(0, 400, speed, BezierAndHoverCompositeFlightPlan(trajectory,false,hoverX,hoverY,i*delay)))
+        table.insert(enemies, YellowEnemy(0, 400, speed, BezierAndHoverCompositeFlightPlan(trajectory,true,hoverX,hoverY,i*delay)))        
+    end
+    for i=1,3 do
+        local hoverX = 50 + 50*i 
+        local hoverY = 200
+        local startDelay = 1.5
+        table.insert(enemies, BlueEnemy(0, 400, speed, BezierAndHoverCompositeFlightPlan(trajectory,false,hoverX,hoverY,startDelay+i*delay)))
+        table.insert(enemies, YellowEnemy(0, 400, speed, BezierAndHoverCompositeFlightPlan(trajectory,true,hoverX,hoverY,startDelay+i*delay)))        
+    end
+end

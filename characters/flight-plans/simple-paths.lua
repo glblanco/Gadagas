@@ -111,7 +111,7 @@ BezierFlightPlan = FlightPlan:extend()
 function BezierFlightPlan:new( bezierCurve, timeDelay )
     BezierFlightPlan.super.new(self)
     self.bezierCurve = bezierCurve
-    self.time = -timeDelay
+    self.time = -1 * timeDelay
 end
 function BezierFlightPlan:doUpdate(character, dt)
     if self.time < 0 then

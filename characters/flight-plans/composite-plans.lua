@@ -10,7 +10,7 @@ function Demo1CompositeFlightPlan:new()
 end
 
 BezierAndHoverCompositeFlightPlan = CompositeFlightPlan:extend()
-function BezierAndHoverCompositeFlightPlan:new( trajectory, mirrored, hoverX, hoverY )
+function BezierAndHoverCompositeFlightPlan:new( trajectory, mirrored, hoverX, hoverY, delay )
     local count = table.getn( trajectory )
     local gotoPlan, hoverPlan
     local bezierEndX = trajectory[count-1]
@@ -24,7 +24,7 @@ function BezierAndHoverCompositeFlightPlan:new( trajectory, mirrored, hoverX, ho
         gotoPlan = GoToCoordinateFlightPlan(bezierEndX,bezierEndY,hoverX,hoverY)
         hoverPlan = HorizontalHoverFlightPlan(hoverX,hoverY)
     end
-    local bezierPlan = BezierFlightPlan(love.math.newBezierCurve(trajectory),0)
+    local bezierPlan = BezierFlightPlan(love.math.newBezierCurve(trajectory),delay)
         
     local plans = {}
     table.insert(plans,bezierPlan)

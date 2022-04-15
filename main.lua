@@ -27,12 +27,13 @@ function love.load()
     end
     lives[1].activate(lives[1])
 
-    table.insert(enemies, TwinSquadron())
+    --table.insert(enemies, TwinSquadron())
     --table.insert(enemies, DownwardYellowSquadron())
-    table.insert(enemies, SampleBezierGreenSquadron())
-    local trajectory = {100,0, 200,80, 350,100, 500,250, 1000,400, 500,500, 350,400, 350,100}
-    table.insert(enemies, BlueEnemy(0,400,100, BezierAndHoverCompositeFlightPlan(trajectory,true,200,200)))
-    table.insert(enemies, YellowEnemy(0,400,100, BezierAndHoverCompositeFlightPlan(trajectory,false,200,200)))
+    --table.insert(enemies, SampleBezierGreenSquadron())
+    --local trajectory = {100,0, 200,80, 350,100, 500,250, 1000,400, 500,500, 350,400, 350,100}
+    --table.insert(enemies, BlueEnemy(0,400,100, BezierAndHoverCompositeFlightPlan(trajectory,true,200,200,0)))
+    --table.insert(enemies, YellowEnemy(0,400,100, BezierAndHoverCompositeFlightPlan(trajectory,false,200,200,0)))
+    table.insert(enemies, A1Squadron())
     
 end
 
