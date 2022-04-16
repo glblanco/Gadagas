@@ -68,5 +68,7 @@ function CircularFlightPlan:doUpdate(character, dt)
 end
 function CircularFlightPlan:drawDebugData(character)
     setDebugColor()
-    love.graphics.circle( "line", self.centerX, self.centerY, self.radius )
+    if self.active then
+        love.graphics.circle( "line", self.centerX, self.centerY, self.radius )
+    end
 end 

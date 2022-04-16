@@ -2,18 +2,20 @@
 UpInTheMiddleFlightPlan = FlightPlan:extend()
 function UpInTheMiddleFlightPlan:drawDebugData(character)
     setDebugColor()
-    local screenWidth = love.graphics.getWidth()
-    local screenHeight = love.graphics.getHeight()
-    local x1 = screenWidth/2 - 3*character.width
-    local x2 = screenWidth/2 - character.width
-    local x3 = screenWidth/2 
-    local x4 = screenWidth/2 + character.width
-    local x5 = screenWidth/2 + 3*character.width
-    love.graphics.line( x1, 0, x1, screenHeight )
-    love.graphics.line( x2, 0, x2, screenHeight )
-    love.graphics.line( x3, 0, x3, screenHeight )
-    love.graphics.line( x4, 0, x4, screenHeight )
-    love.graphics.line( x5, 0, x5, screenHeight )
+    if self.active then
+        local screenWidth = love.graphics.getWidth()
+        local screenHeight = love.graphics.getHeight()
+        local x1 = screenWidth/2 - 3*character.width
+        local x2 = screenWidth/2 - character.width
+        local x3 = screenWidth/2 
+        local x4 = screenWidth/2 + character.width
+        local x5 = screenWidth/2 + 3*character.width
+        love.graphics.line( x1, 0, x1, screenHeight )
+        love.graphics.line( x2, 0, x2, screenHeight )
+        love.graphics.line( x3, 0, x3, screenHeight )
+        love.graphics.line( x4, 0, x4, screenHeight )
+        love.graphics.line( x5, 0, x5, screenHeight )
+    end 
 end 
 
 RightAndUpInTheMiddleFlightPlan = UpInTheMiddleFlightPlan:extend()
@@ -143,11 +145,13 @@ function BezierFlightPlan:hasCompleted(character, dt, deltaY, deltaX)
 end
 function BezierFlightPlan:drawDebugData(character)
     setDebugColor()
-    love.graphics.line(self.bezierCurve:render())
-    -- love.graphics.print(
-    --    ' complete:'..(self.complete and 'true' or 'false')..
-    --    ' active:'..(self.active and 'true' or 'false')
-    --    ,10,400)
+    if self.active then
+        love.graphics.line(self.bezierCurve:render())
+        -- love.graphics.print(
+        --    ' complete:'..(self.complete and 'true' or 'false')..
+        --    ' active:'..(self.active and 'true' or 'false')
+        --    ,10,400)
+    end
 end 
 
 GoToCoordinateFlightPlan = FlightPlan:extend()
@@ -174,9 +178,11 @@ function GoToCoordinateFlightPlan:hasCompleted(character, dt, deltaY, deltaX)
 end
 function GoToCoordinateFlightPlan:drawDebugData(character)
     setDebugColor()
-    love.graphics.line( self.startX, self.startY, self.endX, self.endY )
-    love.graphics.print(
-        ' complete:'..(self.complete and 'true' or 'false')..
-        ' active:'..(self.active and 'true' or 'false')
-        ,10,400)
+    if self.active then
+        love.graphics.line( self.startX, self.startY, self.endX, self.endY )
+        love.graphics.print(
+            ' complete:'..(self.complete and 'true' or 'false')..
+            ' active:'..(self.active and 'true' or 'false')
+            ,10,400)
+    end
 end 

@@ -62,8 +62,8 @@ function TwinSquadron:new()
     TwinSquadron.super.new( self )
     local screenWidth = love.graphics.getWidth()
     local speed = 100
-    table.insert(enemies, BlueEnemy(10,500,speed,RightAndUpInTheMiddleFlightPlan()))
-    table.insert(enemies, RedEnemy(screenWidth-10,500,speed,LeftAndUpInTheMiddleFlightPlan()))
+    table.insert(self.enemies, BlueEnemy(10,500,speed,RightAndUpInTheMiddleFlightPlan()))
+    table.insert(self.enemies, RedEnemy(screenWidth-10,500,speed,LeftAndUpInTheMiddleFlightPlan()))
 end
 
 A1Squadron = Squadron:extend()
@@ -75,15 +75,15 @@ function A1Squadron:new()
     for i=1,3 do
         local hoverX = 50 + 50*i 
         local hoverY = 150
-        table.insert(enemies, BlueEnemy(0, 400, speed, BezierAndHoverCompositeFlightPlan(trajectory,false,hoverX,hoverY,i*delay)))
-        table.insert(enemies, YellowEnemy(0, 400, speed, BezierAndHoverCompositeFlightPlan(trajectory,true,hoverX,hoverY,i*delay)))        
+        table.insert(self.enemies, BlueEnemy(0, 400, speed, BezierAndHoverCompositeFlightPlan(trajectory,false,hoverX,hoverY,i*delay)))
+        table.insert(self.enemies, YellowEnemy(0, 400, speed, BezierAndHoverCompositeFlightPlan(trajectory,true,hoverX,hoverY,i*delay)))        
     end
     for i=1,3 do
         local hoverX = 50 + 50*i 
         local hoverY = 200
         local startDelay = 1.5
-        table.insert(enemies, BlueEnemy(0, 400, speed, BezierAndHoverCompositeFlightPlan(trajectory,false,hoverX,hoverY,startDelay+i*delay)))
-        table.insert(enemies, YellowEnemy(0, 400, speed, BezierAndHoverCompositeFlightPlan(trajectory,true,hoverX,hoverY,startDelay+i*delay)))        
+        table.insert(self.enemies, BlueEnemy(0, 400, speed, BezierAndHoverCompositeFlightPlan(trajectory,false,hoverX,hoverY,startDelay+i*delay)))
+        table.insert(self.enemies, YellowEnemy(0, 400, speed, BezierAndHoverCompositeFlightPlan(trajectory,true,hoverX,hoverY,startDelay+i*delay)))        
     end
 end
 
@@ -96,14 +96,14 @@ function A2Squadron:new( grid )
     for i=1,3 do
         local row = 1
         local col = i + 3 
-        table.insert(enemies, BlueEnemy(0, 400, speed, BezierAndSnapToGridFlightPlan(trajectory,false,grid,row,col,i*delay)))
-        table.insert(enemies, YellowEnemy(0, 400, speed, BezierAndSnapToGridFlightPlan(trajectory,true,grid,row,col,i*delay)))        
+        table.insert(self.enemies, BlueEnemy(0, 400, speed, BezierAndSnapToGridFlightPlan(trajectory,false,grid,row,col,i*delay)))
+        table.insert(self.enemies, YellowEnemy(0, 400, speed, BezierAndSnapToGridFlightPlan(trajectory,true,grid,row,col,i*delay)))        
     end
     for i=1,3 do
         local startDelay = 1.5
         local row = 2
         local col = i + 3
-        table.insert(enemies, BlueEnemy(0, 400, speed, BezierAndSnapToGridFlightPlan(trajectory,false,grid,row,col,startDelay+i*delay)))
-        table.insert(enemies, YellowEnemy(0, 400, speed, BezierAndSnapToGridFlightPlan(trajectory,true,grid,row,col,startDelay+i*delay)))        
+        table.insert(self.enemies, BlueEnemy(0, 400, speed, BezierAndSnapToGridFlightPlan(trajectory,false,grid,row,col,startDelay+i*delay)))
+        table.insert(self.enemies, YellowEnemy(0, 400, speed, BezierAndSnapToGridFlightPlan(trajectory,true,grid,row,col,startDelay+i*delay)))        
     end
 end

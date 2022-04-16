@@ -64,7 +64,7 @@ function HoverGrid:drawDebugData()
         for j=1,self.cols do
             local x,y = self.getTargetCoordinate(self,i,j)
             love.graphics.circle( "fill", x, y, 2 )
-            love.graphics.print("[" .. i .. "," .. j .. "]", x, y )
+            --love.graphics.print("[" .. i .. "," .. j .. "]", x, y )
         end
     end 
 end

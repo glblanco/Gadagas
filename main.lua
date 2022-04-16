@@ -3,6 +3,7 @@ function love.load()
     -- First require classic, since we use it to create our classes.
     Object = require "external/classic"
     require "external/entity"
+    require "external/TLbind"
     require "characters/character"
     require "characters/player"
     require "characters/enemy"
@@ -17,7 +18,7 @@ function love.load()
     enemies = {}
     objects = {}
 
-    debug = false
+    debug = true
     
     local screenWidth = love.graphics.getWidth()
     local screenHeight = love.graphics.getHeight()
@@ -28,8 +29,10 @@ function love.load()
     for i=1,livesCount do
         table.insert(lives, Player(((livesCount-i)*spacePerPlayer)+20,y))
     end
-    lives[1].activate(lives[1])
 
+    player = lives[1]
+    player.activate(player)
+    
     --table.insert(enemies, TwinSquadron())
     --table.insert(enemies, DownwardYellowSquadron())
     --table.insert(enemies, SampleBezierGreenSquadron())
@@ -58,7 +61,7 @@ function love.draw()
         player:draw()
         if debug then
             setDebugColor()
-            love.graphics.print("player " .. i .. " ->  x:" .. player.x .. " y:" .. player.y .. " w:" .. player.width .. " h: " .. player.height .. " r:" .. math.floor(player.orientation * 180 / PI), 10, 15*i + 10)
+            love.graphics.print("player " .. i .. " ->  x:" .. player.x .. " y:" .. player.y .. " w:" .. player.width .. " h: " .. player.height .. " r:" .. math.floor(player.orientation * 180 / PI) .. ' b: ' .. (player.binds and "true" or "false")  , 10, 15*i + 10)
         end    
     end
     for i,enemy in ipairs(enemies) do
@@ -84,16 +87,4 @@ end
 function setDebugColor()
     --love.graphics.setColor(1, 0, 0)
     love.graphics.setColor(163/255, 163/255, 155/255)
-end
-
-function love.keypressed(key)
-    for i,player in ipairs(lives) do
-        --player:notify...
-    end
-end
-
-function love.mousepressed( x, y, button, istouch, presses )
-    for i,player in ipairs(lives) do
-        --player:notify...
-    end
 end
