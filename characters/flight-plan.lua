@@ -36,7 +36,7 @@ end
 function CompositeFlightPlan:doUpdate(character, dt)
     for i,plan in ipairs(self.flightPlans) do
         if not plan.complete then
-            plan.update(plan,character, dt)
+            plan.update(plan, character, dt)
             break
         end
     end

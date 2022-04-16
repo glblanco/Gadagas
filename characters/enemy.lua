@@ -6,6 +6,7 @@ function Enemy:new( spriteInfo, x, y, speed, flightPlan )
     self.flightPlan = flightPlan
     self.hoverTime = 0
     self.laps = 0
+    self.squadron = nil
 end
 
 function Enemy:update(dt)
@@ -55,7 +56,12 @@ function Enemy:isSquadron()
     return false
 end
 
-
+function Enemy:attachToContainer( container )
+    if self.container then
+        container.dettach(container,self)
+    end 
+    self.container = container
+end
 
 GreenEnemy = Enemy:extend()
 function GreenEnemy:new( x, y, speed, flightPlan )

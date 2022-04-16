@@ -19,6 +19,10 @@ function Squadron:isSquadron()
     return true
 end
 
+function Squadron:dettach( character )
+    self.enemies.remove(character)
+end 
+
 TestCrazySquadron = Squadron:extend()
 function TestCrazySquadron:new()
     TestCrazySquadron.super.new( self )
@@ -80,5 +84,26 @@ function A1Squadron:new()
         local startDelay = 1.5
         table.insert(enemies, BlueEnemy(0, 400, speed, BezierAndHoverCompositeFlightPlan(trajectory,false,hoverX,hoverY,startDelay+i*delay)))
         table.insert(enemies, YellowEnemy(0, 400, speed, BezierAndHoverCompositeFlightPlan(trajectory,true,hoverX,hoverY,startDelay+i*delay)))        
+    end
+end
+
+A2Squadron = Squadron:extend()
+function A2Squadron:new( grid )
+    A2Squadron.super.new( self )    
+    local trajectory = {100,0, 200,80, 350,100, 500,250, 1000,400, 500,500, 350,400, 350,100}
+    local speed = 120
+    local delay = 0.5
+    for i=1,3 do
+        local row = 1
+        local col = i + 3 
+        table.insert(enemies, BlueEnemy(0, 400, speed, BezierAndSnapToGridFlightPlan(trajectory,false,grid,row,col,i*delay)))
+        table.insert(enemies, YellowEnemy(0, 400, speed, BezierAndSnapToGridFlightPlan(trajectory,true,grid,row,col,i*delay)))        
+    end
+    for i=1,3 do
+        local startDelay = 1.5
+        local row = 2
+        local col = i + 3
+        table.insert(enemies, BlueEnemy(0, 400, speed, BezierAndSnapToGridFlightPlan(trajectory,false,grid,row,col,startDelay+i*delay)))
+        table.insert(enemies, YellowEnemy(0, 400, speed, BezierAndSnapToGridFlightPlan(trajectory,true,grid,row,col,startDelay+i*delay)))        
     end
 end

@@ -10,10 +10,13 @@ function love.load()
     require "characters/flight-plans/demos"
     require "characters/flight-plans/simple-paths"
     require "characters/flight-plans/composite-plans"        
+    require "characters/flight-plans/snap-to-grid"        
     require "characters/squadron"
 
     lives = {}
     enemies = {}
+    objects = {}
+
     debug = false
     
     local screenWidth = love.graphics.getWidth()
@@ -30,11 +33,10 @@ function love.load()
     --table.insert(enemies, TwinSquadron())
     --table.insert(enemies, DownwardYellowSquadron())
     --table.insert(enemies, SampleBezierGreenSquadron())
-    --local trajectory = {100,0, 200,80, 350,100, 500,250, 1000,400, 500,500, 350,400, 350,100}
-    --table.insert(enemies, BlueEnemy(0,400,100, BezierAndHoverCompositeFlightPlan(trajectory,true,200,200,0)))
-    --table.insert(enemies, YellowEnemy(0,400,100, BezierAndHoverCompositeFlightPlan(trajectory,false,200,200,0)))
-    table.insert(enemies, A1Squadron())
-    
+    local grid = HoverGrid(10,15)
+    table.insert(enemies, A2Squadron(grid))
+
+    table.insert(objects, grid)
 end
 
 function love.update(dt)
@@ -43,6 +45,9 @@ function love.update(dt)
     end
     for i,enemy in ipairs(enemies) do
         enemy:update(dt)
+    end
+    for i,object in ipairs(objects) do
+        object:update(dt)
     end
 end
 
@@ -65,6 +70,10 @@ function love.draw()
                 love.graphics.print("enemy " .. i .. " ->  x:" .. enemy.x .. " y:" .. enemy.y .. " w:" .. enemy.width .. " h: " .. enemy.height .. " cf: " .. enemy.currentFrame .. " s: " .. enemy.speed .. ' nf: ' ..#enemy.frames, 10, (15*#lives+10)+(15*i+10))
             end
         end
+    end
+    for i,object in ipairs(objects) do
+        setWhiteColor()
+        object:draw()
     end
 end
 

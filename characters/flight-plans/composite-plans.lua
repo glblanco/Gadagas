@@ -34,6 +34,24 @@ function BezierAndHoverCompositeFlightPlan:new( trajectory, mirrored, hoverX, ho
     BezierAndHoverCompositeFlightPlan.super.new(self,plans)
 end
 
+BezierAndSnapToGridFlightPlan = CompositeFlightPlan:extend()
+function BezierAndSnapToGridFlightPlan:new( trajectory, mirrored, grid, hoverRow, hoverCol, delay )
+    local count = table.getn( trajectory )
+    local col = hoverCol
+    if mirrored then
+        local screenWidth = love.graphics.getWidth()
+        trajectory = mirrorVertically(trajectory)
+        col = grid.cols - (hoverCol-1)
+    end
+    local bezierPlan = BezierFlightPlan(love.math.newBezierCurve(trajectory),delay)
+        
+    local plans = {}
+    table.insert(plans,bezierPlan)
+    table.insert(plans,SnapToGridFlightPlan(grid,hoverRow,col))
+
+    BezierAndSnapToGridFlightPlan.super.new(self,plans)
+end
+
 function mirrorVertically( points )
     local len = table.getn( points )
     local mirroredPoints = { n = len }
