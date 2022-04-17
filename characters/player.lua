@@ -54,6 +54,8 @@ function Player:move(dt)
 
     if input.control.shoot then   
         self.shoot = true   
+        bullet = new Bullet(self.x,self.y,"up")
+        table.insert(bullets, bullet)
     else 
         self.shoot = false     
     end

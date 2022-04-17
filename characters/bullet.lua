@@ -2,7 +2,7 @@ Bullet = Entity:extend()
 
 function Bullet:new( x, y, direction )
     
-    self.scale = 1
+    self.scale = 2
     local frame_width = 16
     local frame_height = 16    
     

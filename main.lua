@@ -22,6 +22,7 @@ function love.load()
     lives = {}
     enemies = {}
     objects = {}
+    bullets = {}
     input = Control()
 
     debug = true
@@ -39,14 +40,11 @@ function love.load()
     player = lives[1]
     player.activate(player)
     
-    --local grid = HoverGrid(10,15)
-    --table.insert(enemies, A2Squadron(grid))
+    local grid = HoverGrid(10,15)
+    table.insert(enemies, A2Squadron(grid))
 
-    --table.insert(objects, grid)
-    for i=1,9 do
-        local bullet = Bullet(80*i,screenHeight,"up")
-        table.insert(objects,bullet)
-    end
+    table.insert(objects, grid)
+    
 end
 
 function love.update(dt)
@@ -59,6 +57,9 @@ function love.update(dt)
     for i,object in ipairs(objects) do
         object:update(dt)
     end
+    for i,bullet in ipairs(bullets) do
+        bullet:update(dt)
+    end    
     input.update(dt)
 end
 
@@ -86,6 +87,17 @@ function love.draw()
         setMainColor()
         object:draw()
     end
+    for i,bullet in ipairs(bullets) do
+        setMainColor()
+        bullet:draw()
+        if debug then
+            setDebugColor()
+            if not 1==i then
+                love.graphics.print("bullet " .. i .. " ->  x:" .. bullet.x .. " y:" .. bullet.y , 10, (500)+(15*i+10))
+            end
+        end
+    end
+    love.graphics.print("bullets: " .. (#bullets),10,500)
 end
 
 function setMainColor()
