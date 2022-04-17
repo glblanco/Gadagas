@@ -14,6 +14,16 @@ function Enemy:update(dt)
     if self.flightPlan then
         self.flightPlan.update(self.flightPlan, self, dt)
     end
+    self.checkForImpacts(self)
+end
+
+function Enemy:checkForImpacts()
+    for i,bullet in ipairs(bullets) do
+        if bullet:impacts(self) then
+            bullet:hit(self)
+            break
+        end
+    end    
 end
 
 function Enemy:rotateThroughFrames(dt)
@@ -45,6 +55,9 @@ end
 
 function Enemy:draw()
     Enemy.super.draw(self)
+    if not self.isAlive then
+
+    end
     if self.flightPlan then
         if debug then
             self.flightPlan.drawDebugData(self.flightPlan,self)
@@ -64,11 +77,10 @@ function Enemy:attachToContainer( container )
 end
 
 function Enemy:die()
-    -- animate death with explosion
-    -- mark as dead
-    -- remove from container
+    self.isAlive = false
 end
 
+-------
 
 GreenEnemy = Enemy:extend()
 function GreenEnemy:new( x, y, speed, flightPlan )

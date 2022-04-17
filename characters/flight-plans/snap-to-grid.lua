@@ -45,6 +45,7 @@ function HoverGrid:update(dt)
                 character.x = x 
                 character.y = y
                 character.updateHoverMode(character,dt)
+                character.update(character,dt)
             end 
         end
     end

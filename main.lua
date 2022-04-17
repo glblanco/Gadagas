@@ -25,7 +25,7 @@ function love.load()
     bullets = {}
     control = Control()
 
-    debug = false
+    debug = true
     
     local screenWidth = love.graphics.getWidth()
     local screenHeight = love.graphics.getHeight()
@@ -42,6 +42,7 @@ function love.load()
     
     local grid = HoverGrid(10,15)
     table.insert(enemies, A2Squadron(grid))
+    --table.insert(enemies, BlueEnemy(300,300,0,nil))
 
     table.insert(objects, grid)
 end
@@ -58,6 +59,9 @@ function love.update(dt)
     end
     for i,bullet in ipairs(bullets) do
         bullet:update(dt)
+        if not bullet.isAlive then
+            table.remove(bullets,i)
+        end
     end    
     control.update(dt)
 end
@@ -78,7 +82,7 @@ function love.draw()
         if debug then
             setDebugColor()
             if not enemy:isSquadron() then
-                love.graphics.print("enemy " .. i .. " ->  x:" .. enemy.x .. " y:" .. enemy.y .. " w:" .. enemy.width .. " h: " .. enemy.height .. " cf: " .. enemy.currentFrame .. " s: " .. enemy.speed .. ' nf: ' ..#enemy.frames, 10, (15*#lives+10)+(15*i+10))
+                love.graphics.print("enemy " .. i .. " ->  x:" .. enemy.x .. " y:" .. enemy.y .. " w:" .. enemy.width .. " h: " .. enemy.height .. " cf: " .. enemy.currentFrame .. " s: " .. enemy.speed .. ' nf: ' ..#enemy.frames .. ' isAlive:' .. (enemy.isAlive and 'true' or 'false'), 10, (15*#lives+10)+(15*i+10))
             end
         end
     end
@@ -89,6 +93,10 @@ function love.draw()
     for i,bullet in ipairs(bullets) do
         setMainColor()
         bullet:draw()
+        if debug then
+            setDebugColor()
+            love.graphics.print("bullet " .. i .. " ->  x:" .. bullet.x .. " y:" .. bullet.y .. " w:" .. bullet.width .. " h: " .. bullet.height, 10, 15*i + 100)
+        end  
     end
 
     if debug then

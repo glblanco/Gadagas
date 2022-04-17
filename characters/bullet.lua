@@ -25,7 +25,7 @@ function Bullet:new( x, y, direction )
     end
 
     self.frames = aframes
-    self.speed = 300
+    self.speed = 350
     self.direction = direction
     self.isAlive = true
     self.orientation = 0
@@ -71,11 +71,19 @@ function Bullet:draw()
 end
 
 function Bullet:die()
-    -- remove from list of bullets
     self.isAlive = false
 end 
 
-function Bullet:hit(obj)
-    self.die(self)
-    obj.die(obj)
+function Bullet:impacts(target) 
+    return  target.x - target.width/2 <= self.x + self.width/2
+                and self.x - self.width/2 <= target.x + target.width/2
+            and target.y - target.height/2 <= self.y + self.height/2
+                and self.y - self.height/2 <= target.y + target.height/2
+end
+
+function Bullet:hit(target)
+    if self.isAlive and target.isAlive then
+        self.die(self)
+        target.die(target)
+    end
 end

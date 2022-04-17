@@ -84,11 +84,11 @@ function Character:draw()
                 self.scale, 
                 self.scale,
                 self.width/(2*self.scale),
-                self.height/(2*self.scale)) 
-    end
-    if debug then
-        setDebugColor()
-        love.graphics.rectangle( "line", self.x - self.width/2, self.y - self.height/2, self.width, self.height )
+                self.height/(2*self.scale))         
+        if debug then
+            setDebugColor()
+            love.graphics.rectangle( "line", self.x - self.width/2, self.y - self.height/2, self.width, self.height )
+        end        
     end
 end
 

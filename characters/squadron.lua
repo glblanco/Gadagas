@@ -6,6 +6,9 @@ end
 function Squadron:draw()
     for i,enemy in ipairs(self.enemies) do
         enemy:draw()
+        if debug then
+            -- love.graphics.print("enemy " .. i .. " ->  x:" .. enemy.x .. " y:" .. enemy.y .. " w:" .. enemy.width .. " h: " .. enemy.height .. " cf: " .. enemy.currentFrame .. " s: " .. enemy.speed .. ' nf: ' ..#enemy.frames, 10, (15*#lives+10)+(15*i+10))
+        end
     end
 end
 
