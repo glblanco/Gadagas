@@ -19,6 +19,7 @@ function HoverGrid:new(rows,cols)
     self.y = self.startY
     self.direction = "right"
     self.speed = 30
+    self.isAlive = true
 end
 function HoverGrid:update(dt)
     -- move grid

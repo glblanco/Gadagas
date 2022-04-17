@@ -11,10 +11,12 @@ end
 
 function Enemy:update(dt)
     Enemy.super.update(self, dt)
-    if self.flightPlan then
-        self.flightPlan.update(self.flightPlan, self, dt)
-    end
-    self.checkForImpacts(self)
+    --if self.isAlive then 
+        if self.flightPlan then
+            self.flightPlan.update(self.flightPlan, self, dt)
+        end
+        self.checkForImpacts(self)
+    --end 
 end
 
 function Enemy:checkForImpacts()
@@ -55,12 +57,11 @@ end
 
 function Enemy:draw()
     Enemy.super.draw(self)
-    if not self.isAlive then
-
-    end
-    if self.flightPlan then
-        if debug then
-            self.flightPlan.drawDebugData(self.flightPlan,self)
+    if self.isAlive then
+        if self.flightPlan then
+            if debug then
+                self.flightPlan.drawDebugData(self.flightPlan,self)
+            end
         end
     end
 end
@@ -78,6 +79,7 @@ end
 
 function Enemy:die()
     self.isAlive = false
+    table.insert(objects,Explosion(self.x,self.y))
 end
 
 -------

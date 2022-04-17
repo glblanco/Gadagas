@@ -117,9 +117,9 @@ function BezierFlightPlan:new( bezierCurve, timeDelay )
 end
 function BezierFlightPlan:doUpdate(character, dt)
     if self.time < 0 then
-        character.isAlive = false
+        -- character.isAlive = false
     else   
-        character.isAlive = true
+        -- character.isAlive = true
         -- current position
         local x, y = self.nextPosition(self,character,dt)
         character.x = x

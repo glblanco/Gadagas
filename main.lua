@@ -12,6 +12,7 @@ function requireLibraries()
     require "characters/flight-plans/snap-to-grid"        
     require "characters/squadron"
     require "characters/bullet"
+    require "characters/explosion"
     require "control"
 end 
 
@@ -25,7 +26,7 @@ function love.load()
     bullets = {}
     control = Control()
 
-    debug = true
+    debug = false
     
     local screenWidth = love.graphics.getWidth()
     local screenHeight = love.graphics.getHeight()
@@ -43,8 +44,8 @@ function love.load()
     local grid = HoverGrid(10,15)
     table.insert(enemies, A2Squadron(grid))
     --table.insert(enemies, BlueEnemy(300,300,0,nil))
-
     table.insert(objects, grid)
+        
 end
 
 function love.update(dt)
@@ -56,6 +57,9 @@ function love.update(dt)
     end
     for i,object in ipairs(objects) do
         object:update(dt)
+        if not object.isAlive then
+            table.remove(objects,i)
+        end
     end
     for i,bullet in ipairs(bullets) do
         bullet:update(dt)
