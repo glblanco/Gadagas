@@ -18,26 +18,31 @@ function Bullet:new( x, y, direction )
             table.insert(aframes, 
                 love.graphics.newQuad(
                         (2 * 18 * 8) + 1 + (spriteColumn-1) * (frame_width+2), 
-                        (6.5*(frame_height+2)) + (spriteRow-1) * (frame_height+2),
+                        (6.5*(frame_height+2)+1) + (spriteRow-1) * (frame_height+2),
                         frame_width, frame_height, 
                         width, height))
         end
     end
 
     self.frames = aframes
-    self.speed = 200
+    self.speed = 300
     self.direction = direction
     self.isAlive = true
     self.orientation = 0
+
+    if self.direction == "up" then
+        self.currentFrame = 2
+    else
+        self.currentFrame = 8
+    end
+
 end
 
 function Bullet:update(dt)
     if self.isAlive then
         if self.direction == "up" then
-            self.currentFrame = 2
             self.y = self.y - self.speed * dt
         else
-            self.currentFrame = 8
             self.y = self.y + self.speed * dt
         end
     end 
@@ -48,7 +53,7 @@ function Bullet:update(dt)
 end
 
 function Bullet:draw()
-    --if self.isAlive then
+    if self.isAlive then
         setMainColor()
         love.graphics.draw(image, self.frames[self.currentFrame], 
                 self.x, 
@@ -58,11 +63,10 @@ function Bullet:draw()
                 self.scale,
                 self.width/(2*self.scale),
                 self.height/(2*self.scale)) 
-    --end
-
-    if debug then
-        setDebugColor()
-        love.graphics.rectangle( "line", self.x - self.width/2, self.y - self.height/2, self.width, self.height )
+        if debug then
+            setDebugColor()
+            love.graphics.rectangle( "line", self.x - self.width/2, self.y - self.height/2, self.width, self.height )
+        end        
     end
 end
 

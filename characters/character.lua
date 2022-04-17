@@ -58,7 +58,7 @@ function Character:lookLeft()
 end
 
 function Character:update(dt)
-   
+    -- subclasses should implement  
 end
 
 function Character:drawableX()
@@ -86,7 +86,6 @@ function Character:draw()
                 self.width/(2*self.scale),
                 self.height/(2*self.scale)) 
     end
-
     if debug then
         setDebugColor()
         love.graphics.rectangle( "line", self.x - self.width/2, self.y - self.height/2, self.width, self.height )

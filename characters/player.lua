@@ -30,11 +30,11 @@ end
 
 function Player:move(dt)
 
-    if input.control.moveLeft then   
+    if control:moveLeft() then   
         self.x = self.x - self.speed * dt     
     end 
 
-    if input.control.moveRight then   
+    if control:moveRight() then   
         self.x = self.x + self.speed * dt     
     end
     
@@ -52,9 +52,9 @@ function Player:move(dt)
         self.x = window_width - self.width
     end
 
-    if input.control.shoot then   
+    if control:shoot() then   
         self.shoot = true   
-        bullet = new Bullet(self.x,self.y,"up")
+        bullet = Bullet(self.x,self.y,"up")
         table.insert(bullets, bullet)
     else 
         self.shoot = false     

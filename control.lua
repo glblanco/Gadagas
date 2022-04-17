@@ -16,21 +16,33 @@ end
 function Control:bindControlsToActions()
     self.control:bind("moveLeft", { 
         "hold left",
-        "press left",
+        --"press left",
         "press LMB",
         "-100:0 G_LEFTSTICK_X"
     })
     self.control:bind("moveRight", { 
         "hold right",
-        "press right",
+        --"press right",
         "press RMB",
-        "0:100 G_RIGHTSTICK_X"        
+        "0:100 G_LEFTSTICK_X"        
     })
     self.control:bind("shoot", { 
         "press space",
         "press tab",
         "press return",
-        "press MMB"
+        "press MMB",
     })
     -- self.control:bind("start", "press any")
+end
+
+function Control:moveLeft()
+    return self.control.moveLeft or love.keyboard.isDown("left")
+end
+
+function Control:moveRight()
+    return self.control.moveRight or love.keyboard.isDown("right")
+end
+
+function Control:shoot()
+    return self.control.shoot 
 end

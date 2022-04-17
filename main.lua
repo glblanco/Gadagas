@@ -23,9 +23,9 @@ function love.load()
     enemies = {}
     objects = {}
     bullets = {}
-    input = Control()
+    control = Control()
 
-    debug = true
+    debug = false
     
     local screenWidth = love.graphics.getWidth()
     local screenHeight = love.graphics.getHeight()
@@ -44,7 +44,6 @@ function love.load()
     table.insert(enemies, A2Squadron(grid))
 
     table.insert(objects, grid)
-    
 end
 
 function love.update(dt)
@@ -60,7 +59,7 @@ function love.update(dt)
     for i,bullet in ipairs(bullets) do
         bullet:update(dt)
     end    
-    input.update(dt)
+    control.update(dt)
 end
 
 function love.draw() 
@@ -70,7 +69,7 @@ function love.draw()
         player:draw()
         if debug then
             setDebugColor()
-            love.graphics.print("player " .. i .. " ->  x:" .. player.x .. " y:" .. player.y .. " w:" .. player.width .. " h: " .. player.height .. " r:" .. math.floor(player.orientation * 180 / PI) .. ' shoot: ' .. (player.shoot and "true" or "false")  , 10, 15*i + 10)
+            love.graphics.print("player " .. i .. " ->  x:" .. player.x .. " y:" .. player.y .. " w:" .. player.width .. " h: " .. player.height .. " r:" .. math.floor(player.orientation * 180 / PI) , 10, 15*i + 10)
         end    
     end
     for i,enemy in ipairs(enemies) do
@@ -90,14 +89,14 @@ function love.draw()
     for i,bullet in ipairs(bullets) do
         setMainColor()
         bullet:draw()
-        if debug then
-            setDebugColor()
-            if not 1==i then
-                love.graphics.print("bullet " .. i .. " ->  x:" .. bullet.x .. " y:" .. bullet.y , 10, (500)+(15*i+10))
-            end
-        end
     end
-    love.graphics.print("bullets: " .. (#bullets),10,500)
+
+    if debug then
+        setDebugColor()
+        love.graphics.print("bullets: " .. (#bullets),10,500)
+        love.graphics.print("lives: " .. (#lives),10,515)
+        love.graphics.print("enemies: " .. (#enemies),10,530)
+    end
 end
 
 function setMainColor()
