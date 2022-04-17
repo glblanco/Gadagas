@@ -30,14 +30,14 @@ end
 
 function Player:move(dt)
 
-    if input.control.moveLeft  then   self.x = self.x - self.speed * dt     end 
-    if input.control.moveRight then   self.x = self.x + self.speed * dt     end
-    if input.control.shoot then   
-        self.shoot = true   
-    else 
-        self.shoot = false     
-    end
+    if input.control.moveLeft then   
+        self.x = self.x - self.speed * dt     
+    end 
 
+    if input.control.moveRight then   
+        self.x = self.x + self.speed * dt     
+    end
+    
     --Get the width of the window
     local window_width = love.graphics.getWidth()
 
@@ -50,6 +50,12 @@ function Player:move(dt)
     elseif self.x + self.width > window_width then
         --Set the x to the window's width.
         self.x = window_width - self.width
+    end
+
+    if input.control.shoot then   
+        self.shoot = true   
+    else 
+        self.shoot = false     
     end
 
 end
