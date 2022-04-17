@@ -6,7 +6,7 @@ function Player:new( x, y )
     self.speed = 500
     self.isActive = false
     self.currentFrame = 7
-    self.binds = nil
+    self.shoot = false
     self.lookUp(self)
 end
 
@@ -18,14 +18,11 @@ end
 function Player:activate()
     self.isActive = true
     self.moveToStartingPosition(self)
-    self.binds = TLbind.giveInstance()
+    self.control = Lynput()
 end
 
 function Player:update(dt)
     Player.super.update(self, dt)
-    if self.binds then
-        self.binds:update()
-    end
     if self.isActive then
         self.move(self, dt)
     end
@@ -33,16 +30,12 @@ end
 
 function Player:move(dt)
 
-    --if self.control.controlPressed("left") then
-    --    self.x = self.x - self.speed * dt
-    --elseif self.control.controlPressed("right") then
-    --    self.x = self.x + self.speed * dt
-    --end
-
-    if love.keyboard.isDown("left") then
-        self.x = self.x - self.speed * dt
-    elseif love.keyboard.isDown("right") then
-        self.x = self.x + self.speed * dt
+    if input.control.moveLeft  then   self.x = self.x - self.speed * dt     end 
+    if input.control.moveRight then   self.x = self.x + self.speed * dt     end
+    if input.control.shoot then   
+        self.shoot = true   
+    else 
+        self.shoot = false     
     end
 
     --Get the width of the window

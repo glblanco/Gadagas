@@ -1,9 +1,7 @@
-function love.load()
-    
+function requireLibraries()
     -- First require classic, since we use it to create our classes.
     Object = require "external/classic"
     require "external/entity"
-    require "external/TLbind"
     require "characters/character"
     require "characters/player"
     require "characters/enemy"
@@ -13,10 +11,17 @@ function love.load()
     require "characters/flight-plans/composite-plans"        
     require "characters/flight-plans/snap-to-grid"        
     require "characters/squadron"
+    require "control"
+end 
 
+function love.load()
+    
+    requireLibraries()
+    
     lives = {}
     enemies = {}
     objects = {}
+    input = Control()
 
     debug = true
     
@@ -33,13 +38,11 @@ function love.load()
     player = lives[1]
     player.activate(player)
     
-    --table.insert(enemies, TwinSquadron())
-    --table.insert(enemies, DownwardYellowSquadron())
-    --table.insert(enemies, SampleBezierGreenSquadron())
     local grid = HoverGrid(10,15)
     table.insert(enemies, A2Squadron(grid))
 
     table.insert(objects, grid)
+    
 end
 
 function love.update(dt)
@@ -52,6 +55,7 @@ function love.update(dt)
     for i,object in ipairs(objects) do
         object:update(dt)
     end
+    input.update(dt)
 end
 
 function love.draw() 
@@ -61,7 +65,7 @@ function love.draw()
         player:draw()
         if debug then
             setDebugColor()
-            love.graphics.print("player " .. i .. " ->  x:" .. player.x .. " y:" .. player.y .. " w:" .. player.width .. " h: " .. player.height .. " r:" .. math.floor(player.orientation * 180 / PI) .. ' b: ' .. (player.binds and "true" or "false")  , 10, 15*i + 10)
+            love.graphics.print("player " .. i .. " ->  x:" .. player.x .. " y:" .. player.y .. " w:" .. player.width .. " h: " .. player.height .. " r:" .. math.floor(player.orientation * 180 / PI) .. ' shoot: ' .. (player.shoot and "true" or "false")  , 10, 15*i + 10)
         end    
     end
     for i,enemy in ipairs(enemies) do
