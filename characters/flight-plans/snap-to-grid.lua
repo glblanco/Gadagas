@@ -50,9 +50,9 @@ function HoverGrid:update(dt)
     end
 end
 function HoverGrid:draw()
-    setWhiteColor()
+    setMainColor()
 
-    -- hacer uqe los enemies hovereen!
+    -- todo: draw enemies
 
     if debug then
         self.drawDebugData(self)

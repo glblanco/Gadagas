@@ -63,6 +63,13 @@ function Enemy:attachToContainer( container )
     self.container = container
 end
 
+function Enemy:die()
+    -- animate death with explosion
+    -- mark as dead
+    -- remove from container
+end
+
+
 GreenEnemy = Enemy:extend()
 function GreenEnemy:new( x, y, speed, flightPlan )
     local info = SpriteInfo( 2, 8, 0 )

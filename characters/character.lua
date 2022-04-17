@@ -76,7 +76,7 @@ end
 
 function Character:draw()
     if self.isAlive then
-        setWhiteColor()
+        setMainColor()
         love.graphics.draw(image, self.frames[self.currentFrame], 
                 self.drawableX(self), 
                 self.drawableY(self), 
@@ -88,6 +88,11 @@ function Character:draw()
     end
 
     if debug then
+        setDebugColor()
         love.graphics.rectangle( "line", self.x - self.width/2, self.y - self.height/2, self.width, self.height )
     end
+end
+
+function Character:die()
+    -- to be implemented by subclasses
 end

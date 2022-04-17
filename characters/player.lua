@@ -60,5 +60,10 @@ function Player:move(dt)
 
 end
 
+function Player:die()
+    -- check lives left
+    -- mark as dead
+    -- remove from container    
+end
 
 

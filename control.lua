@@ -16,13 +16,15 @@ end
 function Control:bindControlsToActions()
     self.control:bind("moveLeft", { 
         "hold left",
+        "press left",
         "press LMB",
         "-100:0 G_LEFTSTICK_X"
     })
     self.control:bind("moveRight", { 
         "hold right",
+        "press right",
         "press RMB",
-        "0:100 G_LEFTSTICK_X"        
+        "0:100 G_RIGHTSTICK_X"        
     })
     self.control:bind("shoot", { 
         "press space",

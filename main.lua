@@ -11,6 +11,7 @@ function requireLibraries()
     require "characters/flight-plans/composite-plans"        
     require "characters/flight-plans/snap-to-grid"        
     require "characters/squadron"
+    require "characters/bullet"
     require "control"
 end 
 
@@ -38,11 +39,14 @@ function love.load()
     player = lives[1]
     player.activate(player)
     
-    local grid = HoverGrid(10,15)
-    table.insert(enemies, A2Squadron(grid))
+    --local grid = HoverGrid(10,15)
+    --table.insert(enemies, A2Squadron(grid))
 
-    table.insert(objects, grid)
-    
+    --table.insert(objects, grid)
+    for i=1,9 do
+        local bullet = Bullet(80*i,screenHeight,"up")
+        table.insert(objects,bullet)
+    end
 end
 
 function love.update(dt)
@@ -61,7 +65,7 @@ end
 function love.draw() 
     local PI = 3.14159265358
     for i,player in ipairs(lives) do
-        setWhiteColor()
+        setMainColor()
         player:draw()
         if debug then
             setDebugColor()
@@ -69,7 +73,7 @@ function love.draw()
         end    
     end
     for i,enemy in ipairs(enemies) do
-        setWhiteColor()
+        setMainColor()
         enemy:draw()
         if debug then
             setDebugColor()
@@ -79,12 +83,12 @@ function love.draw()
         end
     end
     for i,object in ipairs(objects) do
-        setWhiteColor()
+        setMainColor()
         object:draw()
     end
 end
 
-function setWhiteColor()
+function setMainColor()
     love.graphics.setColor(1,1,1)
 end
 
