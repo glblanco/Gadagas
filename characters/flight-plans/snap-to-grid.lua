@@ -19,7 +19,7 @@ function HoverGrid:new(rows,cols)
     self.y = self.startY
     self.direction = "right"
     self.speed = 30
-    self.isAlive = true
+    self.active = true
 end
 function HoverGrid:update(dt)
     -- move grid
@@ -42,11 +42,11 @@ function HoverGrid:update(dt)
         for j=1,self.cols do
             if self.grid[i][j] then
                 local character = self.grid[i][j]
-                local x,y = self.getTargetCoordinate(self,i,j)
+                local x,y = self:getTargetCoordinate(i,j)
                 character.x = x 
                 character.y = y
-                character.updateHoverMode(character,dt)
-                character.update(character,dt)
+                character:updateHoverMode(dt)
+                character:update(dt)
             end 
         end
     end
@@ -57,14 +57,14 @@ function HoverGrid:draw()
     -- todo: draw enemies
 
     if debug then
-        self.drawDebugData(self)
+        self:drawDebugData()
     end
 end 
 function HoverGrid:drawDebugData()
     setDebugColor()
     for i=1,self.rows do
         for j=1,self.cols do
-            local x,y = self.getTargetCoordinate(self,i,j)
+            local x,y = self:getTargetCoordinate(i,j)
             love.graphics.circle( "fill", x, y, 2 )
             --love.graphics.print("[" .. i .. "," .. j .. "]", x, y )
         end
@@ -77,7 +77,7 @@ function HoverGrid:getTargetCoordinate(row,col)
 end
 function HoverGrid:attach(character,row,col)
     self.grid[row][col] = character
-    character.attachToContainer( character, self )    
+    character:attachToContainer( self )    
 end
 function HoverGrid:dettach(character)
     -- not implemented
@@ -91,13 +91,13 @@ function SnapToGridFlightPlan:new(grid,row,col)
     self.col = col
 end
 function SnapToGridFlightPlan:doUpdate(character, dt)
-    local x,y = self.grid.getTargetCoordinate(self.grid,self.row,self.col)
+    local x,y = self.grid:getTargetCoordinate(self.row,self.col)
     character.orientation = math.atan2(y-character.y, x-character.x)
     character.x = character.x + math.cos(character.orientation) * character.speed * dt
     character.y = character.y + math.sin(character.orientation) * character.speed * dt
-    if self.hasCompleted(self,character,dt,y-character.y, x-character.x) then
-        self.markComplete(self)
-        self.grid.attach(self.grid,character,self.row, self.col)
+    if self:hasCompleted(character,dt,y-character.y, x-character.x) then
+        self:markComplete()
+        self.grid:attach(character,self.row,self.col)
     end
 end
 function SnapToGridFlightPlan:hasCompleted(character, dt, deltaY, deltaX)

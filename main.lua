@@ -1,7 +1,9 @@
 function requireLibraries()
     -- First require classic, since we use it to create our classes.
     Object = require "external/classic"
-    require "external/entity"
+    require "entity"
+    require "control"
+    require "resources"
     require "characters/character"
     require "characters/player"
     require "characters/enemy"
@@ -13,7 +15,6 @@ function requireLibraries()
     require "characters/squadron"
     require "characters/bullet"
     require "characters/explosion"
-    require "control"
 end 
 
 function love.load()
@@ -25,13 +26,14 @@ function love.load()
     objects = {}
     bullets = {}
     control = Control()
+    resources = Resources()
 
     debug = false
     
     local screenWidth = love.graphics.getWidth()
     local screenHeight = love.graphics.getHeight()
 
-    local spacePerPlayer = 18*2
+    local spacePerPlayer = (resources.characterFrameWidth+2)*2
     local y = screenHeight - spacePerPlayer
     local livesCount = 3
     for i=1,livesCount do
@@ -39,11 +41,10 @@ function love.load()
     end
 
     player = lives[1]
-    player.activate(player)
+    player:activate()
     
     local grid = HoverGrid(10,15)
     table.insert(enemies, A2Squadron(grid))
-    --table.insert(enemies, BlueEnemy(300,300,0,nil))
     table.insert(objects, grid)
         
 end
@@ -57,17 +58,17 @@ function love.update(dt)
     end
     for i,object in ipairs(objects) do
         object:update(dt)
-        if not object.isAlive then
+        if not object.active then
             table.remove(objects,i)
         end
     end
     for i,bullet in ipairs(bullets) do
         bullet:update(dt)
-        if not bullet.isAlive then
+        if not bullet.active then
             table.remove(bullets,i)
         end
     end    
-    control.update(dt)
+    control:update(dt)
 end
 
 function love.draw() 
@@ -86,7 +87,7 @@ function love.draw()
         if debug then
             setDebugColor()
             if not enemy:isSquadron() then
-                love.graphics.print("enemy " .. i .. " ->  x:" .. enemy.x .. " y:" .. enemy.y .. " w:" .. enemy.width .. " h: " .. enemy.height .. " cf: " .. enemy.currentFrame .. " s: " .. enemy.speed .. ' nf: ' ..#enemy.frames .. ' isAlive:' .. (enemy.isAlive and 'true' or 'false'), 10, (15*#lives+10)+(15*i+10))
+                love.graphics.print("enemy " .. i .. " ->  x:" .. enemy.x .. " y:" .. enemy.y .. " w:" .. enemy.width .. " h: " .. enemy.height .. " cf: " .. enemy.currentFrame .. " s: " .. enemy.speed .. ' nf: ' ..#enemy.frames .. ' active:' .. (enemy.active and 'true' or 'false'), 10, (15*#lives+10)+(15*i+10))
             end
         end
     end

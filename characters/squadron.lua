@@ -23,7 +23,8 @@ function Squadron:isSquadron()
 end
 
 function Squadron:dettach( character )
-    self.enemies.remove(character)
+    -- todo check for correct implementation
+    -- self.enemies.remove(character)
 end 
 
 TestCrazySquadron = Squadron:extend()

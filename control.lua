@@ -6,7 +6,7 @@ function Control:new()
     Lynput.load_mouse_callbacks()
     Lynput.load_gamepad_callbacks()
     self.control = Lynput()
-    self.bindControlsToActions(self)    
+    self:bindControlsToActions()    
 end
 
 function Control:update(dt)

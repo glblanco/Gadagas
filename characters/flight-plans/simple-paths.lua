@@ -26,7 +26,7 @@ function RightAndUpInTheMiddleFlightPlan:doUpdate(character, dt)
     local screenWidth = love.graphics.getWidth()
     if character.x < (screenWidth/2) - 3*character.width then
         -- straight right
-        character.lookRight(character)
+        character:lookRight()
         character.x = character.x + character.speed * dt    
         self.startY = character.y     
     elseif character.x < (screenWidth/2) - character.width - 1 then
@@ -43,10 +43,10 @@ function RightAndUpInTheMiddleFlightPlan:doUpdate(character, dt)
         character.orientation = math.atan2(nextY - character.y, nextX - character.x)
     else
         -- straight up
-        character.lookUp(character)
+        character:lookUp()
         character.y = character.y - character.speed * dt 
         if character.y + character.height < 0 then
-            self.markComplete(self)
+            self:markComplete()
         end
     end
 end
@@ -59,7 +59,7 @@ function LeftAndUpInTheMiddleFlightPlan:doUpdate(character, dt)
     local screenWidth = love.graphics.getWidth()
     if character.x > (screenWidth/2) + 3*character.width then
         -- straight left
-        character.lookLeft(character)
+        character:lookLeft()
         character.x = character.x - character.speed * dt         
         self.startY = character.y   
     elseif character.x > (screenWidth/2) + character.width + 1 then
@@ -76,10 +76,10 @@ function LeftAndUpInTheMiddleFlightPlan:doUpdate(character, dt)
         character.orientation = math.atan2(nextY - character.y, nextX - character.x)
     else
         -- straight up
-        character.lookUp(character)
+        character:lookUp()
         character.y = character.y - character.speed * dt 
         if character.y + character.height < 0 then
-            self.markComplete(self)
+            self:markComplete()
         end
     end
 end
@@ -92,7 +92,7 @@ function HorizontalHoverFlightPlan:new(startX,startY)
     self.direction = "right"
 end
 function HorizontalHoverFlightPlan:doUpdate(character, dt)
-    character.updateHoverMode(character,dt)
+    character:updateHoverMode(dt)
     local extent = 1.5*character.width
     if self.direction == "right" then
         if character.x < self.startX + extent then
@@ -116,22 +116,19 @@ function BezierFlightPlan:new( bezierCurve, timeDelay )
     self.time = -1 * timeDelay
 end
 function BezierFlightPlan:doUpdate(character, dt)
-    if self.time < 0 then
-        -- character.isAlive = false
-    else   
-        -- character.isAlive = true
+    if self.time >= 0 then
         -- current position
-        local x, y = self.nextPosition(self,character,dt)
+        local x, y = self:nextPosition(character,dt)
         character.x = x
         character.y = y
         -- next position
-        local nextX, nextY = self.nextPosition(self,character,2*dt)
+        local nextX, nextY = self:nextPosition(character,2*dt)
         local deltaX = nextX - x
         local deltaY = nextY - y
         character.orientation = math.atan2(deltaY, deltaX)
         -- check if plan completed
-        if self.hasCompleted(self,character,dt,deltaY,deltaX) then
-            self.markComplete(self)
+        if self:hasCompleted(character,dt,deltaY,deltaX) then
+            self:markComplete()
         end
     end
     self.time = self.time + dt
@@ -168,8 +165,8 @@ function GoToCoordinateFlightPlan:doUpdate(character, dt)
     character.x = nextX
     character.y = nextY
     character.orientation = math.atan2(self.endY-nextY, self.endX-nextX)
-    if self.hasCompleted(self,character,dt,self.endY-nextY, self.endX-nextX) then
-        self.markComplete(self)
+    if self:hasCompleted(character,dt,self.endY-nextY, self.endX-nextX) then
+        self:markComplete()
     end
 end
 function GoToCoordinateFlightPlan:hasCompleted(character, dt, deltaY, deltaX)

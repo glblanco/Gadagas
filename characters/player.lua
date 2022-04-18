@@ -4,10 +4,10 @@ function Player:new( x, y )
     local info = SpriteInfo( 0, 7, 0 )
     Player.super.new( self, info, x, y )
     self.speed = 500
-    self.isActive = false
+    self.active = false
     self.currentFrame = 7
     self.shoot = false
-    self.lookUp(self)
+    self:lookUp()
 end
 
 function Player:moveToStartingPosition()
@@ -16,14 +16,14 @@ function Player:moveToStartingPosition()
 end
 
 function Player:activate()
-    self.isActive = true
+    self.active = true
     self.moveToStartingPosition(self)
     self.control = Lynput()
 end
 
 function Player:update(dt)
     Player.super.update(self, dt)
-    if self.isActive then
+    if self.active then
         self.move(self, dt)
     end
 end
@@ -60,6 +60,23 @@ function Player:move(dt)
         self.shoot = false     
     end
 
+end
+
+function Player:draw()
+    setMainColor()
+    love.graphics.draw(resources.image, self.frames[self.currentFrame], 
+            self:drawableX(), 
+            self:drawableY(), 
+            self:drawableOrientation(), 
+            self.scale, 
+            self.scale,
+            self.width/(2*self.scale),
+            self.height/(2*self.scale)) 
+    if debug then
+        -- draw boundign box
+        setDebugColor()
+        love.graphics.rectangle( "line", self.x - self.width/2, self.y - self.height/2, self.width, self.height )
+    end        
 end
 
 function Player:die()

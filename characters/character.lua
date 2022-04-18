@@ -5,35 +5,15 @@ function SpriteInfo:new( row, maxFrames, column )
     self.maxFrames = maxFrames  -- number of images available for the character
 end
 
-
 Character = Entity:extend()
 
 function Character:new( spriteInfo, x, y )
-
+    Character.super.new( self, x, y, resources.characterWidth, resources.characterHeight )
+    self.frames = resources:getCharacterFrames(spriteInfo)
     self.scale = 2
-    local frame_width = 16
-    local frame_height = 16
-
-    Character.super.new( self, x, y, frame_width*self.scale, frame_width*self.scale )
-
-    image = love.graphics.newImage("resources/sprites.png")
-    local width = image:getWidth()
-    local height = image:getHeight() 
-
-    local aframes = {}
-    for spriteColumn=0,spriteInfo.maxFrames do
-        table.insert(aframes, 
-                love.graphics.newQuad(
-                        (spriteInfo.column * 18 * 8) + 1 + spriteColumn * (frame_width+2), 
-                        1 + spriteInfo.row * (frame_height+2),
-                        frame_width, frame_height, 
-                        width, height))
-    end
-
     self.speed = 0
-    self.frames = aframes
     self.currentFrame = 1
-    self.isAlive = true
+    self.active = true
     self.orientation = 0
 end
 
@@ -61,35 +41,9 @@ function Character:update(dt)
     -- subclasses should implement  
 end
 
-function Character:drawableX()
-    return self.x
-end
-
-function Character:drawableY()
-    return self.y
-end
-
 function Character:drawableOrientation()
     -- images are looking right, not left
     return self.orientation + math.rad(180)
-end
-
-function Character:draw()
-    if self.isAlive then
-        setMainColor()
-        love.graphics.draw(image, self.frames[self.currentFrame], 
-                self.drawableX(self), 
-                self.drawableY(self), 
-                self.drawableOrientation(self), 
-                self.scale, 
-                self.scale,
-                self.width/(2*self.scale),
-                self.height/(2*self.scale))         
-        if debug then
-            setDebugColor()
-            love.graphics.rectangle( "line", self.x - self.width/2, self.y - self.height/2, self.width, self.height )
-        end        
-    end
 end
 
 function Character:die()

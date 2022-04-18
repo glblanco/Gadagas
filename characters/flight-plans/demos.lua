@@ -1,17 +1,17 @@
 
 StraightDownFlightPlan = FlightPlan:extend()
 function StraightDownFlightPlan:doUpdate(character, dt)
-    character.lookDown(character)
+    character:lookDown()
     character.y = character.y + character.speed * dt 
     local screenHeight = love.graphics.getHeight()
     if character.y > screenHeight + character.height then
-        self.markComplete(self)
+        self:markComplete()
     end
 end
 
 NeverEndingStraightDownFlightPlan = FlightPlan:extend()
 function NeverEndingStraightDownFlightPlan:doUpdate(character, dt)
-    character.lookDown(character)
+    character:lookDown()
     character.y = character.y + character.speed * dt 
     local screenHeight = love.graphics.getHeight()
     if character.y > screenHeight + character.height then
@@ -21,21 +21,21 @@ end
 
 StraightRightFlightPlan = FlightPlan:extend()
 function StraightRightFlightPlan:doUpdate(character, dt)
-    character.lookRight(character)
+    character:lookRight()
     character.x = character.x + character.speed * dt 
     local screenWidth = love.graphics.getWidth()
     if character.x > screenWidth + character.width then
-        self.markComplete(self)
+        self:markComplete()
     end
 end
 
 StraightLeftFlightPlan = FlightPlan:extend()
 function StraightLeftFlightPlan:doUpdate(character, dt)
-    character.lookLeft(character)
+    character:lookLeft()
     character.x = character.x - character.speed * dt 
     local screenWidth = love.graphics.getWidth()
     if character.x + character.width < 0 then
-        self.markComplete(self)
+        self:markComplete()
     end
 end
 

@@ -1,34 +1,15 @@
 Bullet = Entity:extend()
 
 function Bullet:new( x, y, direction )
-    
-    self.scale = 2
-    local frame_width = 16
-    local frame_height = 16    
-    
-    Bullet.super.new( self, x, y, frame_width*self.scale, frame_width*self.scale )
 
-    image = love.graphics.newImage("resources/sprites.png")
-    local width = image:getWidth()
-    local height = image:getHeight() 
+    Bullet.super.new( self, x, y, resources.bulletWidth, resources.bulletHeight )
 
-    local aframes = {}
-    for spriteRow=1,3 do
-        for spriteColumn=1,3 do
-            table.insert(aframes, 
-                love.graphics.newQuad(
-                        (2 * 18 * 8) + 1 + (spriteColumn-1) * (frame_width+2), 
-                        (6.5*(frame_height+2)+1) + (spriteRow-1) * (frame_height+2),
-                        frame_width, frame_height, 
-                        width, height))
-        end
-    end
-
-    self.frames = aframes
+    self.frames = resources:getBulletFrames()
     self.speed = 350
     self.direction = direction
-    self.isAlive = true
+    self.active = true
     self.orientation = 0
+    self.scale = resources.bulletScale
 
     if self.direction == "up" then
         self.currentFrame = 2
@@ -39,7 +20,7 @@ function Bullet:new( x, y, direction )
 end
 
 function Bullet:update(dt)
-    if self.isAlive then
+    if self.active then
         if self.direction == "up" then
             self.y = self.y - self.speed * dt
         else
@@ -52,26 +33,8 @@ function Bullet:update(dt)
     end
 end
 
-function Bullet:draw()
-    if self.isAlive then
-        setMainColor()
-        love.graphics.draw(image, self.frames[self.currentFrame], 
-                self.x, 
-                self.y, 
-                self.orientation, 
-                self.scale, 
-                self.scale,
-                self.width/(2*self.scale),
-                self.height/(2*self.scale)) 
-        if debug then
-            setDebugColor()
-            love.graphics.rectangle( "line", self.x - self.width/2, self.y - self.height/2, self.width, self.height )
-        end        
-    end
-end
-
 function Bullet:die()
-    self.isAlive = false
+    self.active = false
 end 
 
 function Bullet:impacts(target) 
@@ -82,7 +45,7 @@ function Bullet:impacts(target)
 end
 
 function Bullet:hit(target)
-    if self.isAlive and target.isAlive then
+    if self.active and target.active then
         self.die(self)
         target.die(target)
     end

@@ -8,7 +8,7 @@ end
 function FlightPlan:update(character, dt)
     if not self.complete then
         self.active = true
-        self.doUpdate( self, character, dt )
+        self:doUpdate( character, dt )
     end
 end
 
@@ -36,7 +36,7 @@ end
 function CompositeFlightPlan:doUpdate(character, dt)
     for i,plan in ipairs(self.flightPlans) do
         if not plan.complete then
-            plan.update(plan, character, dt)
+            plan:update(character, dt)
             break
         end
     end
@@ -44,7 +44,7 @@ end
 
 function CompositeFlightPlan:drawDebugData(character)
     for i,plan in ipairs(self.flightPlans) do
-        plan.drawDebugData(plan,character)
+        plan:drawDebugData(character)
         -- setDebugColor()
         -- love.graphics.print('plan '..i..
         --        ': complete:'..(plan.complete and 'true' or 'false')
