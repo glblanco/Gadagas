@@ -46,3 +46,10 @@ end
 function Entity:drawableOrientation()
     return self.orientation 
 end
+
+function Entity:collides(target) 
+    return  target.x - target.width/2 <= self.x + self.width/2
+                and self.x - self.width/2 <= target.x + target.width/2
+            and target.y - target.height/2 <= self.y + self.height/2
+                and self.y - self.height/2 <= target.y + target.height/2
+end

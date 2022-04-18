@@ -21,7 +21,7 @@ end
 
 function Enemy:checkForImpacts()
     for i,bullet in ipairs(bullets) do
-        if bullet:impacts(self) then
+        if bullet:collides(self) then
             bullet:hit(self)
             break
         end

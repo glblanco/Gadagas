@@ -37,13 +37,6 @@ function Bullet:die()
     self.active = false
 end 
 
-function Bullet:impacts(target) 
-    return  target.x - target.width/2 <= self.x + self.width/2
-                and self.x - self.width/2 <= target.x + target.width/2
-            and target.y - target.height/2 <= self.y + self.height/2
-                and self.y - self.height/2 <= target.y + target.height/2
-end
-
 function Bullet:hit(target)
     if self.active and target.active then
         self.die(self)
