@@ -116,7 +116,10 @@ function BezierFlightPlan:new( bezierCurve, timeDelay )
     self.time = -1 * timeDelay
 end
 function BezierFlightPlan:doUpdate(character, dt)
-    if self.time >= 0 then
+    if self.time < 0 then
+        character.visible = false
+    elseif self.time >= 0 then
+        character.visible = true
         -- current position
         local x, y = self:nextPosition(character,dt)
         character.x = x

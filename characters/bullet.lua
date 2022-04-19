@@ -2,15 +2,12 @@ Bullet = Entity:extend()
 
 function Bullet:new( x, y, direction )
 
-    Bullet.super.new( self, x, y, resources.bulletWidth, resources.bulletHeight )
+    Bullet.super.new( self, x, y, resources.bulletWidth, resources.bulletHeight, 
+                    resources.bulletScale, resources:getBulletFrames() )
 
-    self.frames = resources:getBulletFrames()
     self.speed = 350
     self.direction = direction
-    self.active = true
-    self.orientation = 0
-    self.scale = resources.bulletScale
-
+    
     if self.direction == "up" then
         self.currentFrame = 2
     else
@@ -35,6 +32,7 @@ end
 
 function Bullet:die()
     self.active = false
+    self.visible = false
 end 
 
 function Bullet:hit(target)

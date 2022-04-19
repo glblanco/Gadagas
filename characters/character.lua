@@ -8,12 +8,11 @@ end
 Character = Entity:extend()
 
 function Character:new( spriteInfo, x, y )
-    Character.super.new( self, x, y, resources.characterWidth, resources.characterHeight )
-    self.frames = resources:getCharacterFrames(spriteInfo)
-    self.scale = 2
+    Character.super.new( self, x, y, resources.characterWidth, resources.characterHeight, 
+                        resources.characterScale, resources:getCharacterFrames(spriteInfo) )
     self.speed = 0
-    self.currentFrame = 1
     self.active = true
+    self.visible = true
     self.orientation = 0
 end
 

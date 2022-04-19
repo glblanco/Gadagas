@@ -1,15 +1,16 @@
 Entity = Object:extend()
 
-function Entity:new(x, y, width, height)
+function Entity:new(x, y, width, height, scale, frames)
     self.x = x
     self.y = y
     self.width = width
     self.height = height
-    self.active = true
+    self.scale = scale
+    self.active = true      -- determines whether the entity should receive updates
+    self.visible = true     -- determines whether the entity should be drawn
     self.orientation = 0
-    -- subclasses should fill in the below if the draw method is to be used as is
-    self.frames = nil 
-    self.scale = 1
+    self.frames = frames 
+    self.currentFrame = 1
 end
 
 function Entity:update(dt)
@@ -17,7 +18,7 @@ function Entity:update(dt)
 end
 
 function Entity:draw()
-    if self.active then
+    if self.visible then
         setMainColor()
         love.graphics.draw(resources.image, self.frames[self.currentFrame], 
                 self:drawableX(), 

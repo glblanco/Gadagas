@@ -1,12 +1,8 @@
 Explosion = Entity:extend()
 
 function Explosion:new( x, y )
-    Explosion.super.new( self, x, y, resources.explosionWidth, resources.explosionHeight )  
-    self.frames = resources:getExplosionFrames()
-    self.scale = resources.explosionScale
+    Explosion.super.new( self, x, y, resources.explosionWidth, resources.explosionHeight, resources.explosionScale, resources:getExplosionFrames() )  
     self.speed = 60
-    self.currentFrame = 1
-    self.active = true
 end
 
 function Explosion:update(dt)

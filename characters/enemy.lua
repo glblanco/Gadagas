@@ -36,28 +36,30 @@ function Enemy:rotateThroughFrames(dt)
 end
 
 function Enemy:updateHoverMode(dt)
-    self.orientation = math.atan2(0, -1)
-    if #self.frames == 9 then
-        self.hoverTime = self.hoverTime + dt
-        if self.hoverTime>3*dt then
-            if self.currentFrame <= 7 then
-                self.currentFrame = 8
-            else 
+    if self.active then 
+        self.orientation = math.atan2(0, -1)
+        if #self.frames == 9 then
+            self.hoverTime = self.hoverTime + dt
+            if self.hoverTime>3*dt then
+                if self.currentFrame <= 7 then
+                    self.currentFrame = 8
+                else 
+                    self.currentFrame = 7
+                end    
+                self.hoverTime = 0
+                self.laps = self.laps + 1
+            elseif self.currentFrame < 7 then
                 self.currentFrame = 7
-            end    
-            self.hoverTime = 0
-            self.laps = self.laps + 1
-        elseif self.currentFrame < 7 then
+            end
+        else
             self.currentFrame = 7
-        end
-    else
-        self.currentFrame = 7
-    end
+        end      
+    end                   
 end
 
 function Enemy:draw()
     Enemy.super.draw(self)
-    if self.active then
+    if self.visible then
         if self.flightPlan then
             if debug then
                 self.flightPlan:drawDebugData(self)
@@ -79,6 +81,7 @@ end
 
 function Enemy:die()
     self.active = false
+    self.visible = false
     table.insert(objects,Explosion(self.x,self.y))
 end
 
