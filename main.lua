@@ -24,11 +24,12 @@ function love.load()
     lives = {}
     enemies = {}
     objects = {}
-    bullets = {}
+    playerBullets = {}
+    enemyBullets = {}
     control = Control()
     resources = Resources()
 
-    debug = false
+    debug = true
     
     local screenWidth = love.graphics.getWidth()
     local screenHeight = love.graphics.getHeight()
@@ -62,10 +63,10 @@ function love.update(dt)
             table.remove(objects,i)
         end
     end
-    for i,bullet in ipairs(bullets) do
+    for i,bullet in ipairs(playerBullets) do
         bullet:update(dt)
         if not bullet.active then
-            table.remove(bullets,i)
+            table.remove(playerBullets,i)
         end
     end    
     control:update(dt)
@@ -95,18 +96,27 @@ function love.draw()
         setMainColor()
         object:draw()
     end
-    for i,bullet in ipairs(bullets) do
+    for i,bullet in ipairs(playerBullets) do
         setMainColor()
         bullet:draw()
         if debug then
             setDebugColor()
-            love.graphics.print("bullet " .. i .. " ->  x:" .. bullet.x .. " y:" .. bullet.y .. " w:" .. bullet.width .. " h: " .. bullet.height, 10, 15*i + 100)
+            love.graphics.print("player bullet " .. i .. " ->  x:" .. bullet.x .. " y:" .. bullet.y .. " w:" .. bullet.width .. " h: " .. bullet.height, 10, 15*i + 100)
+        end  
+    end
+    for i,bullet in ipairs(enemyBullets) do
+        setMainColor()
+        bullet:draw()
+        if debug then
+            setDebugColor()
+            love.graphics.print("enemy bullet " .. i .. " ->  x:" .. bullet.x .. " y:" .. bullet.y .. " w:" .. bullet.width .. " h: " .. bullet.height, 10, 15*i + 300)
         end  
     end
 
     if debug then
         setDebugColor()
-        love.graphics.print("bullets: " .. (#bullets),10,500)
+        love.graphics.print("player bullets: " .. (#playerBullets),10,485)
+        love.graphics.print("enemy bullets: " .. (#enemyBullets),10,500)
         love.graphics.print("lives: " .. (#lives),10,515)
         love.graphics.print("enemies: " .. (#enemies),10,530)
     end

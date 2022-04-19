@@ -50,12 +50,49 @@ function HoverGrid:update(dt)
             end 
         end
     end
+    -- send an enemy to attack the player -- this should probably not be the responsibility of the grid - refactor!!!
+    if self:shouldAttack(dt) then
+        local row, col = self:chooseEnemyForAttack( dt )
+        if row>0 and col>0 then 
+            local enemy = self.grid[row][col]
+            self.grid[row][col] = nil
+            local destRow, destCol = self:getEmptyTargetCoordinateNear(10,14)
+            local x,y = self:getTargetCoordinate(row,col)
+            local x2,y2 = self:getTargetCoordinate(destRow,destCol)
+            local trajectory = { x, y, 0, 0, 100, 200, 100, 500, 600, love.graphics.getHeight(), 650, 600, love.graphics.getWidth(), 500, x2, y2 }
+            flightPlan = BezierAndSnapToGridFlightPlan(trajectory,false,self,destRow,destCol,0)
+            enemy.flightPlan = flightPlan
+            enemy.currentFrame = 1
+        end 
+    end 
 end
+function HoverGrid:getEmptyTargetCoordinateNear( aRow, aCol ) 
+    local row = aRow 
+    local col = aCol
+    while self.grid[row][col] do
+        col = col - 1
+        if col == 0 then
+            row = row - 1
+        end 
+    end 
+    return row, col
+end 
+function HoverGrid:shouldAttack( dt ) -- this should probably not be the responsibility of the grid - refactor!!!
+    return control:test()
+end
+function HoverGrid:chooseEnemyForAttack( dt ) -- this should probably not be the responsibility of the grid - refactor!!!
+    for i=1,self.rows do
+        for j=1,self.cols do
+            if self.grid[i][j] then
+                return i,j
+            end
+        end 
+    end
+    return 0,0
+end 
 function HoverGrid:draw()
     setMainColor()
-
-    -- todo: draw enemies
-
+    -- todo: draw enemies - this is currently being done by the squadron
     if debug then
         self:drawDebugData()
     end
@@ -76,6 +113,7 @@ function HoverGrid:getTargetCoordinate(row,col)
     return x,y
 end
 function HoverGrid:attach(character,row,col)
+    -- todo: if the position is occupied, send the character nearby to an empty space
     self.grid[row][col] = character
     character:attachToContainer( self )    
 end

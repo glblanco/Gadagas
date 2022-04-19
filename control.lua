@@ -32,6 +32,7 @@ function Control:bindControlsToActions()
         "press return",
         "press MMB",
     })
+    self.control:bind("test", "press t")
     -- self.control:bind("start", "press any")
 end
 
@@ -45,4 +46,8 @@ end
 
 function Control:shoot()
     return self.control.shoot 
+end
+
+function Control:test()
+    return self.control.test 
 end

@@ -20,7 +20,7 @@ function Enemy:update(dt)
 end
 
 function Enemy:checkForImpacts()
-    for i,bullet in ipairs(bullets) do
+    for i,bullet in ipairs(playerBullets) do
         if bullet:collides(self) then
             bullet:hit(self)
             break
@@ -56,6 +56,11 @@ function Enemy:updateHoverMode(dt)
         end      
     end                   
 end
+
+function Enemy:attack()
+    local bullet = Bullet(self.x,self.y,"down")
+    table.insert(enemyBullets, bullet)
+end 
 
 function Enemy:draw()
     Enemy.super.draw(self)
