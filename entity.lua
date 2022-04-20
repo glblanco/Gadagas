@@ -11,6 +11,7 @@ function Entity:new(x, y, width, height, scale, frames)
     self.orientation = 0
     self.frames = frames 
     self.currentFrame = 1
+    self.uuid = uuidGenerator.next()
 end
 
 function Entity:update(dt)
@@ -29,12 +30,16 @@ function Entity:draw()
                 self.width/(2*self.scale),
                 self.height/(2*self.scale)) 
         if debug then
-            -- draw boundign box
+            -- draw bounding box
             setDebugColor()
             love.graphics.rectangle( "line", self.x - self.width/2, self.y - self.height/2, self.width, self.height )
         end        
     end
 end
+
+function Entity:equals( entity )
+    return entity and self.uuid == entity.uuid
+end 
 
 function Entity:drawableX()
     return self.x

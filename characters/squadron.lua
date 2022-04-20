@@ -7,7 +7,8 @@ function Squadron:draw()
     for i,enemy in ipairs(self.enemies) do
         enemy:draw()
         if debug then
-            -- love.graphics.print("enemy " .. i .. " ->  x:" .. enemy.x .. " y:" .. enemy.y .. " w:" .. enemy.width .. " h: " .. enemy.height .. " cf: " .. enemy.currentFrame .. " s: " .. enemy.speed .. ' nf: ' ..#enemy.frames, 10, (15*#lives+10)+(15*i+10))
+            -- local row,col = grid:getCellOccupiedBy(enemy)
+            -- love.graphics.print("enemy " .. i .. " ->  x:" .. enemy.x .. " y:" .. enemy.y .. " w:" .. enemy.width .. " h: " .. enemy.height .. " cf: " .. enemy.currentFrame .. " s: " .. enemy.speed .. ' nf: ' ..#enemy.frames .. ' row: ' .. row .. ' col: ' .. col , 10, (15*#lives+10)+(15*i+10))
         end
     end
 end
@@ -111,3 +112,40 @@ function A2Squadron:new( grid )
         table.insert(self.enemies, YellowEnemy(0, 400, speed, BezierAndSnapToGridFlightPlan(trajectory,true,grid,row,col,startDelay+i*delay)))        
     end
 end
+
+A3Squadron = A2Squadron:extend()
+function A3Squadron:new( grid )
+    A3Squadron.super.new( self, grid )  
+    self.grid = grid  
+end 
+function A3Squadron:update( dt )
+    A3Squadron.super.update( self, dt )    
+    -- send an enemy to attack the player 
+    if self:shouldAttack(dt) then
+        local row, col = self:chooseEnemyForAttack( dt )
+        if row>0 and col>0 then 
+            local enemy = self.grid:getCharacterAt(row,col)
+            if enemy then
+                flightPlan = KamikazeFlightPlan(enemy,self.grid)
+                self.grid:setCharacterAt(row,col,nil) -- todo: dettach from grid
+                enemy.flightPlan = flightPlan
+                enemy.currentFrame = 1
+            end
+        end 
+    end 
+end
+function A3Squadron:shouldAttack( dt ) 
+    -- todo: implement logic
+    return control:test()
+end   
+function A3Squadron:chooseEnemyForAttack( dt ) 
+    -- todo: choose randomly
+    for i=1,self.grid.rows do
+        for j=1,self.grid.cols do
+            if self.grid.grid[i][j] then
+                return i,j
+            end
+        end 
+    end
+    return 0,0
+end 

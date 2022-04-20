@@ -21,6 +21,13 @@ function HoverGrid:new(rows,cols)
     self.speed = 30
     self.active = true
 end
+function HoverGrid:getCharacterAt(row,col)
+    return self.grid[row][col]
+end
+function HoverGrid:setCharacterAt(row,col,character)
+    self.grid[row][col] = character
+end
+
 function HoverGrid:update(dt)
     -- move grid
     local extent = 48
@@ -42,7 +49,7 @@ function HoverGrid:update(dt)
         for j=1,self.cols do
             if self.grid[i][j] then
                 local character = self.grid[i][j]
-                local x,y = self:getTargetCoordinate(i,j)
+                local x,y = self:getCoordinates(i,j)
                 character.x = x 
                 character.y = y
                 character:updateHoverMode(dt)
@@ -50,45 +57,95 @@ function HoverGrid:update(dt)
             end 
         end
     end
-    -- send an enemy to attack the player -- this should probably not be the responsibility of the grid - refactor!!!
-    if self:shouldAttack(dt) then
-        local row, col = self:chooseEnemyForAttack( dt )
-        if row>0 and col>0 then 
-            local enemy = self.grid[row][col]
-            self.grid[row][col] = nil
-            local destRow, destCol = self:getEmptyTargetCoordinateNear(10,14)
-            local x,y = self:getTargetCoordinate(row,col)
-            local x2,y2 = self:getTargetCoordinate(destRow,destCol)
-            local trajectory = { x, y, 0, 0, 100, 200, 100, 500, 600, love.graphics.getHeight(), 650, 600, love.graphics.getWidth(), 500, x2, y2 }
-            flightPlan = BezierAndSnapToGridFlightPlan(trajectory,false,self,destRow,destCol,0)
-            enemy.flightPlan = flightPlan
-            enemy.currentFrame = 1
-        end 
-    end 
 end
-function HoverGrid:getEmptyTargetCoordinateNear( aRow, aCol ) 
-    local row = aRow 
-    local col = aCol
-    while self.grid[row][col] do
-        col = col - 1
-        if col == 0 then
-            row = row - 1
-        end 
+function HoverGrid:getCellOccupiedBy( character )
+    local row = 0
+    local col = 0
+    for i=1, self.rows do
+        for j=1, self.cols do 
+            if character:equals(self.grid[i][j]) then
+                row = i
+                col = j
+                break
+            end 
+        end
     end 
-    return row, col
+    return row,col
 end 
-function HoverGrid:shouldAttack( dt ) -- this should probably not be the responsibility of the grid - refactor!!!
-    return control:test()
-end
-function HoverGrid:chooseEnemyForAttack( dt ) -- this should probably not be the responsibility of the grid - refactor!!!
-    for i=1,self.rows do
-        for j=1,self.cols do
-            if self.grid[i][j] then
-                return i,j
-            end
+function HoverGrid:getEmptyCellFarFrom( row, col ) -- there must be a smarter way of doing this
+    local aRow = 0
+    local aCol = 0
+
+    for j=1,self.rows do
+        local i = self.rows - j
+        if (col + i <= self.cols) then
+            if not self.grid[row][col + i] then  
+                aCol = col + i
+                aRow = row
+                break
+            end 
         end 
-    end
-    return 0,0
+        if  (col - i > 0) then
+            if not self.grid[row][col - i] then  
+                aCol = col - i
+                aRow = row
+                break
+            end 
+        end 
+        if (row + i <= self.rows) then
+            if not self.grid[row + i ][col] then  
+                aCol = col
+                aRow = row + i
+                break
+            end 
+        end 
+        if (row - i > 0) then
+            if not self.grid[row-i][col] then  
+                aCol = col 
+                aRow = row - i
+                break
+            end 
+        end 
+    end 
+
+    return aRow, aCol    
+end
+function HoverGrid:getEmptyCellNear( row, col ) -- there must be a smarter way of doing this
+    local aRow = 0
+    local aCol = 0
+
+    for i=1,self.rows do
+        if (col + i <= self.cols) then
+            if not self.grid[row][col + i] then  
+                aCol = col + i
+                aRow = row
+                break
+            end 
+        end 
+        if  (col - i > 0) then
+            if not self.grid[row][col - i] then  
+                aCol = col - i
+                aRow = row
+                break
+            end 
+        end 
+        if (row + i <= self.rows) then
+            if not self.grid[row + i ][col] then  
+                aCol = col
+                aRow = row + i
+                break
+            end 
+        end 
+        if (row - i > 0) then
+            if not self.grid[row-i][col] then  
+                aCol = col 
+                aRow = row - i
+                break
+            end 
+        end 
+    end 
+
+    return aRow, aCol
 end 
 function HoverGrid:draw()
     setMainColor()
@@ -101,20 +158,24 @@ function HoverGrid:drawDebugData()
     setDebugColor()
     for i=1,self.rows do
         for j=1,self.cols do
-            local x,y = self:getTargetCoordinate(i,j)
+            local x,y = self:getCoordinates(i,j)
             love.graphics.circle( "fill", x, y, 2 )
             --love.graphics.print("[" .. i .. "," .. j .. "]", x, y )
         end
     end 
 end
-function HoverGrid:getTargetCoordinate(row,col)
+function HoverGrid:getCoordinates(row,col)
     local x = (col - 1) * self.cellWidth + self.x
     local y = (row - 1) * self.cellHeight + self.y
     return x,y
 end
 function HoverGrid:attach(character,row,col)
-    -- todo: if the position is occupied, send the character nearby to an empty space
-    self.grid[row][col] = character
+    local aRow = row
+    local aCol = col
+    if self.grid[row][col] then
+        aRow, aCol = self:getEmptyCellNear(row,col)
+    end 
+    self.grid[aRow][aCol] = character
     character:attachToContainer( self )    
 end
 function HoverGrid:dettach(character)
@@ -129,7 +190,7 @@ function SnapToGridFlightPlan:new(grid,row,col)
     self.col = col
 end
 function SnapToGridFlightPlan:doUpdate(character, dt)
-    local x,y = self.grid:getTargetCoordinate(self.row,self.col)
+    local x,y = self.grid:getCoordinates(self.row,self.col)
     character.orientation = math.atan2(y-character.y, x-character.x)
     character.x = character.x + math.cos(character.orientation) * character.speed * dt
     character.y = character.y + math.sin(character.orientation) * character.speed * dt

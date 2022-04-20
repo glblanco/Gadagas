@@ -2,8 +2,9 @@ function requireLibraries()
     -- First require classic, since we use it to create our classes.
     Object = require "external/classic"
     require "entity"
-    require "control"
     require "resources"
+    require "utils/control"
+    require "utils/uuid-generator"
     require "characters/character"
     require "characters/player"
     require "characters/enemy"
@@ -26,8 +27,10 @@ function love.load()
     objects = {}
     playerBullets = {}
     enemyBullets = {}
+
     control = Control()
     resources = Resources()
+    uuidGenerator = UUIDGenerator()
 
     debug = true
     
@@ -44,8 +47,8 @@ function love.load()
     player = lives[1]
     player:activate()
     
-    local grid = HoverGrid(10,15)
-    table.insert(enemies, A2Squadron(grid))
+    grid = HoverGrid(10,15)
+    table.insert(enemies, A3Squadron(grid))
     table.insert(objects, grid)
         
 end
@@ -88,7 +91,7 @@ function love.draw()
         if debug then
             setDebugColor()
             if not enemy:isSquadron() then
-                love.graphics.print("enemy " .. i .. " ->  x:" .. enemy.x .. " y:" .. enemy.y .. " w:" .. enemy.width .. " h: " .. enemy.height .. " cf: " .. enemy.currentFrame .. " s: " .. enemy.speed .. ' nf: ' ..#enemy.frames .. ' active:' .. (enemy.active and 'true' or 'false'), 10, (15*#lives+10)+(15*i+10))
+                love.graphics.print("enemy " .. i .. "[" .. enemy.uuid .. "] ->  x:" .. enemy.x .. " y:" .. enemy.y .. " w:" .. enemy.width .. " h: " .. enemy.height .. " cf: " .. enemy.currentFrame .. " s: " .. enemy.speed .. ' nf: ' ..#enemy.frames .. ' active:' .. (enemy.active and 'true' or 'false'), 10, (15*#lives+10)+(15*i+10))
             end
         end
     end
@@ -118,7 +121,7 @@ function love.draw()
         love.graphics.print("player bullets: " .. (#playerBullets),10,485)
         love.graphics.print("enemy bullets: " .. (#enemyBullets),10,500)
         love.graphics.print("lives: " .. (#lives),10,515)
-        love.graphics.print("enemies: " .. (#enemies),10,530)
+        love.graphics.print("enemies: " .. (#enemies).. ' ' .. (math.random(0, 1)),10,530)
     end
 end
 
