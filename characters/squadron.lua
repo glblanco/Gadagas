@@ -117,10 +117,10 @@ function A3Squadron:update( dt )
     A3Squadron.super.update( self, dt )    
     -- send an enemy to attack the player 
     if self:shouldAttack(dt) then
-        local row, col = self:chooseEnemyForAttack( dt )
-        if row>0 and col>0 then 
-            local enemy = self.grid:getCharacterAt(row,col)
-            if enemy then
+        local enemy = self:chooseEnemyForAttack()
+        if enemy then 
+            local row, col = self.grid:getCellOccupiedBy(enemy)
+            if row > 0 and col > 0 then
                 flightPlan = KamikazeFlightPlan(enemy,self.grid)
                 self.grid:setCharacterAt(row,col,nil) 
                 enemy.flightPlan = flightPlan
@@ -133,14 +133,18 @@ function A3Squadron:shouldAttack( dt )
     -- todo: implement logic
     return control:test()
 end   
-function A3Squadron:chooseEnemyForAttack( dt ) 
-    -- todo: choose randomly
-    for i=1,self.grid.rows do
-        for j=1,self.grid.cols do
-            if self.grid.grid[i][j] then
-                return i,j
-            end
+function A3Squadron:activeEnemies()
+    local activeEnemies = {}
+    for i=1,#self.enemies do
+        local enemy = self.enemies[i]
+        if enemy.active then
+            table.insert(activeEnemies, enemy)  
         end 
     end
-    return 0,0
+    return activeEnemies
+end
+function A3Squadron:chooseEnemyForAttack() 
+    local activeEnemies = self:activeEnemies()
+    local chosenAttacker = activeEnemies[ math.random( 1, #activeEnemies ) ] 
+    return chosenAttacker
 end 

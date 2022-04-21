@@ -6,7 +6,6 @@ function Enemy:new( spriteInfo, x, y, speed, flightPlan )
     self.flightPlan = flightPlan
     self.hoverTime = 0
     self.laps = 0
-    self.squadron = nil
 end
 
 function Enemy:update(dt)
