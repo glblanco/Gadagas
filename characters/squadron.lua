@@ -130,8 +130,7 @@ function A3Squadron:update( dt )
     end 
 end
 function A3Squadron:shouldAttack( dt ) 
-    -- todo: implement logic
-    return control:test()
+    return #self:activeEnemies() == #self:activeEnemiesInGrid()
 end   
 function A3Squadron:activeEnemies()
     local activeEnemies = {}
@@ -143,8 +142,18 @@ function A3Squadron:activeEnemies()
     end
     return activeEnemies
 end
+function A3Squadron:activeEnemiesInGrid()
+    local activeEnemies = {}
+    for i=1,#self.enemies do
+        local enemy = self.enemies[i]
+        if enemy.active and self.grid:includes(enemy) then
+            table.insert(activeEnemies, enemy)  
+        end 
+    end
+    return activeEnemies
+end
 function A3Squadron:chooseEnemyForAttack() 
-    local activeEnemies = self:activeEnemies()
+    local activeEnemies = self:activeEnemiesInGrid()
     local chosenAttacker = activeEnemies[ math.random( 1, #activeEnemies ) ] 
     return chosenAttacker
 end 

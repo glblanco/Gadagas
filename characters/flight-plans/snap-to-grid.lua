@@ -72,6 +72,18 @@ function HoverGrid:getCellOccupiedBy( character )
     end 
     return row,col
 end 
+function HoverGrid:includes( character )
+    local ret = false
+    for i=1, self.rows do
+        for j=1, self.cols do 
+            if character:equals(self.grid[i][j]) then
+                ret = true
+                break
+            end 
+        end
+    end 
+    return ret
+end 
 function HoverGrid:getEmptyCellFarFrom( row, col ) 
     local aRow = 0
     local aCol = 0
