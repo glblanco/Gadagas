@@ -32,7 +32,7 @@ function love.load()
     resources = Resources()
     uuidGenerator = UUIDGenerator()
 
-    debug = true
+    debug = false
     
     local screenWidth = love.graphics.getWidth()
     local screenHeight = love.graphics.getHeight()

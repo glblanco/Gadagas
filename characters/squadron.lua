@@ -23,11 +23,6 @@ function Squadron:isSquadron()
     return true
 end
 
-function Squadron:dettach( character )
-    -- todo check for correct implementation
-    -- self.enemies.remove(character)
-end 
-
 TestCrazySquadron = Squadron:extend()
 function TestCrazySquadron:new()
     TestCrazySquadron.super.new( self )
@@ -127,7 +122,7 @@ function A3Squadron:update( dt )
             local enemy = self.grid:getCharacterAt(row,col)
             if enemy then
                 flightPlan = KamikazeFlightPlan(enemy,self.grid)
-                self.grid:setCharacterAt(row,col,nil) -- todo: dettach from grid
+                self.grid:setCharacterAt(row,col,nil) 
                 enemy.flightPlan = flightPlan
                 enemy.currentFrame = 1
             end

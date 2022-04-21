@@ -72,84 +72,54 @@ function HoverGrid:getCellOccupiedBy( character )
     end 
     return row,col
 end 
-function HoverGrid:getEmptyCellFarFrom( row, col ) -- there must be a smarter way of doing this
+function HoverGrid:getEmptyCellFarFrom( row, col ) 
     local aRow = 0
     local aCol = 0
-
-    for j=1,self.rows do
-        local i = self.rows - j
-        if (col + i <= self.cols) then
-            if not self.grid[row][col + i] then  
-                aCol = col + i
-                aRow = row
-                break
-            end 
-        end 
-        if  (col - i > 0) then
-            if not self.grid[row][col - i] then  
-                aCol = col - i
-                aRow = row
-                break
-            end 
-        end 
-        if (row + i <= self.rows) then
-            if not self.grid[row + i ][col] then  
-                aCol = col
-                aRow = row + i
-                break
-            end 
-        end 
-        if (row - i > 0) then
-            if not self.grid[row-i][col] then  
-                aCol = col 
-                aRow = row - i
-                break
-            end 
-        end 
+    for distance=1,self.rows do
+        local invDistance = self.rows - distance
+        for i=-invDistance,invDistance do
+            for j=-invDistance,invDistance do
+                if i>0 or j>0 then
+                    if (0 < row + i) and (row + i) < self.rows then 
+                        if (0 < col + j) and (col + j) < self.cols then 
+                            if not self.grid[row+i][col+j] then  
+                                aCol = col + j
+                                aRow = row + i 
+                                break
+                            end 
+                        end
+                    end
+                end
+            end
+        end
     end 
-
     return aRow, aCol    
 end
-function HoverGrid:getEmptyCellNear( row, col ) -- there must be a smarter way of doing this
+function HoverGrid:getEmptyCellNear( row, col ) 
     local aRow = 0
     local aCol = 0
-
-    for i=1,self.rows do
-        if (col + i <= self.cols) then
-            if not self.grid[row][col + i] then  
-                aCol = col + i
-                aRow = row
-                break
-            end 
-        end 
-        if  (col - i > 0) then
-            if not self.grid[row][col - i] then  
-                aCol = col - i
-                aRow = row
-                break
-            end 
-        end 
-        if (row + i <= self.rows) then
-            if not self.grid[row + i ][col] then  
-                aCol = col
-                aRow = row + i
-                break
-            end 
-        end 
-        if (row - i > 0) then
-            if not self.grid[row-i][col] then  
-                aCol = col 
-                aRow = row - i
-                break
-            end 
-        end 
+    for distance=1,self.rows do
+        for i=-distance,distance do
+            for j=-distance,distance do
+                if i>0 or j>0 then
+                    if (0 < row + i) and (row + i) < self.rows then 
+                        if (0 < col + j) and (col + j) < self.cols then 
+                            if not self.grid[row+i][col+j] then  
+                                aCol = col + j
+                                aRow = row + i 
+                                break
+                            end 
+                        end
+                    end
+                end
+            end
+        end
     end 
-
     return aRow, aCol
 end 
 function HoverGrid:draw()
     setMainColor()
-    -- todo: draw enemies - this is currently being done by the squadron
+    -- the drawing of enemies is currently handled by the squadron
     if debug then
         self:drawDebugData()
     end
@@ -176,11 +146,7 @@ function HoverGrid:attach(character,row,col)
         aRow, aCol = self:getEmptyCellNear(row,col)
     end 
     self.grid[aRow][aCol] = character
-    character:attachToContainer( self )    
 end
-function HoverGrid:dettach(character)
-    -- not implemented
-end 
 
 
 SnapToGridFlightPlan = FlightPlan:extend()
