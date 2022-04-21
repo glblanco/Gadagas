@@ -77,13 +77,6 @@ function Enemy:isSquadron()
     return false
 end
 
-function Enemy:attachToContainer( container )
-    if self.container then
-        container:dettach(self)
-    end 
-    self.container = container
-end
-
 function Enemy:die()
     self.active = false
     self.visible = false
