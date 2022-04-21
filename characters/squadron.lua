@@ -124,6 +124,7 @@ function A3Squadron:update( dt )
                 flightPlan = KamikazeFlightPlan(enemy,self.grid)
                 self.grid:setCharacterAt(row,col,nil) 
                 enemy.flightPlan = flightPlan
+                enemy.attackPlan = AttackPlan()
                 enemy.currentFrame = 1
             end
         end 

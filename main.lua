@@ -8,6 +8,7 @@ function requireLibraries()
     require "characters/character"
     require "characters/player"
     require "characters/enemy"
+    require "characters/attack-plan"
     require "characters/flight-plan"
     require "characters/flight-plans/demos"
     require "characters/flight-plans/simple-paths"
@@ -70,6 +71,12 @@ function love.update(dt)
         bullet:update(dt)
         if not bullet.active then
             table.remove(playerBullets,i)
+        end
+    end    
+    for i,bullet in ipairs(enemyBullets) do
+        bullet:update(dt)
+        if not bullet.active then
+            table.remove(enemyBullets,i)
         end
     end    
     control:update(dt)

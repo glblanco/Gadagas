@@ -1,9 +1,10 @@
 Enemy = Character:extend()
 
-function Enemy:new( spriteInfo, x, y, speed, flightPlan )
+function Enemy:new( spriteInfo, x, y, speed, flightPlan, attackPlan )
     Enemy.super.new( self, spriteInfo, x, y )
     self.speed = speed
     self.flightPlan = flightPlan
+    self.attackPlan = attackPlan
     self.hoverTime = 0
     self.laps = 0
 end
@@ -14,6 +15,9 @@ function Enemy:update(dt)
         if self.flightPlan then
             self.flightPlan:update(self, dt)
         end
+        if self.attackPlan then
+            self.attackPlan:update(self, dt)
+        end        
         self:checkForImpacts()
     end 
 end
