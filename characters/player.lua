@@ -67,10 +67,13 @@ end
 
 function Player:die()
     self.active = false
-    self.currentFrame = 1
-    -- check lives left
-    -- mark as dead
-    -- remove from container    
+    self.visible = false 
+    self:explode()
+    nextPlayer()
+end
+
+function Player:explode()
+    -- TODO add an explosion 
 end
 
 

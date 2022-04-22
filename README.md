@@ -17,7 +17,7 @@ https://grumpygamer.com/puzzle_dependency_charts#:~:text=A%20Puzzle%20Dependency
 2. ~~Generate movement strategy for enemies - FlightPlan - https://love2d.org/wiki/BezierCurve~~
 3. ~~Controls: Keyboard, Joystick, etc - https://love2d.org/wiki/Input~~
 4. ~~Shoot bullets~~
-5. Check collisions
+5. ~~Check collisions~~
 6. Consume lives
 7. Keep score - Impacts
 8. Add levels

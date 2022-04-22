@@ -45,8 +45,7 @@ function love.load()
         table.insert(lives, Player(((livesCount-i)*spacePerPlayer)+20,y))
     end
 
-    player = lives[1]
-    player:activate()
+    nextPlayer()
     
     grid = HoverGrid(10,15)
     table.insert(enemies, A3Squadron(grid))
@@ -55,8 +54,14 @@ function love.load()
 end
 
 function love.update(dt)
+    if not player.visible then
+        nextPlayer()
+    end
     for i,player in ipairs(lives) do
         player:update(dt)
+        if not player.visible then
+            table.remove(lives,i)
+        end
     end
     for i,enemy in ipairs(enemies) do
         enemy:update(dt)
@@ -139,4 +144,11 @@ end
 function setDebugColor()
     --love.graphics.setColor(1, 0, 0)
     love.graphics.setColor(163/255, 163/255, 155/255)
+end
+
+function nextPlayer()
+    if #lives > 0 then
+        player = lives[1]
+        player:activate()
+    end
 end
