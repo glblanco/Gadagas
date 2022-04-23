@@ -83,7 +83,12 @@ end
 function Enemy:die()
     self.active = false
     self.visible = false
-    table.insert(objects,Explosion(self.x,self.y))
+    self:explode()
+    score = score + 100 -- TODO score send to game object
+end
+
+function Enemy:explode()
+    table.insert(explosions,EnemyExplosion(self.x,self.y))
 end
 
 -------

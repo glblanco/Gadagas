@@ -56,7 +56,7 @@ function Resources:getCharacterFrames( spriteInfo )
     return aframes
 end
 
-function Resources:getExplosionFrames()
+function Resources:getEnemyExplosionFrames()
     local frame_width = self.explosionFrameWidth
     local frame_height = self.explosionFrameHeight
     local aframes = {}
@@ -71,3 +71,17 @@ function Resources:getExplosionFrames()
     return aframes
 end
 
+function Resources:getPlayerExplosionFrames()
+    local frame_width = self.explosionFrameWidth
+    local frame_height = self.explosionFrameHeight
+    local aframes = {}
+    for spriteColumn=1,4 do
+        table.insert(aframes, 
+                love.graphics.newQuad(
+                        (1 * (self.characterFrameWidth+2) * 8) + 1 + (spriteColumn-1) * (frame_width+2), 
+                        1 ,
+                        frame_width, frame_height, 
+                        self.width, self.height))
+    end
+    return aframes
+end

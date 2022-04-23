@@ -69,11 +69,10 @@ function Player:die()
     self.active = false
     self.visible = false 
     self:explode()
-    nextPlayer()
 end
 
 function Player:explode()
-    -- TODO add an explosion 
+    table.insert(explosions,PlayerExplosion(self.x,self.y))
 end
 
 

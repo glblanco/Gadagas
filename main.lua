@@ -28,6 +28,7 @@ function love.load()
     objects = {}
     playerBullets = {}
     enemyBullets = {}
+    explosions = {}    
 
     control = Control()
     resources = Resources()
@@ -50,41 +51,47 @@ function love.load()
     grid = HoverGrid(10,15)
     table.insert(enemies, A3Squadron(grid))
     table.insert(objects, grid)
-        
+    -- table.insert(explosions, EnemyExplosion(200,200))
+    -- table.insert(explosions, PlayerExplosion(200,200))
+    
+    pause = 0
+    gameOver = false
+    score = 0
 end
 
 function love.update(dt)
-    if not player.visible then
+    if not player.visible and pause > 1 then
+        pause = 0
+        table.remove(lives,1)        
         nextPlayer()
     end
-    for i,player in ipairs(lives) do
-        player:update(dt)
-        if not player.visible then
-            table.remove(lives,i)
+    if #lives <= 0 then
+        gameOver = true
+    else
+        for i,player in ipairs(lives) do
+            player:update(dt)
+            if not player.visible then
+                pause = pause + dt
+            end
+        end
+        updateList(explosions,dt)
+        if pause == 0 then
+            updateList(enemies,dt) 
+            updateList(playerBullets,dt)
+            updateList(enemyBullets,dt)
+            updateList(objects,dt)     
         end
     end
-    for i,enemy in ipairs(enemies) do
-        enemy:update(dt)
-    end
-    for i,object in ipairs(objects) do
-        object:update(dt)
-        if not object.active then
-            table.remove(objects,i)
-        end
-    end
-    for i,bullet in ipairs(playerBullets) do
-        bullet:update(dt)
-        if not bullet.active then
-            table.remove(playerBullets,i)
-        end
-    end    
-    for i,bullet in ipairs(enemyBullets) do
-        bullet:update(dt)
-        if not bullet.active then
-            table.remove(enemyBullets,i)
-        end
-    end    
     control:update(dt)
+end
+
+function updateList( aList, dt )
+    for i,item in ipairs(aList) do
+        item:update(dt)
+        if not item.active then
+            table.remove(item,i)
+        end
+    end  
 end
 
 function love.draw() 
@@ -127,7 +134,16 @@ function love.draw()
             love.graphics.print("enemy bullet " .. i .. " ->  x:" .. bullet.x .. " y:" .. bullet.y .. " w:" .. bullet.width .. " h: " .. bullet.height, 10, 15*i + 300)
         end  
     end
-
+    for i,explosion in ipairs(explosions) do
+        setMainColor()
+        explosion:draw()
+    end
+    if gameOver then
+        setTextColor()
+        love.graphics.print("Game over",love.graphics.getWidth()*0.9/2,love.graphics.getHeight()*0.8/2)
+    end
+    setTextColor()
+        love.graphics.print("Score: "..score,love.graphics.getWidth()*0.9/2,love.graphics.getHeight()*0.05)
     if debug then
         setDebugColor()
         love.graphics.print("player bullets: " .. (#playerBullets),10,485)
@@ -137,12 +153,15 @@ function love.draw()
     end
 end
 
+function setTextColor()
+    love.graphics.setColor(1,0,0)
+end
+
 function setMainColor()
     love.graphics.setColor(1,1,1)
 end
 
 function setDebugColor()
-    --love.graphics.setColor(1, 0, 0)
     love.graphics.setColor(163/255, 163/255, 155/255)
 end
 
