@@ -84,7 +84,7 @@ function Enemy:die()
     self.active = false
     self.visible = false
     self:explode()
-    game.score = game.score + 100 -- TODO score send to game object
+    game:enemyKilled(self)
 end
 
 function Enemy:explode()

@@ -11,7 +11,6 @@ function Game:new()
     
     local screenWidth = love.graphics.getWidth()
     local screenHeight = love.graphics.getHeight()
-
     local spacePerPlayer = (resources.characterFrameWidth+2)*2
     local y = screenHeight - spacePerPlayer
     local livesCount = 3
@@ -27,8 +26,9 @@ function Game:new()
     
     self.paused     = false
     self.pauseDelay = 0
-    self.score      = 0
 
+    self.scoreBoard      = ScoreBoard()
+    self.gameOverBoard   = GameOverBoard()
 end
 
 function Game:update(dt)
@@ -87,6 +87,10 @@ end
 
 function Game:isPaused()
     return self.paused
+end
+
+function Game:enemyKilled( enemy )
+    self.scoreBoard:add(100)
 end
 
 function Game:playerKilled()
@@ -168,32 +172,11 @@ function Game:drawDebugData()
 end
 
 function Game:drawScore()
-    setTextColor()
-    local textWidth = 50 + (string.len(self.score)-1)*8
-    local textHeight = 30
-    local x = love.graphics.getWidth()/2 - textWidth/2
-    local y = love.graphics.getHeight()*0.95
-    love.graphics.print("Score: "..self.score,x,y)
-    if debug then
-        setDebugColor()
-        love.graphics.rectangle( "line", x, y, textWidth, textHeight )
-    end
+    self.scoreBoard:draw()
 end
 
 function Game:notifyGameOver()
-    setTextColor()
-    local scale = 2
-    local textWidth = 130
-    local textHeight = 30
-    local x = love.graphics.getWidth()/2 - textWidth/2
-    local y = love.graphics.getHeight()*0.7/2
-    if math.floor(love.timer.getTime()) % 2 == 0 then
-        love.graphics.print("Game over", x, y, 0, scale, scale)
-    end
-    if debug then
-        setDebugColor()
-        love.graphics.rectangle( "line", x, y, textWidth, textHeight )
-    end
+    self.gameOverBoard:draw()
 end
 
 function Game:isOver()
