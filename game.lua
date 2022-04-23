@@ -26,15 +26,12 @@ function Game:new()
     table.insert(self.objects, self.grid)
     
     self.pause = 0
-    self.gameOver = false
     self.score = 0
 
 end
 
 function Game:update(dt)
-    if self:isOver() then
-        self.gameOver = true
-    else
+    if not self:isOver() then
         local player = self.lives[1]
         if not player.visible and self.pause > 1 then
             self.pause = 0
@@ -69,33 +66,33 @@ function Game:updateList( aList, dt )
 end
 
 function Game:draw()
-    local PI = 3.14159265358
-    for i,player in ipairs(self.lives) do
-        setMainColor()
-        player:draw()
-        if debug then
-            setDebugColor()
-            love.graphics.print("player " .. i .. " ->  x:" .. player.x .. " y:" .. player.y .. " w:" .. player.width .. " h: " .. player.height .. " r:" .. math.floor(player.orientation * 180 / PI) , 10, 15*i + 10)
-        end    
+    self:drawPlayers()
+    self:drawEnemies()
+    self:drawObjects()
+    self:drawExplosions()
+    self:drawBullets()
+    self:drawScore()
+    self:drawDebugData()
+    if self:isOver() then
+        self:notifyGameOver()
     end
-    for i,enemy in ipairs(self.enemies) do
-        setMainColor()
-        enemy:draw()
-        if debug then
-            setDebugColor()
-            if not enemy:isSquadron() then
-                love.graphics.print("enemy " .. i .. "[" .. enemy.uuid .. "] ->  x:" .. enemy.x .. " y:" .. enemy.y .. " w:" .. enemy.width .. " h: " .. enemy.height .. " cf: " .. enemy.currentFrame .. " s: " .. enemy.speed .. ' nf: ' ..#enemy.frames .. ' active:' .. (enemy.active and 'true' or 'false'), 10, (15*#lives+10)+(15*i+10))
-            end
-        end
-    end
+end
+
+function Game:drawObjects()
     for i,object in ipairs(self.objects) do
         setMainColor()
         object:draw()
     end
+end
+
+function Game:drawExplosions()
     for i,explosion in ipairs(self.explosions) do
         setMainColor()
         explosion:draw()
     end
+end
+
+function Game:drawBullets()
     for i,bullet in ipairs(self.playerBullets) do
         setMainColor()
         bullet:draw()
@@ -112,11 +109,31 @@ function Game:draw()
             love.graphics.print("enemy bullet " .. i .. " ->  x:" .. bullet.x .. " y:" .. bullet.y .. " w:" .. bullet.width .. " h: " .. bullet.height, 10, 15*i + 300)
         end  
     end
-    if self:isOver() then
-        self:notifyGameOver()
+end
+
+function Game:drawPlayers()
+    local PI = 3.14159265358
+    for i,player in ipairs(self.lives) do
+        setMainColor()
+        player:draw()
+        if debug then
+            setDebugColor()
+            love.graphics.print("player " .. i .. " ->  x:" .. player.x .. " y:" .. player.y .. " w:" .. player.width .. " h: " .. player.height .. " r:" .. math.floor(player.orientation * 180 / PI) , 10, 15*i + 10)
+        end    
     end
-    self:drawScore()
-    self:drawDebugData()
+end
+
+function Game:drawEnemies()
+    for i,enemy in ipairs(self.enemies) do
+        setMainColor()
+        enemy:draw()
+        if debug then
+            setDebugColor()
+            if not enemy:isSquadron() then
+                love.graphics.print("enemy " .. i .. "[" .. enemy.uuid .. "] ->  x:" .. enemy.x .. " y:" .. enemy.y .. " w:" .. enemy.width .. " h: " .. enemy.height .. " cf: " .. enemy.currentFrame .. " s: " .. enemy.speed .. ' nf: ' ..#enemy.frames .. ' active:' .. (enemy.active and 'true' or 'false'), 10, (15*#lives+10)+(15*i+10))
+            end
+        end
+    end
 end
 
 function Game:drawDebugData()
