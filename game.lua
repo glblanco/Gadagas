@@ -17,42 +17,49 @@ function Game:new()
     for i=1,livesCount do
         table.insert(self.lives, Player(((livesCount-i)*spacePerPlayer)+20,y))
     end
-
     self:activateNextPlayer()
     
     self.grid = HoverGrid(10,15)
     table.insert(self.enemies, A3Squadron(self.grid))
     table.insert(self.objects, self.grid)
     
-    self.paused     = false
-    self.pauseDelay = 0
-
+    self.pause           = nil
     self.scoreBoard      = ScoreBoard()
     self.gameOverBoard   = GameOverBoard()
+
 end
 
 function Game:update(dt)
     if not self:isOver() then
+        -- Check that there is an active player
         local player = self:currentPlayer()
-        if not player.visible and self.pauseDelay > 1 then
-            self.pauseDelay = 0
-            self.paused = false
+        if player:isDead() and (self:playerKilledPauseElapsed() or self:isOver())  then
+            self:resume()
             self:destroyCurrentPlayer()       
             self:activateNextPlayer()
         end
+        -- Update all players
         for i,player in ipairs(self.lives) do
             player:update(dt)
         end
+        -- Update explosions
         self:updateList(self.explosions,dt)
+        -- Update the rest of the game objects, removing them if not active any more
         if not self:isPaused() then
             self:updateList(self.enemies,dt) 
             self:updateList(self.playerBullets,dt)
             self:updateList(self.enemyBullets,dt)
             self:updateList(self.objects,dt)     
         else
-            self.pauseDelay = self.pauseDelay + dt
+            self.pause:update(dt) 
         end
     end
+end
+
+function Game:playerKilledPauseElapsed()
+    return self.pause 
+            and self.pause:is( PlayerKilledPause ) 
+            and self.pause:elapsed()
 end
 
 function Game:updateList( aList, dt )
@@ -75,27 +82,44 @@ function Game:draw()
     self:drawScore()
     self:drawDebugData()
     if self:isPaused() then
-        self:notifyPauseMotive()
+        self:notifyPause()
     end
     if self:isOver() then
         self:notifyGameOver()
     end
 end
 
-function Game:notifyPauseMotive()
+function Game:notifyPause()
+    self.pause:draw()
 end
 
 function Game:isPaused()
-    return self.paused
+    return self.pause 
 end
 
 function Game:enemyKilled( enemy )
     self.scoreBoard:add(100)
 end
 
+function Game:livesRemaining()
+    local count = 0
+    for i,object in ipairs(self.lives) do
+        if not object:isDead() then
+            count = count + 1
+        end
+    end
+    return count
+end
+
 function Game:playerKilled()
-    self.paused = true
-    self.pauseDelay = 0
+    local lives = self:livesRemaining()
+    if lives > 0 then
+        self.pause = PlayerKilledPause( (#self.lives - 1) .. " UP" )
+    end
+end
+
+function Game:resume()
+    self.pause = nil
 end
 
 function Game:destroyCurrentPlayer()
@@ -142,7 +166,9 @@ function Game:drawPlayers()
         player:draw()
         if debug then
             setDebugColor()
-            love.graphics.print("player " .. i .. " ->  x:" .. player.x .. " y:" .. player.y .. " w:" .. player.width .. " h: " .. player.height .. " r:" .. math.floor(player.orientation * 180 / PI) , 10, 15*i + 10)
+            love.graphics.print("player " .. i .. " ->  x:" .. player.x .. " y:" .. player.y .. " w:" .. player.width .. " h: " .. player.height .. 
+                                " r:" .. math.floor(player.orientation * 180 / PI) .. ' d:' .. (player:isDead() and 'true' or 'false'), 
+                                10, 15*i + 10)
         end    
     end
 end
@@ -154,7 +180,10 @@ function Game:drawEnemies()
         if debug then
             setDebugColor()
             if not enemy:isSquadron() then
-                love.graphics.print("enemy " .. i .. "[" .. enemy.uuid .. "] ->  x:" .. enemy.x .. " y:" .. enemy.y .. " w:" .. enemy.width .. " h: " .. enemy.height .. " cf: " .. enemy.currentFrame .. " s: " .. enemy.speed .. ' nf: ' ..#enemy.frames .. ' active:' .. (enemy.active and 'true' or 'false'), 10, (15*#lives+10)+(15*i+10))
+                love.graphics.print("enemy " .. i .. "[" .. enemy.uuid .. "] ->  x:" .. enemy.x .. " y:" .. enemy.y .. 
+                        " w:" .. enemy.width .. " h: " .. enemy.height .. " cf: " .. enemy.currentFrame .. 
+                        " s: " .. enemy.speed .. ' nf: ' ..#enemy.frames .. ' active:' .. (enemy.active and 'true' or 'false'), 
+                        10, (15*#lives+10)+(15*i+10))
             end
         end
     end
@@ -163,7 +192,8 @@ end
 function Game:drawDebugData()
     if debug then
         setDebugColor()
-        love.graphics.print("game over: " .. (self:isOver() and "true" or "false"),10,470)        
+        love.graphics.print("game over: " .. (self:isOver() and "true" or "false"),10,455)        
+        love.graphics.print("game paused: " .. (self:isPaused() and "true" or "false"),10,470)               
         love.graphics.print("player bullets: " .. (#self.playerBullets),10,485)
         love.graphics.print("enemy bullets: " .. (#self.enemyBullets),10,500)
         love.graphics.print("lives: " .. (#self.lives),10,515)
@@ -180,7 +210,7 @@ function Game:notifyGameOver()
 end
 
 function Game:isOver()
-    return #self.lives <= 0 
+    return self:livesRemaining() <= 0 
 end
 
 function Game:currentPlayer()

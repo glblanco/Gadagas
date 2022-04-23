@@ -4,6 +4,7 @@ function requireLibraries()
     require "game"
     require "entity"
     require "resources"
+    require "pause"
     require "information-boards"
     require "utils/control"
     require "utils/uuid-generator"

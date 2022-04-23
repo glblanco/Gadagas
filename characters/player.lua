@@ -72,6 +72,10 @@ function Player:die()
     game:playerKilled()
 end
 
+function Player:isDead()
+    return not self.visible
+end
+
 function Player:explode()
     table.insert(game.explosions,PlayerExplosion(self.x,self.y))
 end
