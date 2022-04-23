@@ -169,7 +169,7 @@ end
 
 function Game:drawScore()
     setTextColor()
-    local textWidth = 80
+    local textWidth = 50 + (string.len(self.score)-1)*8
     local textHeight = 30
     local x = love.graphics.getWidth()/2 - textWidth/2
     local y = love.graphics.getHeight()*0.95
