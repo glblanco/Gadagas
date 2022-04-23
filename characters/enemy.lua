@@ -23,7 +23,7 @@ function Enemy:update(dt)
 end
 
 function Enemy:checkForImpacts()
-    for i,bullet in ipairs(playerBullets) do
+    for i,bullet in ipairs(game.playerBullets) do
         if bullet:collides(self) then
             bullet:hit(self)
             break
@@ -62,7 +62,7 @@ end
 
 function Enemy:attack()
     local bullet = Bullet(self.x,self.y,"down")
-    table.insert(enemyBullets, bullet)
+    table.insert(game.enemyBullets, bullet)
 end 
 
 function Enemy:draw()
@@ -84,11 +84,11 @@ function Enemy:die()
     self.active = false
     self.visible = false
     self:explode()
-    score = score + 100 -- TODO score send to game object
+    game.score = game.score + 100 -- TODO score send to game object
 end
 
 function Enemy:explode()
-    table.insert(explosions,EnemyExplosion(self.x,self.y))
+    table.insert(game.explosions,EnemyExplosion(self.x,self.y))
 end
 
 -------

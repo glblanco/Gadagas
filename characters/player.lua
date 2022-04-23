@@ -28,7 +28,7 @@ function Player:update(dt)
 end
 
 function Player:checkForImpacts()
-    for i,bullet in ipairs(enemyBullets) do
+    for i,bullet in ipairs(game.enemyBullets) do
         if bullet:collides(self) then
             bullet:hit(self)
             break
@@ -60,7 +60,7 @@ function Player:action(dt)
       
     if control:shoot() then   
         local bullet = Bullet(self.x,self.y,"up")
-        table.insert(playerBullets, bullet)
+        table.insert(game.playerBullets, bullet)
     end
 
 end
@@ -72,7 +72,7 @@ function Player:die()
 end
 
 function Player:explode()
-    table.insert(explosions,PlayerExplosion(self.x,self.y))
+    table.insert(game.explosions,PlayerExplosion(self.x,self.y))
 end
 
 

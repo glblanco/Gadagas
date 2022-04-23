@@ -1,6 +1,7 @@
 Squadron = Object:extend()
 function Squadron:new()
     self.enemies = {}
+    self.active = true
 end
 
 function Squadron:draw()
