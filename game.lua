@@ -25,31 +25,32 @@ function Game:new()
     table.insert(self.enemies, A3Squadron(self.grid))
     table.insert(self.objects, self.grid)
     
-    self.pause = 0
-    self.score = 0
+    self.paused     = false
+    self.pauseDelay = 0
+    self.score      = 0
 
 end
 
 function Game:update(dt)
     if not self:isOver() then
-        local player = self.lives[1]
-        if not player.visible and self.pause > 1 then
-            self.pause = 0
-            table.remove(self.lives,1)        
+        local player = self:currentPlayer()
+        if not player.visible and self.pauseDelay > 1 then
+            self.pauseDelay = 0
+            self.paused = false
+            self:destroyCurrentPlayer()       
             self:activateNextPlayer()
         end
         for i,player in ipairs(self.lives) do
             player:update(dt)
-            if not player.visible then
-                self.pause = self.pause + dt
-            end
         end
         self:updateList(self.explosions,dt)
-        if self.pause == 0 then
+        if not self:isPaused() then
             self:updateList(self.enemies,dt) 
             self:updateList(self.playerBullets,dt)
             self:updateList(self.enemyBullets,dt)
             self:updateList(self.objects,dt)     
+        else
+            self.pauseDelay = self.pauseDelay + dt
         end
     end
 end
@@ -73,9 +74,28 @@ function Game:draw()
     self:drawBullets()
     self:drawScore()
     self:drawDebugData()
+    if self:isPaused() then
+        self:notifyPauseMotive()
+    end
     if self:isOver() then
         self:notifyGameOver()
     end
+end
+
+function Game:notifyPauseMotive()
+end
+
+function Game:isPaused()
+    return self.paused
+end
+
+function Game:playerKilled()
+    self.paused = true
+    self.pauseDelay = 0
+end
+
+function Game:destroyCurrentPlayer()
+    table.remove(self.lives,1)  
 end
 
 function Game:drawObjects()
@@ -149,12 +169,31 @@ end
 
 function Game:drawScore()
     setTextColor()
-    love.graphics.print("Score: "..self.score,love.graphics.getWidth()*0.9/2,love.graphics.getHeight()*0.05)
+    local textWidth = 80
+    local textHeight = 30
+    local x = love.graphics.getWidth()/2 - textWidth/2
+    local y = love.graphics.getHeight()*0.95
+    love.graphics.print("Score: "..self.score,x,y)
+    if debug then
+        setDebugColor()
+        love.graphics.rectangle( "line", x, y, textWidth, textHeight )
+    end
 end
 
 function Game:notifyGameOver()
     setTextColor()
-    love.graphics.print("Game over",love.graphics.getWidth()*0.9/2,love.graphics.getHeight()*0.8/2)
+    local scale = 2
+    local textWidth = 130
+    local textHeight = 30
+    local x = love.graphics.getWidth()/2 - textWidth/2
+    local y = love.graphics.getHeight()*0.7/2
+    if math.floor(love.timer.getTime()) % 2 == 0 then
+        love.graphics.print("Game over", x, y, 0, scale, scale)
+    end
+    if debug then
+        setDebugColor()
+        love.graphics.rectangle( "line", x, y, textWidth, textHeight )
+    end
 end
 
 function Game:isOver()

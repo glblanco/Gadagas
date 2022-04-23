@@ -69,6 +69,7 @@ function Player:die()
     self.active = false
     self.visible = false 
     self:explode()
+    game:playerKilled()
 end
 
 function Player:explode()
