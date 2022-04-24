@@ -17,6 +17,7 @@ function Game:new()
     self.scoreBoard      = ScoreBoard()
     self.gameOverBoard   = GameOverBoard()
     self.winnerBoard     = WinnerBoard()
+    self.view            = GameView()
 
     self:activateNextPlayer()
 end
@@ -91,30 +92,8 @@ function Game:updateList( aList, dt, removeInactiveItems )
 end
 
 function Game:draw()
-    self:drawPlayers()
-    self:drawEnemies()
-    self:drawObjects()
-    self:drawExplosions()
-    self:drawBullets()
-    self:drawScore()
-    self:drawDebugData()
-    self:drawMessages()
-end
-
-function Game:drawMessages()
-    if self:isPaused() then
-        self:notifyPause()
-    end
-    if self:playerLost() then
-        self:notifyLoss()
-    end
-    if self:playerWon() then
-        self:notifyWin()
-    end  
-end
-
-function Game:notifyPause()
-    self.pause:draw()
+    self.view:setGame(self)
+    self.view:draw()
 end
 
 function Game:isPaused()
@@ -181,101 +160,6 @@ end
 
 function Game:destroyCurrentLevel()
     table.remove(self.levels,1)  
-end
-
-function Game:drawObjects()
-    for i,object in ipairs(self.objects) do
-        setMainColor()
-        object:draw()
-    end
-end
-
-function Game:drawExplosions()
-    for i,explosion in ipairs(self.explosions) do
-        setMainColor()
-        explosion:draw()
-    end
-end
-
-function Game:drawBullets()
-    for i,bullet in ipairs(self.playerBullets) do
-        setMainColor()
-        bullet:draw()
-        if debug then
-            setDebugColor()
-            love.graphics.print("player bullet " .. i .. " ->  x:" .. bullet.x .. " y:" .. bullet.y .. " w:" .. bullet.width .. " h: " .. bullet.height, 10, 15*i + 100)
-        end  
-    end
-    for i,bullet in ipairs(self.enemyBullets) do
-        setMainColor()
-        bullet:draw()
-        if debug then
-            setDebugColor()
-            love.graphics.print("enemy bullet " .. i .. " ->  x:" .. bullet.x .. " y:" .. bullet.y .. " w:" .. bullet.width .. " h: " .. bullet.height, 10, 15*i + 300)
-        end  
-    end
-end
-
-function Game:drawPlayers()
-    local PI = 3.14159265358
-    for i,player in ipairs(self.lives) do
-        setMainColor()
-        player:draw()
-        if debug then
-            setDebugColor()
-            love.graphics.print("player " .. i .. " ->  x:" .. player.x .. " y:" .. player.y .. " w:" .. player.width .. " h: " .. player.height .. 
-                                " r:" .. math.floor(player.orientation * 180 / PI) .. ' d:' .. (player:isDead() and 'true' or 'false'), 
-                                10, 15*i + 10)
-        end    
-    end
-end
-
-function Game:drawEnemies()
-    for i,enemy in ipairs(self.enemies) do
-        setMainColor()
-        enemy:draw()
-        if debug then
-            setDebugColor()
-            if not enemy:isSquadron() then
-                love.graphics.print("enemy " .. i .. "[" .. enemy.uuid .. "] ->  x:" .. enemy.x .. " y:" .. enemy.y .. 
-                        " w:" .. enemy.width .. " h: " .. enemy.height .. " cf: " .. enemy.currentFrame .. 
-                        " s: " .. enemy.speed .. ' nf: ' ..#enemy.frames .. ' active:' .. (enemy.active and 'true' or 'false'), 
-                        10, (15*#lives+10)+(15*i+10))
-            end
-        end
-    end
-end
-
-function Game:drawDebugData()
-    if debug then
-        setDebugColor()
-        if self:isPaused() then
-            love.graphics.print("pause delay: " .. (self.pause.delay),10,395)   
-            love.graphics.print("pause: " .. (self.pause.board.message),10,410)   
-        end
-        if self:currentLevel() then
-            love.graphics.print("current level complete: " .. (self:currentLevel().complete and "true" or "false"),10,425)   
-        end
-        love.graphics.print("levels: " .. (#self.levels),10,440)   
-        love.graphics.print("game over: " .. (self:isOver() and "true" or "false"),10,455)        
-        love.graphics.print("game paused: " .. (self:isPaused() and "true" or "false"),10,470)               
-        love.graphics.print("player bullets: " .. (#self.playerBullets),10,485)
-        love.graphics.print("enemy bullets: " .. (#self.enemyBullets),10,500)
-        love.graphics.print("lives: " .. (#self.lives),10,515)
-        love.graphics.print("enemies: " .. (#self.enemies).. ' ' .. (math.random(0, 1)),10,530)
-    end
-end
-
-function Game:drawScore()
-    self.scoreBoard:draw()
-end
-
-function Game:notifyLoss()
-    self.gameOverBoard:draw()
-end
-
-function Game:notifyWin()
-    self.winnerBoard:draw()
 end
 
 function Game:playerLost()

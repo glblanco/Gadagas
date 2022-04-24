@@ -2,6 +2,7 @@ function requireLibraries()
     -- First require classic, since we use it to create our classes.
     Object = require "external/classic"
     require "game"
+    require "game-view"
     require "entity"
     require "resources"
     require "pause"
