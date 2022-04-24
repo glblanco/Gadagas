@@ -2,6 +2,9 @@ GameView = Object:extend()
 
 function GameView:new()
     self.game = nil
+    self.scoreBoard      = ScoreBoard()
+    self.gameOverBoard   = GameOverBoard()
+    self.winnerBoard     = WinnerBoard()    
 end
 
 function GameView:setGame( game )
@@ -83,7 +86,7 @@ function GameView:drawBullets()
 end
 
 function GameView:drawScore()
-    self.game.scoreBoard:draw()
+    self.scoreBoard:draw()
 end
 
 function GameView:drawDebugData()
@@ -123,10 +126,13 @@ function GameView:notifyPause()
 end
 
 function GameView:notifyLoss()
-    self.game.gameOverBoard:draw()
+    self.gameOverBoard:draw()
 end
 
 function GameView:notifyWin()
-    self.game.winnerBoard:draw()
+    self.winnerBoard:draw()
 end
 
+function GameView:updateScore( score )
+    self.scoreBoard:setScore( score )
+end    

@@ -14,9 +14,7 @@ function Game:new()
     self:initializeLevels()
 
     self.pause           = nil
-    self.scoreBoard      = ScoreBoard()
-    self.gameOverBoard   = GameOverBoard()
-    self.winnerBoard     = WinnerBoard()
+    self.score           = 0
     self.view            = GameView()
 
     self:activateNextPlayer()
@@ -113,7 +111,8 @@ function Game:playerKilledPauseElapsed()
 end
 
 function Game:enemyKilled( enemy )
-    self.scoreBoard:add(100)
+    self.score = self.score + 100 -- TODO maybe different enemies have different values
+    self.view:updateScore(self.score)
 end
 
 function Game:levelComplete()

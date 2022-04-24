@@ -25,8 +25,8 @@ ScoreBoard = Board:extend()
 function ScoreBoard:new()
     self.score = 0
 end
-function ScoreBoard:add( points )
-    self.score = self.score + points
+function ScoreBoard:setScore( points )
+    self.score = points
 end 
 function ScoreBoard:draw()
     local textWidth = 50 + (string.len(self.score)-1)*8
