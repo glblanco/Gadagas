@@ -9,14 +9,7 @@ function Game:new()
     self.enemyBullets = {}
     self.explosions = {}    
     
-    local screenWidth = love.graphics.getWidth()
-    local screenHeight = love.graphics.getHeight()
-    local spacePerPlayer = (resources.characterFrameWidth+2)*2
-    local y = screenHeight - spacePerPlayer
-    local livesCount = 3
-    for i=1,livesCount do
-        table.insert(self.lives, Player(((livesCount-i)*spacePerPlayer)+20,y))
-    end
+    self:initializeLives()
     self:activateNextPlayer()
     
     self.grid = HoverGrid(10,15)
@@ -27,6 +20,17 @@ function Game:new()
     self.scoreBoard      = ScoreBoard()
     self.gameOverBoard   = GameOverBoard()
 
+end
+
+function Game:initializeLives()
+    local screenWidth = love.graphics.getWidth()
+    local screenHeight = love.graphics.getHeight()
+    local spacePerPlayer = (resources.characterFrameWidth+2)*2
+    local y = screenHeight - spacePerPlayer
+    local livesCount = 3
+    for i=1,livesCount do
+        table.insert(self.lives, Player(((livesCount-i)*spacePerPlayer)+20,y))
+    end
 end
 
 function Game:update(dt)
