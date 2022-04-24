@@ -22,12 +22,16 @@ function Game:new()
 
 end
 
+function Game:livesPerGame()
+    return 3
+end    
+
 function Game:initializeLives()
     local screenWidth = love.graphics.getWidth()
     local screenHeight = love.graphics.getHeight()
     local spacePerPlayer = (resources.characterFrameWidth+2)*2
     local y = screenHeight - spacePerPlayer
-    local livesCount = 3
+    local livesCount = self:livesPerGame()
     for i=1,livesCount do
         table.insert(self.lives, Player(((livesCount-i)*spacePerPlayer)+20,y))
     end
@@ -46,7 +50,7 @@ function Game:update(dt)
         for i,player in ipairs(self.lives) do
             player:update(dt)
         end
-        -- Update explosions
+        -- Update explosions (regardless of pauses)
         self:updateList(self.explosions,dt)
         -- Update the rest of the game objects, removing them if not active any more
         if not self:isPaused() then

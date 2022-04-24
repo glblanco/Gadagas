@@ -15,7 +15,7 @@ function PlayerKilledPause:new(message)
     PlayerKilledPause.super.new(self,message)
 end    
 function PlayerKilledPause:elapsed()
-    return self.delay > 1
+    return self.delay > 2
 end    
 function PlayerKilledPause:draw()
     setTextColor()
