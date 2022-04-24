@@ -8,18 +8,17 @@ function Game:new()
     self.playerBullets = {}
     self.enemyBullets = {}
     self.explosions = {}    
+    self.levels = {}
     
     self:initializeLives()
-    self:activateNextPlayer()
-    
-    self.grid = HoverGrid(10,15)
-    table.insert(self.enemies, A3Squadron(self.grid))
-    table.insert(self.objects, self.grid)
-    
+    self:initializeLevels()
+
     self.pause           = nil
     self.scoreBoard      = ScoreBoard()
     self.gameOverBoard   = GameOverBoard()
+    self.winnerBoard     = WinnerBoard()
 
+    self:activateNextPlayer()
 end
 
 function Game:livesPerGame()
@@ -37,44 +36,54 @@ function Game:initializeLives()
     end
 end
 
+function Game:initializeLevels()
+    table.insert(self.levels, Level())
+    table.insert(self.levels, Level())
+end
+
 function Game:update(dt)
+    
     if not self:isOver() then
         -- Check that there is an active player
         local player = self:currentPlayer()
-        if player:isDead() and (self:playerKilledPauseElapsed() or self:isOver())  then
+        if player:isDead() and (self:playerKilledPauseElapsed() or self:playerLost())  then
             self:resume()
             self:destroyCurrentPlayer()       
             self:activateNextPlayer()
         end
-        -- Update all players
-        for i,player in ipairs(self.lives) do
-            player:update(dt)
+        -- Check whether the current level has started
+        local level = self:currentLevel()
+        if not level.active and not level.complete then
+            self:activateNextLevel()
         end
+        -- Check whether the current level is complete
+        if level.complete and self:levelCompletedPauseElapsed()  then -- TODO this is not pausing
+            self:resume()
+            self:destroyCurrentLevel()       
+            self:activateNextLevel()
+        end
+        -- Update levels (regardless of pauses)
+        self:updateList(self.levels,dt,false) 
         -- Update explosions (regardless of pauses)
-        self:updateList(self.explosions,dt)
+        self:updateList(self.explosions,dt,true)
         -- Update the rest of the game objects, removing them if not active any more
         if not self:isPaused() then
-            self:updateList(self.enemies,dt) 
-            self:updateList(self.playerBullets,dt)
-            self:updateList(self.enemyBullets,dt)
-            self:updateList(self.objects,dt)     
+            self:updateList(self.lives,dt,false)
+            self:updateList(self.enemies,dt,true) 
+            self:updateList(self.playerBullets,dt,true)
+            self:updateList(self.enemyBullets,dt,true)
+            self:updateList(self.objects,dt,true)     
         else
             self.pause:update(dt) 
         end
     end
 end
 
-function Game:playerKilledPauseElapsed()
-    return self.pause 
-            and self.pause:is( PlayerKilledPause ) 
-            and self.pause:elapsed()
-end
-
-function Game:updateList( aList, dt )
+function Game:updateList( aList, dt, removeInactiveItems )
     if aList then
         for i,item in ipairs(aList) do
             item:update(dt)
-            if not item.active then
+            if removeInactiveItems and not item.active then
                 table.remove(aList,i)
             end
         end  
@@ -89,12 +98,19 @@ function Game:draw()
     self:drawBullets()
     self:drawScore()
     self:drawDebugData()
+    self:drawMessages()
+end
+
+function Game:drawMessages()
     if self:isPaused() then
         self:notifyPause()
     end
-    if self:isOver() then
-        self:notifyGameOver()
+    if self:playerLost() then
+        self:notifyLoss()
     end
+    if self:playerWon() then
+        self:notifyWin()
+    end  
 end
 
 function Game:notifyPause()
@@ -105,8 +121,37 @@ function Game:isPaused()
     return self.pause 
 end
 
+function Game:levelCompletedPauseElapsed()
+    return self.pause 
+        -- and self.pause:is( LevelCompletedPause ) 
+        and self.pause:elapsed()
+end     
+
+function Game:playerKilledPauseElapsed()
+    return self.pause 
+        and self.pause:is( PlayerKilledPause ) 
+        and self.pause:elapsed()
+end
+
 function Game:enemyKilled( enemy )
     self.scoreBoard:add(100)
+end
+
+function Game:levelComplete()
+    local levels = self:levelsRemaining()
+    if levels > 0 then
+        self.pause = LevelCompletedPause( "Next Level" ) -- TODO appropriate text 
+    end
+end    
+
+function Game:levelsRemaining()
+    local count = 0
+    for i,object in ipairs(self.levels) do
+        if not object.complete then -- TODO verify implementation
+           count = count + 1
+        end
+    end
+    return count
 end
 
 function Game:livesRemaining()
@@ -132,6 +177,10 @@ end
 
 function Game:destroyCurrentPlayer()
     table.remove(self.lives,1)  
+end
+
+function Game:destroyCurrentLevel()
+    table.remove(self.levels,1)  
 end
 
 function Game:drawObjects()
@@ -200,6 +249,14 @@ end
 function Game:drawDebugData()
     if debug then
         setDebugColor()
+        if self:isPaused() then
+            love.graphics.print("pause delay: " .. (self.pause.delay),10,395)   
+            love.graphics.print("pause: " .. (self.pause.board.message),10,410)   
+        end
+        if self:currentLevel() then
+            love.graphics.print("current level complete: " .. (self:currentLevel().complete and "true" or "false"),10,425)   
+        end
+        love.graphics.print("levels: " .. (#self.levels),10,440)   
         love.graphics.print("game over: " .. (self:isOver() and "true" or "false"),10,455)        
         love.graphics.print("game paused: " .. (self:isPaused() and "true" or "false"),10,470)               
         love.graphics.print("player bullets: " .. (#self.playerBullets),10,485)
@@ -213,20 +270,46 @@ function Game:drawScore()
     self.scoreBoard:draw()
 end
 
-function Game:notifyGameOver()
+function Game:notifyLoss()
     self.gameOverBoard:draw()
+end
+
+function Game:notifyWin()
+    self.winnerBoard:draw()
+end
+
+function Game:playerLost()
+    return self:livesRemaining() <= 0 
+end
+
+function Game:playerWon()
+    return self:levelsRemaining() <= 0 
 end
 
 function Game:isOver()
     return self:livesRemaining() <= 0 
+        or self:levelsRemaining() <= 0 
 end
 
 function Game:currentPlayer()
     return self.lives[1]
 end
 
+function Game:currentLevel()
+    return self.levels[1]
+end
+
 function Game:activateNextPlayer()
     if not self:isOver() then
         self:currentPlayer():activate()
+    end
+end
+
+function Game:activateNextLevel()
+    if not self:isOver() then
+        local level = self:currentLevel()
+        if level then
+            level:activate()
+        end
     end
 end

@@ -1,7 +1,7 @@
 Pause = Object:extend()
-function Pause:new(message)
-    self.message = message
+function Pause:new(message,textWidth,textHeight)
     self.delay = 0
+    self.board = PauseBoard(message,textWidth,textHeight)
 end    
 function Pause:update( dt )
     self.delay = self.delay + dt
@@ -9,29 +9,26 @@ end
 function Pause:elapsed()
     return false
 end    
+function Pause:draw()
+    self.board:draw()
+end
+
 
 PlayerKilledPause = Pause:extend()
 function PlayerKilledPause:new(message)
-    PlayerKilledPause.super.new(self,message)
+    PlayerKilledPause.super.new(self,message,80,30)
 end    
 function PlayerKilledPause:elapsed()
     return self.delay > 2
 end    
-function PlayerKilledPause:draw()
-    setTextColor()
-    local scale = 2
-    local textWidth = 80
-    local textHeight = 30
-    local x = love.graphics.getWidth()/2 - textWidth/2
-    local y = love.graphics.getHeight()*0.7/2
-    if math.floor(love.timer.getTime()) % 2 == 0 then
-        love.graphics.print(self.message, x, y, 0, scale, scale)
-    end
-    if debug then
-        setDebugColor()
-        love.graphics.rectangle( "line", x, y, textWidth, textHeight )
-    end
-end
+
+LevelCompletedPause = Pause:extend()
+function LevelCompletedPause:new(message)
+    LevelCompletedPause.super.new(self,message,130,30)
+end    
+function LevelCompletedPause:elapsed()
+    return self.delay > 2
+end    
 
 UserRequestedPause = Pause:extend()
 function UserRequestedPause:new(message)

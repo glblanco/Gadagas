@@ -91,6 +91,10 @@ function Enemy:explode()
     table.insert(game.explosions,EnemyExplosion(self.x,self.y))
 end
 
+function Enemy:isDead()
+    return not self.active
+end
+
 -------
 
 GreenEnemy = Enemy:extend()

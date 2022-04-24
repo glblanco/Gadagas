@@ -5,6 +5,7 @@ function requireLibraries()
     require "entity"
     require "resources"
     require "pause"
+    require "levels"
     require "information-boards"
     require "utils/control"
     require "utils/uuid-generator"

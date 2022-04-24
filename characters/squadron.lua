@@ -24,6 +24,14 @@ function Squadron:isSquadron()
     return true
 end
 
+function Squadron:isDead()
+    local ret = true
+    for i,enemy in ipairs(self.enemies) do
+        ret = ret and enemy:isDead()
+    end
+    return ret 
+end
+
 TestCrazySquadron = Squadron:extend()
 function TestCrazySquadron:new()
     TestCrazySquadron.super.new( self )
