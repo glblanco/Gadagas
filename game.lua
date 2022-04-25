@@ -36,31 +36,34 @@ function Game:initializeLives()
 end
 
 function Game:initializeLevels()
-    table.insert(self.levels, Level())
-    table.insert(self.levels, Level())
+    table.insert(self.levels, Level1())
+    -- table.insert(self.levels, Level1())
 end
 
 function Game:update(dt)
     
     if not self:isOver() then
-        -- Check that there is an active player
+
         local player = self:currentPlayer()
-        if player:isDead() and (self:playerKilledPauseElapsed() or self:playerLost())  then
+        local level = self:currentLevel()
+
+        -- Check that there is an active player
+        if player:isDead() and self:playerKilledPauseElapsed() then
             self:resume()
             self:destroyCurrentPlayer()       
             self:activateNextPlayer()
         end
-        -- Check whether the current level has started
-        local level = self:currentLevel()
-        if not level.active and not level.complete then
-            self:activateNextLevel()
-        end
+
         -- Check whether the current level is complete
-        if level.complete and self:levelCompletedPauseElapsed()  then -- TODO this is not pausing
+        if level.complete and self:levelCompletedPauseElapsed() then 
             self:resume()
             self:destroyCurrentLevel()       
             self:activateNextLevel()
+        elseif not level:hasStarted() then
+            -- Check whether the first level has started
+            self:activateNextLevel()
         end
+
         -- Update levels (regardless of pauses)
         self:updateList(self.levels,dt,false) 
         -- Update explosions (regardless of pauses)
@@ -72,9 +75,13 @@ function Game:update(dt)
             self:updateList(self.playerBullets,dt,true)
             self:updateList(self.enemyBullets,dt,true)
             self:updateList(self.objects,dt,true)     
-        else
+        end
+
+        -- If the game is paused, update the pause
+        if self:isPaused() then
             self.pause:update(dt) 
         end
+
     end
 end
 
@@ -100,7 +107,7 @@ end
 
 function Game:levelCompletedPauseElapsed()
     return self.pause 
-        -- and self.pause:is( LevelCompletedPause ) 
+        and self.pause:is( LevelCompletedPause ) 
         and self.pause:elapsed()
 end     
 
@@ -118,8 +125,11 @@ end
 function Game:levelComplete()
     local levels = self:levelsRemaining()
     if levels > 0 then
-        self.pause = LevelCompletedPause( "Next Level" ) -- TODO appropriate text 
+        local nextLevel = self.levels[2]
+        self.pause = LevelCompletedPause( nextLevel.name ) -- TODO appropriate text 
     end
+    self.enemies = {}
+    self.objects = {}
 end    
 
 function Game:levelsRemaining()
@@ -145,7 +155,7 @@ end
 function Game:playerKilled()
     local lives = self:livesRemaining()
     if lives > 0 then
-        self.pause = PlayerKilledPause( (#self.lives - 1) .. " UP" )
+        self.pause = PlayerKilledPause( (self:livesPerGame() - self:livesRemaining()) .. " UP" )
     end
 end
 
@@ -170,8 +180,8 @@ function Game:playerWon()
 end
 
 function Game:isOver()
-    return self:livesRemaining() <= 0 
-        or self:levelsRemaining() <= 0 
+    return self:playerWon()
+        or self:playerLost()
 end
 
 function Game:currentPlayer()

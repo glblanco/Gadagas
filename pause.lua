@@ -16,7 +16,7 @@ end
 
 PlayerKilledPause = Pause:extend()
 function PlayerKilledPause:new(message)
-    PlayerKilledPause.super.new(self,message,80,30)
+    PlayerKilledPause.super.new(self,message,60,30)
 end    
 function PlayerKilledPause:elapsed()
     return self.delay > 2

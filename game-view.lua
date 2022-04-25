@@ -93,8 +93,8 @@ function GameView:drawDebugData()
     if debug then
         setDebugColor()
         if self.game:isPaused() then
-            love.graphics.print("pause delay: " .. (self.game.pause.delay),10,395)   
-            love.graphics.print("pause: " .. (self.game.pause.board.message),10,410)   
+            love.graphics.print("pause delay: " .. (self.game.pause.delay),10,365)   
+            love.graphics.print("pause: " .. (self.game.pause.board:getMessage()),10,380)   
         end
         if self.game:currentLevel() then
             love.graphics.print("current level complete: " .. (self.game:currentLevel().complete and "true" or "false"),10,425)   
