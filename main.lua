@@ -33,7 +33,7 @@ function love.load()
     uuidGenerator = UUIDGenerator()
     game = Game()
     
-    debug = false
+    debug = true
 
 end
 

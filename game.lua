@@ -16,6 +16,7 @@ function Game:new()
     self.pause           = nil
     self.score           = 0
     self.view            = GameView()
+    self.started         = false
 
     self:activateNextPlayer()
 end
@@ -36,8 +37,8 @@ function Game:initializeLives()
 end
 
 function Game:initializeLevels()
-    table.insert(self.levels, Level1())
-    -- table.insert(self.levels, Level1())
+    table.insert(self.levels, Level1("Level 1"))
+    table.insert(self.levels, Level1("Level 2"))
 end
 
 function Game:update(dt)
@@ -54,13 +55,16 @@ function Game:update(dt)
             self:activateNextPlayer()
         end
 
+        -- Starte the game by activating the first level
+        if not self.started then
+            self.started = true
+            self:activateNextLevel()
+        end
+
         -- Check whether the current level is complete
         if level.complete and self:levelCompletedPauseElapsed() then 
             self:resume()
             self:destroyCurrentLevel()       
-            self:activateNextLevel()
-        elseif not level:hasStarted() then
-            -- Check whether the first level has started
             self:activateNextLevel()
         end
 
@@ -126,7 +130,7 @@ function Game:levelComplete()
     local levels = self:levelsRemaining()
     if levels > 0 then
         local nextLevel = self.levels[2]
-        self.pause = LevelCompletedPause( nextLevel.name ) -- TODO appropriate text 
+        self.pause = LevelCompletedPause( nextLevel.name ) 
     end
     self.enemies = {}
     self.objects = {}
@@ -201,7 +205,7 @@ end
 function Game:activateNextLevel()
     if not self:isOver() then
         local level = self:currentLevel()
-        if level then
+        if level and not level:hasStarted() then
             level:activate()
         end
     end
