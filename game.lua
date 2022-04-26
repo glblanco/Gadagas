@@ -2,27 +2,31 @@ Game = Object:extend()
 
 function Game:new()
 
-    self.lives = {}
-    self.enemies = {}
-    self.objects = {}
-    self.playerBullets = {}
-    self.enemyBullets = {}
-    self.explosions = {}    
-    self.levels = {}
-    
-    self:initializeLives()
-    self:initializeLevels()
-
+    self.lives          = {}
+    self.enemies        = {}
+    self.objects        = {}
+    self.playerBullets  = {}
+    self.enemyBullets   = {}
+    self.explosions     = {}    
+    self.levels         = {}
+        
     self.pause           = nil
     self.score           = 0
     self.view            = GameView()
     self.started         = false
 
-    self:activateNextPlayer()
 end
 
 function Game:livesPerGame()
     return 3
+end    
+
+function Game:start()
+    self:initializeLives()
+    self:initializeLevels()
+    self:activateNextPlayer()
+    self:activateNextLevel()
+    self.started = true
 end    
 
 function Game:initializeLives()
@@ -37,12 +41,17 @@ function Game:initializeLives()
 end
 
 function Game:initializeLevels()
-    table.insert(self.levels, Level1("Level 1"))
-    table.insert(self.levels, Level1("Level 2"))
+    table.insert(self.levels, Level1(game, "Level 1"))
+    table.insert(self.levels, Level1(game, "Level 2"))
 end
 
 function Game:update(dt)
     
+    -- Starte the game 
+    if not self.started then
+        game:start()
+    end
+
     if not self:isOver() then
 
         local player = self:currentPlayer()
@@ -53,12 +62,6 @@ function Game:update(dt)
             self:resume()
             self:destroyCurrentPlayer()       
             self:activateNextPlayer()
-        end
-
-        -- Starte the game by activating the first level
-        if not self.started then
-            self.started = true
-            self:activateNextLevel()
         end
 
         -- Check whether the current level is complete
@@ -87,6 +90,26 @@ function Game:update(dt)
         end
 
     end
+end
+
+function Game:addEnemy( enemy )
+    table.insert(self.enemies, enemy)
+end
+
+function Game:addObject( object )
+    table.insert(self.objects, object)
+end
+
+function Game:addPlayerBullet( object )
+    table.insert(self.playerBullets, object)
+end
+
+function Game:addEnemyBullet( object )
+    table.insert(self.enemyBullets, object)
+end
+
+function Game:addExplosion( object )
+    table.insert(self.explosions, object)
 end
 
 function Game:updateList( aList, dt, removeInactiveItems )
@@ -121,12 +144,19 @@ function Game:playerKilledPauseElapsed()
         and self.pause:elapsed()
 end
 
-function Game:enemyKilled( enemy )
+function Game:handlePlayerKilledEvent()
+    local lives = self:livesRemaining()
+    if lives > 0 then
+        self.pause = PlayerKilledPause( (self:livesPerGame() - self:livesRemaining()) .. " UP" )
+    end
+end
+
+function Game:handleEnemyKilledEvent( enemy )
     self.score = self.score + 100 -- TODO maybe different enemies have different values
     self.view:updateScore(self.score)
 end
 
-function Game:levelComplete()
+function Game:handleLevelCompletedEvent()
     local levels = self:levelsRemaining()
     if levels > 0 then
         local nextLevel = self.levels[2]
@@ -154,13 +184,6 @@ function Game:livesRemaining()
         end
     end
     return count
-end
-
-function Game:playerKilled()
-    local lives = self:livesRemaining()
-    if lives > 0 then
-        self.pause = PlayerKilledPause( (self:livesPerGame() - self:livesRemaining()) .. " UP" )
-    end
 end
 
 function Game:resume()

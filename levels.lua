@@ -1,5 +1,6 @@
 Level = Object:extend()
-function Level:new( name ) 
+function Level:new( game, name ) 
+    self.game = game
     self.complete = false
     self.active = false
     self.squadron = nil
@@ -21,21 +22,21 @@ end
 
 
 Level1 = Level:extend()
-function Level1:new( name ) 
-    Level1.super.new( self, name )
+function Level1:new( game, name ) 
+    Level1.super.new( self, game, name )
 end
 function Level1:activate()
     Level1.super.activate(self)
     local grid = HoverGrid(10,15)
     self.squadron = A3Squadron(grid)
-    table.insert(game.enemies, self.squadron)
-    table.insert(game.objects, grid)
+    self.game:addEnemy(self.squadron)
+    self.game:addObject(grid)
 end
 function Level1:update( dt )
     Level1.super.update(self,dt)
     if self.active and self.squadron and self.squadron:isDead() then
         self:markAsComplete()
-        game:levelComplete()
+        raise(LevelCompletedEvent(self))
     end
 end
 

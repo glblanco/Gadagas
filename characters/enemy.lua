@@ -62,7 +62,7 @@ end
 
 function Enemy:attack()
     local bullet = Bullet(self.x,self.y,"down")
-    table.insert(game.enemyBullets, bullet)
+    raise(EnemyShotBulletEvent(bullet))
 end 
 
 function Enemy:draw()
@@ -84,11 +84,12 @@ function Enemy:die()
     self.active = false
     self.visible = false
     self:explode()
-    game:enemyKilled(self)
+    raise( EnemyKilledEvent(self) )
 end
 
 function Enemy:explode()
-    table.insert(game.explosions,EnemyExplosion(self.x,self.y))
+    local explosion = EnemyExplosion(self.x,self.y)
+    raise( ExplosionEvent(explosion) )
 end
 
 function Enemy:isDead()

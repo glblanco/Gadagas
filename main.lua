@@ -7,6 +7,7 @@ function requireLibraries()
     require "resources"
     require "pause"
     require "levels"
+    require "events"
     require "information-boards"
     require "utils/control"
     require "utils/uuid-generator"
@@ -33,8 +34,8 @@ function love.load()
     uuidGenerator = UUIDGenerator()
     game = Game()
     
-    debug = true
-
+    debug = false
+    
 end
 
 function love.update(dt)
@@ -58,3 +59,6 @@ function setDebugColor()
     love.graphics.setColor(163/255, 163/255, 155/255)
 end
 
+function raise( event )
+    event:action( game )
+end    
