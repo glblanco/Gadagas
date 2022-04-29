@@ -4,11 +4,12 @@ function requireLibraries()
     require "game"
     require "game-view"
     require "entity"
-    require "resources"
     require "pause"
     require "levels"
     require "events"
     require "information-boards"
+    require "resources"  
+    require "skins/resources-skin1"    
     require "utils/control"
     require "utils/uuid-generator"
     require "characters/character"
@@ -30,7 +31,7 @@ function love.load()
     requireLibraries()
 
     control = Control()
-    resources = Resources()
+    resources = ResourcesSkin1()
     uuidGenerator = UUIDGenerator()
     game = Game()
     

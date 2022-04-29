@@ -1,9 +1,3 @@
-SpriteInfo = Object:extend()
-function SpriteInfo:new( row, maxFrames, column )
-    self.column = column        -- is the character in the first or second set?
-    self.row = row              -- which is the line the character occupies in the sprite - starting at 0
-    self.maxFrames = maxFrames  -- number of images available for the character
-end
 
 Character = Entity:extend()
 
@@ -14,6 +8,8 @@ function Character:new( spriteInfo, x, y )
     self.active = true
     self.visible = true
     self.orientation = 0
+    self.frameLookingUp = spriteInfo.frameLookingUp
+    self.orientationCorrection = spriteInfo.orientationCorrection
 end
 
 function Character:lookUp()
@@ -42,7 +38,7 @@ end
 
 function Character:drawableOrientation()
     -- images are looking right, not left
-    return self.orientation + math.rad(180)
+    return self.orientation + math.rad(180) -- + self.orientationCorrection
 end
 
 function Character:die()

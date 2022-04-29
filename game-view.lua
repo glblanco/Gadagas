@@ -29,8 +29,12 @@ function GameView:drawPlayers()
         player:draw()
         if debug then
             setDebugColor()
-            love.graphics.print("player " .. i .. " ->  x:" .. player.x .. " y:" .. player.y .. " w:" .. player.width .. " h: " .. player.height .. 
-                                " r:" .. math.floor(player.orientation * 180 / PI) .. ' d:' .. (player:isDead() and 'true' or 'false'), 
+            love.graphics.print("player " .. i .. -- " ->  x:" .. player.x .. " y:" .. player.y .. 
+                                " w:" .. player.width .. " h: " .. player.height .. 
+                                " fs:" .. #player.frames ..
+                                " cf:" .. player.currentFrame ..
+                                " r:" .. math.floor(player.orientation * 180 / PI) .. 
+                                ' d:' .. (player:isDead() and 'true' or 'false'), 
                                 10, 15*i + 10)
         end    
     end
@@ -43,10 +47,13 @@ function GameView:drawEnemies()
         if debug then
             setDebugColor()
             if not enemy:isSquadron() then
-                love.graphics.print("enemy " .. i .. "[" .. enemy.uuid .. "] ->  x:" .. enemy.x .. " y:" .. enemy.y .. 
+                love.graphics.print("enemy " .. i .. -- "[" .. enemy.uuid .. "] " ..
+                        -- "->  x:" .. enemy.x .. " y:" .. enemy.y .. 
                         " w:" .. enemy.width .. " h: " .. enemy.height .. " cf: " .. enemy.currentFrame .. 
-                        " s: " .. enemy.speed .. ' nf: ' ..#enemy.frames .. ' active:' .. (enemy.active and 'true' or 'false'), 
-                        10, (15*#lives+10)+(15*i+10))
+                        " s:" .. enemy.speed .. ' nf: ' ..#enemy.frames .. ' active:' .. (enemy.active and 'true' or 'false') ..
+                        " hf:" .. resources:getHoverFramesIds( enemy )[1] .. "," ..resources:getHoverFramesIds( enemy )[2] ..
+                        " idx:" .. nextFrame(2,resources:getHoverFramesIds( enemy )), 
+                        10, (15*#self.game.lives+10)+(15*i+10))
             end
         end
     end

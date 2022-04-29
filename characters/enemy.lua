@@ -38,24 +38,39 @@ function Enemy:rotateThroughFrames(dt)
     end    
 end
 
+function findIndexOf( item, array )
+    local ret = 0
+    for i=1,#array do
+        if array[i] == item then
+            ret = i
+            break
+        end
+    end
+    return ret
+end
+
+function nextFrame( currentIndex, frames )
+    local nextIndex = currentIndex + 1
+    if nextIndex > #frames then
+        nextIndex = 1
+    end
+    return nextIndex
+end    
+
 function Enemy:updateHoverMode(dt)
     if self.active then 
-        self.orientation = math.atan2(0, -1)
-        if #self.frames == 9 then
-            self.hoverTime = self.hoverTime + dt
-            if self.hoverTime>3*dt then
-                if self.currentFrame <= 7 then
-                    self.currentFrame = 8
-                else 
-                    self.currentFrame = 7
-                end    
-                self.hoverTime = 0
-                self.laps = self.laps + 1
-            elseif self.currentFrame < 7 then
-                self.currentFrame = 7
-            end
-        else
-            self.currentFrame = 7
+        self.orientation =  math.atan2(0, -1) --self.orientationCorrection
+        local hoverFrames = resources:getHoverFramesIds( self )
+        local currentIndex = findIndexOf(self.currentFrame,hoverFrames)
+        self.hoverTime = self.hoverTime + dt
+        if currentIndex == 0 then
+            self.currentFrame = hoverFrames[1]
+        end
+        if self.hoverTime>10*dt then
+            self.currentFrame = nextFrame(currentIndex,hoverFrames)
+            self.hoverTime = 0
+            self.laps = self.laps + 1
+            --self.currentFrame = self.frameLookingUp
         end      
     end                   
 end
@@ -100,24 +115,24 @@ end
 
 GreenEnemy = Enemy:extend()
 function GreenEnemy:new( x, y, speed, flightPlan )
-    local info = SpriteInfo( 2, 8, 0 )
+    local info = GreenEnemySpriteInfo()
     GreenEnemy.super.new( self, info, x, y, speed, flightPlan )
 end
 
 BlueEnemy = Enemy:extend()
 function BlueEnemy:new( x, y, speed, flightPlan )
-    local info = SpriteInfo( 3, 8, 0 )
+    local info = BlueEnemySpriteInfo()
     BlueEnemy.super.new( self, info, x, y, speed, flightPlan )
 end
 
 RedEnemy = Enemy:extend()
 function RedEnemy:new( x, y, speed, flightPlan )
-    local info = SpriteInfo( 4, 8, 0 )
+    local info = RedEnemySpriteInfo()
     RedEnemy.super.new( self, info, x, y, speed, flightPlan )
 end
 
 YellowEnemy = Enemy:extend()
 function YellowEnemy:new( x, y, speed, flightPlan )
-    local info = SpriteInfo( 3, 8, 1 )
+    local info = YellowEnemySpriteInfo()
     YellowEnemy.super.new( self, info, x, y, speed, flightPlan )
 end

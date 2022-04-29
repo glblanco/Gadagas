@@ -20,7 +20,7 @@ end
 
 RightAndUpInTheMiddleFlightPlan = UpInTheMiddleFlightPlan:extend()
 function RightAndUpInTheMiddleFlightPlan:new()
-    self.rotation = math.atan2(1, 0)  -- start angle
+    self.rotation = math.atan2(1, 0) -- start angle
 end
 function RightAndUpInTheMiddleFlightPlan:doUpdate(character, dt)
     local screenWidth = love.graphics.getWidth()
@@ -40,7 +40,8 @@ function RightAndUpInTheMiddleFlightPlan:doUpdate(character, dt)
         self.nextRotation = self.rotation - (character.speed/radius)*dt 
         nextX = radius * math.cos(self.nextRotation) + ox
         nextY = radius * math.sin(self.nextRotation) + oy
-        character.orientation = math.atan2(nextY - character.y, nextX - character.x)
+        character.orientation = math.atan2(nextY - character.y, nextX - character.x) 
+                                    -- character.orientationCorrection
     else
         -- straight up
         character:lookUp()
@@ -128,7 +129,7 @@ function BezierFlightPlan:doUpdate(character, dt)
         local nextX, nextY = self:nextPosition(character,2*dt)
         local deltaX = nextX - x
         local deltaY = nextY - y
-        character.orientation = math.atan2(deltaY, deltaX)
+        character.orientation = math.atan2(deltaY, deltaX) -- + character.orientationCorrection
         -- check if plan completed
         if self:hasCompleted(character,dt,deltaY,deltaX) then
             self:markComplete()
@@ -167,7 +168,8 @@ function GoToCoordinateFlightPlan:doUpdate(character, dt)
     local nextY = character.y + math.sin(character.orientation) * character.speed * dt
     character.x = nextX
     character.y = nextY
-    character.orientation = math.atan2(self.endY-nextY, self.endX-nextX)
+    --character.currentFrame = 7
+    character.orientation = math.atan2(self.endY-nextY, self.endX-nextX) --+ character.orientationCorrection
     if self:hasCompleted(character,dt,self.endY-nextY, self.endX-nextX) then
         self:markComplete()
     end

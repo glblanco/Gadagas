@@ -15,6 +15,10 @@ function Game:new()
     self.view            = GameView()
     self.started         = false
 
+    --local grid = HoverGrid(10,15)
+    --e4 = A2Squadron(grid)
+    --table.insert(self.enemies, e4 )
+    --table.insert(self.objects, grid )
 end
 
 function Game:livesPerGame()
@@ -46,7 +50,7 @@ function Game:initializeLevels()
 end
 
 function Game:update(dt)
-    
+        
     -- Starte the game 
     if not self.started then
         game:start()
@@ -65,7 +69,7 @@ function Game:update(dt)
         end
 
         -- Check whether the current level is complete
-        if level.complete and self:levelCompletedPauseElapsed() then 
+        if level and level.complete and self:levelCompletedPauseElapsed() then 
             self:resume()
             self:destroyCurrentLevel()       
             self:activateNextLevel()
@@ -207,6 +211,7 @@ function Game:playerWon()
 end
 
 function Game:isOver()
+    -- return false
     return self:playerWon()
         or self:playerLost()
 end

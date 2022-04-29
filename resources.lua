@@ -1,7 +1,16 @@
+SpriteInfo = Object:extend()
+function SpriteInfo:new( row, column, maxFrames )
+    self.column = column                        -- is the character in the first or second set?
+    self.row = row                              -- which is the line the character occupies in the sprite - starting at 0
+    self.maxFrames = maxFrames                  -- number of images available for the character
+    self.frameLookingUp = 1                     -- which frame is looking up
+    self.orientationCorrection = math.rad(90)   -- correction to be used when math assumes image points right
+end
+
 Resources = Object:extend()
 
-function Resources:new()
-    self.image = love.graphics.newImage("resources/sprites.png")
+function Resources:new( image )
+    self.image = love.graphics.newImage(image)
     self.width = self.image:getWidth()
     self.height = self.image:getHeight() 
 
@@ -13,7 +22,7 @@ function Resources:new()
 
     self.characterFrameWidth = 16
     self.characterFrameHeight = 16
-    self.characterScale = 2    
+    self.characterScale = 2
     self.characterWidth = self.characterScale * self.characterFrameWidth
     self.characterHeight = self.characterScale * self.characterFrameHeight
 
@@ -25,63 +34,23 @@ function Resources:new()
 end
 
 function Resources:getBulletFrames()
-    local frame_width = self.bulletFrameWidth
-    local frame_height = self.bulletFrameHeight
-    local aframes = {}
-    for spriteRow=1,3 do
-        for spriteColumn=1,3 do
-            table.insert(aframes, 
-                love.graphics.newQuad(
-                        (2 * (self.characterFrameWidth+2) * 8) + 1 + (spriteColumn-1) * (frame_width+2), 
-                        (6.5*(frame_height+2)+1) + (spriteRow-1) * (frame_height+2),
-                        frame_width, frame_height, 
-                        self.width, self.height))
-        end
-    end
-    return aframes
+    -- to be implemented by subclasses
 end
 
 function Resources:getCharacterFrames( spriteInfo )
-    local frame_width = self.characterFrameWidth
-    local frame_height = self.characterFrameHeight
-    local aframes = {}
-    for spriteColumn=0,spriteInfo.maxFrames do
-        table.insert(aframes, 
-                love.graphics.newQuad(
-                        (spriteInfo.column * (frame_width+2) * 8) + 1 + spriteColumn * (frame_width+2), 
-                        1 + spriteInfo.row * (frame_height+2),
-                        frame_width, frame_height, 
-                        self.width, self.height))
-    end
-    return aframes
+    -- to be implemented by subclasses
 end
 
+function Resources:getHoverFramesIds( character )
+    -- to be implemented by subclasses
+end    
+
 function Resources:getEnemyExplosionFrames()
-    local frame_width = self.explosionFrameWidth
-    local frame_height = self.explosionFrameHeight
-    local aframes = {}
-    for spriteColumn=1,5 do
-        table.insert(aframes, 
-                love.graphics.newQuad(
-                        (2 * (self.characterFrameWidth+2) * 8) + 1 + (spriteColumn-1) * (frame_width+2), 
-                        1 ,
-                        frame_width, frame_height, 
-                        self.width, self.height))
-    end
-    return aframes
+    -- to be implemented by subclasses
 end
 
 function Resources:getPlayerExplosionFrames()
-    local frame_width = self.explosionFrameWidth
-    local frame_height = self.explosionFrameHeight
-    local aframes = {}
-    for spriteColumn=1,4 do
-        table.insert(aframes, 
-                love.graphics.newQuad(
-                        (1 * (self.characterFrameWidth+2) * 8) + 1 + (spriteColumn-1) * (frame_width+2), 
-                        1 ,
-                        frame_width, frame_height, 
-                        self.width, self.height))
-    end
-    return aframes
+    -- to be implemented by subclasses
 end
+
+
