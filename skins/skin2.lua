@@ -5,6 +5,10 @@ function ResourcesSkin2:new()
     ResourcesSkin2.super.new(self,image)
 end
 
+function Resources:getBulletDimensions()
+    return EntityDimensions(3,8,2)
+end
+
 function ResourcesSkin2:getBulletFrames()
     local bulletDimensions = self:getBulletDimensions()
     local frame_width = bulletDimensions.frameWidth
@@ -12,8 +16,8 @@ function ResourcesSkin2:getBulletFrames()
     local aframes = {}
     table.insert(aframes, 
         love.graphics.newQuad(
-            348, 
-            54,
+            355, 
+            58,
             frame_width, frame_height, 
             self.width, self.height))
     return aframes
