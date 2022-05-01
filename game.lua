@@ -14,7 +14,7 @@ function Game:new()
     self.score           = 0
     self.view            = GameView()
     self.started         = false
-    
+
 end
 
 function Game:livesPerGame()

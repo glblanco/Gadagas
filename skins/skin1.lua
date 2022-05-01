@@ -23,6 +23,10 @@ function ResourcesSkin1:getBulletFrames()
     return aframes
 end
 
+function ResourcesSkin1:getBulletFrameLookingUp()
+    return 2
+end
+
 function ResourcesSkin1:getCharacterFrames( spriteInfo )
     local frame_width = self.characterFrameWidth
     local frame_height = self.characterFrameHeight

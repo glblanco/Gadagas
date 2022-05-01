@@ -3,7 +3,7 @@ Explosion = Entity:extend()
 function Explosion:new( x, y, width, height, scale, frames )
     Explosion.super.new( self, x, y, width, height, scale, frames )  
     self.currentFrame = 1  
-    self.speed = 60
+    self.speed = 59
 end
 
 function Explosion:update(dt)

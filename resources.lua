@@ -36,6 +36,10 @@ function Resources:getBulletFrames()
     -- to be implemented by subclasses
 end
 
+function Resources:getBulletFrameLookingUp()
+    -- to be implemented by subclasses
+end
+
 function Resources:getCharacterFrames( spriteInfo )
     -- to be implemented by subclasses
 end

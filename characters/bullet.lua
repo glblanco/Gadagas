@@ -8,10 +8,11 @@ function Bullet:new( x, y, direction )
     self.speed = 350
     self.direction = direction
     
+    self.currentFrame = resources:getBulletFrameLookingUp()
     if self.direction == "up" then
-        self.currentFrame = 2
+        self.orientation = 0
     else
-        self.currentFrame = 8
+        self.orientation = math.rad(180)
     end
 
 end

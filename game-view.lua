@@ -74,6 +74,10 @@ function GameView:drawExplosions()
     for i,explosion in ipairs(self.game.explosions) do
         setMainColor()
         explosion:draw()
+        if debug then
+            setDebugColor()
+            love.graphics.print("explosion " .. i .. " ->  x:" .. explosion.x .. " y:" .. explosion.y .. " w:" .. explosion.width .. " h: " .. explosion.height, 10, 15*i + 100)
+        end  
     end
 end
 
@@ -117,6 +121,7 @@ function GameView:drawDebugData()
         love.graphics.print("enemy bullets: " .. (#self.game.enemyBullets),10,500)
         love.graphics.print("lives: " .. (#self.game.lives),10,515)
         love.graphics.print("enemies: " .. (#self.game.enemies),10,530)
+        love.graphics.print("explosions: " .. (#self.game.explosions),10,545)
 
         for i,level in ipairs(self.game.levels) do
             love.graphics.print("level " .. i .. " name:" .. level.name .. " active:" .. (level.active and "true" or "false ") .." complete:" .. (level.complete and "true" or "false "),10,200+i*15)
