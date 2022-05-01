@@ -76,9 +76,9 @@ function TwinSquadron:new()
 end
 
 A1Squadron = Squadron:extend()
-function A1Squadron:new()
+function A1Squadron:new( trajectory )
     A1Squadron.super.new( self )    
-    local trajectory = {100,0, 200,80, 350,100, 500,250, 1000,400, 500,500, 350,400, 350,100}
+    -- local trajectory = {100,0, 200,80, 350,100, 500,250, 1000,400, 500,500, 350,400, 350,100}
     local speed = 120
     local delay = 0.5
     for i=1,3 do
@@ -97,9 +97,9 @@ function A1Squadron:new()
 end
 
 A2Squadron = Squadron:extend()
-function A2Squadron:new( grid )
+function A2Squadron:new( grid, trajectory )
     A2Squadron.super.new( self )    
-    local trajectory = {100,0, 200,80, 350,100, 500,250, 1000,400, 500,500, 350,400, 350,100}
+    -- local trajectory = {100,0, 200,80, 350,100, 500,250, 1000,400, 500,500, 350,400, 350,100}
     local speed = 120
     local delay = 0.5
     for i=1,3 do
@@ -118,8 +118,8 @@ function A2Squadron:new( grid )
 end
 
 A3Squadron = A2Squadron:extend()
-function A3Squadron:new( grid )
-    A3Squadron.super.new( self, grid )  
+function A3Squadron:new( grid, trajectory )
+    A3Squadron.super.new( self, grid, trajectory )  
     self.grid = grid  
 end 
 function A3Squadron:update( dt )
@@ -167,3 +167,5 @@ function A3Squadron:chooseEnemyForAttack()
     local chosenAttacker = activeEnemies[ math.random( 1, #activeEnemies ) ] 
     return chosenAttacker
 end 
+
+

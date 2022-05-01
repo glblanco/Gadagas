@@ -28,7 +28,8 @@ end
 function Level1:activate()
     Level1.super.activate(self)
     local grid = HoverGrid(10,15)
-    self.squadron = A3Squadron(grid)
+    local trajectory = {100,0, 200,80, 350,100, 500,250, 1000,400, 500,500, 350,400, 350,100}
+    self.squadron = A3Squadron(grid, trajectory)
     self.game:addEnemy(self.squadron)
     self.game:addObject(grid)
 end
