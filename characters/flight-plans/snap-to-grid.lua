@@ -170,7 +170,7 @@ end
 function SnapToGridFlightPlan:doUpdate(character, dt)
     local x,y = self.grid:getCoordinates(self.row,self.col)
     local correction = math.rad(270)
-    character.currentFrame = 7
+    character.currentFrame = character.frameLookingUp
     character.orientation = math.atan2(y-character.y, x-character.x) - correction
     character.x = character.x + math.cos(character.orientation + correction) * character.speed * dt
     character.y = character.y + math.sin(character.orientation + correction) * character.speed * dt

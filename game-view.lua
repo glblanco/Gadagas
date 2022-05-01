@@ -52,7 +52,11 @@ function GameView:drawEnemies()
                         " w:" .. enemy.width .. " h: " .. enemy.height .. " cf: " .. enemy.currentFrame .. 
                         " s:" .. enemy.speed .. ' nf: ' ..#enemy.frames .. ' active:' .. (enemy.active and 'true' or 'false') ..
                         " hf:" .. resources:getHoverFramesIds( enemy )[1] .. "," ..resources:getHoverFramesIds( enemy )[2] ..
-                        " idx:" .. nextFrame(2,resources:getHoverFramesIds( enemy )), 
+                        " idx:" .. findIndexOf(enemy.currentFrame,resources:getHoverFramesIds( enemy ))..
+                        " nf:" .. nextFrame(findIndexOf(enemy.currentFrame,resources:getHoverFramesIds( enemy )),resources:getHoverFramesIds( enemy )) ..
+                        " ht:" .. math.floor(enemy.hoverTime*100)/100 ..
+                        " dt:" .. math.floor(enemy.dt*100)/100 ..
+                        " l:" .. enemy.laps , 
                         10, (15*#self.game.lives+10)+(15*i+10))
             end
         end

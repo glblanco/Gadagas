@@ -14,7 +14,7 @@ function Game:new()
     self.score           = 0
     self.view            = GameView()
     self.started         = false
-
+    
 end
 
 function Game:livesPerGame()
@@ -207,6 +207,7 @@ function Game:playerWon()
 end
 
 function Game:isOver()
+    -- return false
     return self:playerWon()
         or self:playerLost()
 end

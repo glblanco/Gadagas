@@ -9,6 +9,7 @@ function Character:new( spriteInfo, x, y )
     self.visible = true
     self.orientation = 0
     self.frameLookingUp = spriteInfo.frameLookingUp
+    self.currentFrame = self.frameLookingUp
 end
 
 function Character:lookUp()

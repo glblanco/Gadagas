@@ -7,6 +7,7 @@ function Enemy:new( spriteInfo, x, y, speed, flightPlan, attackPlan )
     self.attackPlan = attackPlan
     self.hoverTime = 0
     self.laps = 0
+    self.dt = 0
 end
 
 function Enemy:update(dt)
@@ -63,14 +64,14 @@ function Enemy:updateHoverMode(dt)
         local hoverFrames = resources:getHoverFramesIds( self )
         local currentIndex = findIndexOf(self.currentFrame,hoverFrames)
         self.hoverTime = self.hoverTime + dt
+        self.dt = dt
         if currentIndex == 0 then
             self.currentFrame = hoverFrames[1]
         end
-        if self.hoverTime>10*dt then
-            self.currentFrame = nextFrame(currentIndex,hoverFrames)
+        if self.hoverTime>4*dt then
+            self.currentFrame = hoverFrames[nextFrame(currentIndex,hoverFrames)]
             self.hoverTime = 0
             self.laps = self.laps + 1
-            --self.currentFrame = self.frameLookingUp
         end      
     end                   
 end
@@ -115,24 +116,24 @@ end
 
 GreenEnemy = Enemy:extend()
 function GreenEnemy:new( x, y, speed, flightPlan )
-    local info = GreenEnemySpriteInfo()
+    local info = resources:greenEnemySpriteInfo()
     GreenEnemy.super.new( self, info, x, y, speed, flightPlan )
 end
 
 BlueEnemy = Enemy:extend()
 function BlueEnemy:new( x, y, speed, flightPlan )
-    local info = BlueEnemySpriteInfo()
+    local info = resources:blueEnemySpriteInfo()
     BlueEnemy.super.new( self, info, x, y, speed, flightPlan )
 end
 
 RedEnemy = Enemy:extend()
 function RedEnemy:new( x, y, speed, flightPlan )
-    local info = RedEnemySpriteInfo()
+    local info = resources:redEnemySpriteInfo()
     RedEnemy.super.new( self, info, x, y, speed, flightPlan )
 end
 
 YellowEnemy = Enemy:extend()
 function YellowEnemy:new( x, y, speed, flightPlan )
-    local info = YellowEnemySpriteInfo()
+    local info = resources:yellowEnemySpriteInfo()
     YellowEnemy.super.new( self, info, x, y, speed, flightPlan )
 end

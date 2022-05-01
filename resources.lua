@@ -52,4 +52,23 @@ function Resources:getPlayerExplosionFrames()
     -- to be implemented by subclasses
 end
 
+function Resources:greenEnemySpriteInfo()
+    -- to be implemented by subclasses
+end
+
+function Resources:blueEnemySpriteInfo()
+    -- to be implemented by subclasses
+end
+
+function Resources:redEnemySpriteInfo()
+    -- to be implemented by subclasses
+end
+
+function Resources:yellowEnemySpriteInfo()
+    -- to be implemented by subclasses
+end
+
+function Resources:playerSpriteInfo()
+    -- to be implemented by subclasses
+end
 

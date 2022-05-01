@@ -1,7 +1,7 @@
 Player = Character:extend()
 
 function Player:new( x, y )
-    local info = PlayerSpriteInfo()
+    local info = resources:playerSpriteInfo()
     Player.super.new( self, info, x, y )
     self.speed = 500
     self.active = false
