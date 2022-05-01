@@ -11,8 +11,8 @@ function EntityDimensions:new(frameWidth,frameHeight,scale,width,height)
     self.frameWidth = frameWidth
     self.frameHeight = frameHeight
     self.scale = scale
-    self.width = width 
-    self.height = height
+    self.width = frameWidth * scale 
+    self.height = frameHeight * scale
 end
 
 Resources = Object:extend()
@@ -22,20 +22,20 @@ function Resources:new( image )
     self.height = self.image:getHeight() 
 end
 
-function Resources:getImage()
+function Resources:getSpriteImage()
     return self.image
 end
 
 function Resources:getBulletDimensions()
-    return EntityDimensions(16,16,2,2*16,2*16)
+    return EntityDimensions(16,16,2)
 end
 
 function Resources:getCharacterDimensions()
-    return EntityDimensions(16,16,2,2*16,2*16)
+    return EntityDimensions(16,16,2)
 end
 
 function Resources:getExplosionDimensions()
-    return EntityDimensions(32,32,2,2*32,2*32)
+    return EntityDimensions(32,32,2)
 end
 
 function Resources:getBulletFrames()

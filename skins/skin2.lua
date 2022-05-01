@@ -60,10 +60,10 @@ function ResourcesSkin2:getEnemyExplosionFrames()
     local frame_height = explosionDimensions.frameHeight
     local aframes = {}
     local startX = {}
-    table.insert(startX,186)
-    table.insert(startX,210)
-    table.insert(startX,240)
-    table.insert(startX,280)
+    table.insert(startX,185)
+    table.insert(startX,209)
+    table.insert(startX,241)
+    table.insert(startX,281)
     for spriteColumn=1,4 do
         local sx = startX[spriteColumn]
         table.insert(aframes, 

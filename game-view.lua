@@ -50,13 +50,7 @@ function GameView:drawEnemies()
                 love.graphics.print("enemy " .. i .. -- "[" .. enemy.uuid .. "] " ..
                         -- "->  x:" .. enemy.x .. " y:" .. enemy.y .. 
                         " w:" .. enemy.width .. " h: " .. enemy.height .. " cf: " .. enemy.currentFrame .. 
-                        " s:" .. enemy.speed .. ' nf: ' ..#enemy.frames .. ' active:' .. (enemy.active and 'true' or 'false') ..
-                        " hf:" .. resources:getHoverFramesIds( enemy )[1] .. "," ..resources:getHoverFramesIds( enemy )[2] ..
-                        " idx:" .. findIndexOf(enemy.currentFrame,resources:getHoverFramesIds( enemy ))..
-                        " nf:" .. nextFrame(findIndexOf(enemy.currentFrame,resources:getHoverFramesIds( enemy )),resources:getHoverFramesIds( enemy )) ..
-                        " ht:" .. math.floor(enemy.hoverTime*100)/100 ..
-                        " dt:" .. math.floor(enemy.dt*100)/100 ..
-                        " l:" .. enemy.laps , 
+                        " s:" .. enemy.speed .. ' nf: ' ..#enemy.frames .. ' active:' .. (enemy.active and 'true' or 'false'),
                         10, (15*#self.game.lives+10)+(15*i+10))
             end
         end

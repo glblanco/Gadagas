@@ -2,9 +2,9 @@
 Character = Entity:extend()
 
 function Character:new( spriteInfo, x, y )
-    local characterDimensions = resources:getCharacterDimensions()
-    Character.super.new( self, x, y, characterDimensions.width, characterDimensions.height, 
-                characterDimensions.scale, resources:getCharacterFrames(spriteInfo) )
+    Character.super.new( self, x, y, 
+            resources:getCharacterDimensions(), 
+            resources:getCharacterFrames(spriteInfo) )
     self.speed = 0
     self.active = true
     self.visible = true

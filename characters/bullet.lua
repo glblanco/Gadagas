@@ -1,9 +1,9 @@
 Bullet = Entity:extend()
 
 function Bullet:new( x, y, direction )
-    local bulletDimensions = resources:getBulletDimensions()
-    Bullet.super.new( self, x, y, bulletDimensions.width, bulletDimensions.height, 
-            bulletDimensions.scale, resources:getBulletFrames() )
+    Bullet.super.new( self, x, y, 
+            resources:getBulletDimensions(), 
+            resources:getBulletFrames() )
 
     self.speed = 350
     self.direction = direction
