@@ -27,7 +27,7 @@ https://grumpygamer.com/puzzle_dependency_charts#:~:text=A%20Puzzle%20Dependency
 12. Package & Deploy
 
 ## Chena's requests
-1. make sprites transparent
-2. make bullet BB smaller
-3. verify collisions 
+1. ~~make sprites transparent~~
+2. ~~make bullet BB smaller~~
+3. ~~verify collisions~~ 
 4. make levels serializable and editable (json)
