@@ -79,25 +79,25 @@ end
 
 GreenEnemySpriteInfo = SpriteInfo:extend()
 function GreenEnemySpriteInfo:new()
-    GreenEnemySpriteInfo.super.new( self, 2, 0, 8 )
+    GreenEnemySpriteInfo.super.new( self, 2, 0, 8, 7 )
 end    
 
 BlueEnemySpriteInfo = SpriteInfo:extend()
 function BlueEnemySpriteInfo:new()
-    BlueEnemySpriteInfo.super.new( self, 3, 0, 8 )
+    BlueEnemySpriteInfo.super.new( self, 3, 0, 8, 7 )
 end    
 
 RedEnemySpriteInfo = SpriteInfo:extend()
 function RedEnemySpriteInfo:new()
-    RedEnemySpriteInfo.super.new( self, 4, 0, 8 )
+    RedEnemySpriteInfo.super.new( self, 4, 0, 8, 7 )
 end    
 
 YellowEnemySpriteInfo = SpriteInfo:extend()
 function YellowEnemySpriteInfo:new()
-    YellowEnemySpriteInfo.super.new( self, 2, 1, 8 )
+    YellowEnemySpriteInfo.super.new( self, 2, 1, 8, 7 )
 end    
 
 PlayerSpriteInfo = SpriteInfo:extend()
 function PlayerSpriteInfo:new()
-    PlayerSpriteInfo.super.new( self, 0, 0, 7 )
+    PlayerSpriteInfo.super.new( self, 0, 0, 7, 7 )
 end    

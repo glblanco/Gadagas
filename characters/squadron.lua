@@ -134,7 +134,7 @@ function A3Squadron:update( dt )
                 self.grid:setCharacterAt(row,col,nil) 
                 enemy.flightPlan = flightPlan
                 enemy.attackPlan = AttackPlan()
-                enemy.currentFrame = 1
+                enemy.currentFrame = enemy.frameLookingUp
             end
         end 
     end 

@@ -1,10 +1,9 @@
 SpriteInfo = Object:extend()
-function SpriteInfo:new( row, column, maxFrames )
+function SpriteInfo:new( row, column, maxFrames, frameLookingUp )
     self.column = column                        -- is the character in the first or second set?
     self.row = row                              -- which is the line the character occupies in the sprite - starting at 0
     self.maxFrames = maxFrames                  -- number of images available for the character
-    self.frameLookingUp = 1                     -- which frame is looking up
-    self.orientationCorrection = math.rad(90)   -- correction to be used when math assumes image points right
+    self.frameLookingUp = frameLookingUp        -- which frame is looking up
 end
 
 Resources = Object:extend()

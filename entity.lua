@@ -22,9 +22,9 @@ function Entity:draw()
     if self.visible then
         setMainColor()
         love.graphics.draw(resources.image, self.frames[self.currentFrame], 
-                self:drawableX(), 
-                self:drawableY(), 
-                self:drawableOrientation(), 
+                self.x,
+                self.y,
+                self.orientation,
                 self.scale, 
                 self.scale,
                 self.width/(2*self.scale),
@@ -40,18 +40,6 @@ end
 function Entity:equals( entity )
     return entity and self.uuid == entity.uuid
 end 
-
-function Entity:drawableX()
-    return self.x
-end
-
-function Entity:drawableY()
-    return self.y
-end
-
-function Entity:drawableOrientation()
-    return self.orientation 
-end
 
 function Entity:collides(target) 
     return  target.x - target.width/2 <= self.x + self.width/2

@@ -43,8 +43,7 @@ function BezierAndSnapToGridFlightPlan:new( trajectory, mirrored, grid, hoverRow
         trajectory = mirrorVertically(trajectory)
         col = grid.cols - (hoverCol-1)
     end
-    local bezierPlan = BezierFlightPlan(love.math.newBezierCurve(trajectory),delay)
-        
+    local bezierPlan = BezierFlightPlan(love.math.newBezierCurve(trajectory),delay)       
     local plans = {}
     table.insert(plans,bezierPlan)
     table.insert(plans,SnapToGridFlightPlan(grid,hoverRow,col))
@@ -68,6 +67,7 @@ function KamikazeFlightPlan:new( character, grid )
     if mirrored then
         trajectory = { x, y, 0, 0, screenWidth - 100, 200, screenWidth - 100, 500, screenWidth - 600, love.graphics.getHeight(), screenWidth - 650, 600, 0, 500, x2, y2 }
     end 
+    
     KamikazeFlightPlan.super.new(self,trajectory,false,grid,destRow,destCol,delay)
 end
 

@@ -169,9 +169,11 @@ function SnapToGridFlightPlan:new(grid,row,col)
 end
 function SnapToGridFlightPlan:doUpdate(character, dt)
     local x,y = self.grid:getCoordinates(self.row,self.col)
-    character.orientation = math.atan2(y-character.y, x-character.x)
-    character.x = character.x + math.cos(character.orientation) * character.speed * dt
-    character.y = character.y + math.sin(character.orientation) * character.speed * dt
+    local correction = math.rad(270)
+    character.currentFrame = 7
+    character.orientation = math.atan2(y-character.y, x-character.x) - correction
+    character.x = character.x + math.cos(character.orientation + correction) * character.speed * dt
+    character.y = character.y + math.sin(character.orientation + correction) * character.speed * dt
     if self:hasCompleted(character,dt,y-character.y, x-character.x) then
         self:markComplete()
         self.grid:attach(character,self.row,self.col)

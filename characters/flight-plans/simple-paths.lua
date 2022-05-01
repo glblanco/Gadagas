@@ -40,8 +40,7 @@ function RightAndUpInTheMiddleFlightPlan:doUpdate(character, dt)
         self.nextRotation = self.rotation - (character.speed/radius)*dt 
         nextX = radius * math.cos(self.nextRotation) + ox
         nextY = radius * math.sin(self.nextRotation) + oy
-        character.orientation = math.atan2(nextY - character.y, nextX - character.x) 
-                                    -- character.orientationCorrection
+        character.orientation = math.atan2(nextY - character.y, nextX - character.x) + math.rad(90)
     else
         -- straight up
         character:lookUp()
@@ -74,7 +73,7 @@ function LeftAndUpInTheMiddleFlightPlan:doUpdate(character, dt)
         self.nextRotation = self.rotation + (character.speed/radius)*dt 
         nextX = radius * math.cos(self.nextRotation) + ox
         nextY = radius * math.sin(self.nextRotation) + oy
-        character.orientation = math.atan2(nextY - character.y, nextX - character.x)
+        character.orientation = math.atan2(nextY - character.y, nextX - character.x) + math.rad(90)
     else
         -- straight up
         character:lookUp()
@@ -129,7 +128,8 @@ function BezierFlightPlan:doUpdate(character, dt)
         local nextX, nextY = self:nextPosition(character,2*dt)
         local deltaX = nextX - x
         local deltaY = nextY - y
-        character.orientation = math.atan2(deltaY, deltaX) -- + character.orientationCorrection
+        character.currentFrame = character.frameLookingUp
+        character.orientation = math.atan2(deltaY, deltaX) + math.rad(90)
         -- check if plan completed
         if self:hasCompleted(character,dt,deltaY,deltaX) then
             self:markComplete()
@@ -164,12 +164,13 @@ function GoToCoordinateFlightPlan:new( startX, startY, endX, endY )
     self.endY = endY
 end
 function GoToCoordinateFlightPlan:doUpdate(character, dt)
-    local nextX = character.x + math.cos(character.orientation) * character.speed * dt
-    local nextY = character.y + math.sin(character.orientation) * character.speed * dt
+    local correction = math.rad(270)
+    local nextX = character.x + math.cos(character.orientation + correction) * character.speed * dt
+    local nextY = character.y + math.sin(character.orientation + correction) * character.speed * dt
     character.x = nextX
     character.y = nextY
-    --character.currentFrame = 7
-    character.orientation = math.atan2(self.endY-nextY, self.endX-nextX) --+ character.orientationCorrection
+    character.currentFrame = character.frameLookingUp
+    character.orientation = math.atan2(self.endY-nextY, self.endX-nextX) - correction
     if self:hasCompleted(character,dt,self.endY-nextY, self.endX-nextX) then
         self:markComplete()
     end

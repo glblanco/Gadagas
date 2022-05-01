@@ -64,7 +64,7 @@ function CircularFlightPlan:doUpdate(character, dt)
     end
     nextX = self.radius * math.cos(nextRotation) + self.centerX
     nextY = self.radius * math.sin(nextRotation) + self.centerY
-    character.orientation = math.atan2(nextY - character.y, nextX - character.x)
+    character.orientation = math.atan2(nextY - character.y, nextX - character.x) + math.rad(180)
 end
 function CircularFlightPlan:drawDebugData(character)
     setDebugColor()

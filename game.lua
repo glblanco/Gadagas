@@ -15,10 +15,6 @@ function Game:new()
     self.view            = GameView()
     self.started         = false
 
-    --local grid = HoverGrid(10,15)
-    --e4 = A2Squadron(grid)
-    --table.insert(self.enemies, e4 )
-    --table.insert(self.objects, grid )
 end
 
 function Game:livesPerGame()
@@ -62,7 +58,7 @@ function Game:update(dt)
         local level = self:currentLevel()
 
         -- Check that there is an active player
-        if player:isDead() and self:playerKilledPauseElapsed() then
+        if player and player:isDead() and self:playerKilledPauseElapsed() then
             self:resume()
             self:destroyCurrentPlayer()       
             self:activateNextPlayer()
@@ -211,7 +207,6 @@ function Game:playerWon()
 end
 
 function Game:isOver()
-    -- return false
     return self:playerWon()
         or self:playerLost()
 end

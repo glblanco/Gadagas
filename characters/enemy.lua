@@ -59,7 +59,7 @@ end
 
 function Enemy:updateHoverMode(dt)
     if self.active then 
-        self.orientation =  math.atan2(0, -1) --self.orientationCorrection
+        self.orientation = 0
         local hoverFrames = resources:getHoverFramesIds( self )
         local currentIndex = findIndexOf(self.currentFrame,hoverFrames)
         self.hoverTime = self.hoverTime + dt
