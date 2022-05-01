@@ -32,7 +32,7 @@ end
 function Game:initializeLives()
     local screenWidth = love.graphics.getWidth()
     local screenHeight = love.graphics.getHeight()
-    local spacePerPlayer = (resources.characterFrameWidth+2)*2
+    local spacePerPlayer = (resources:getCharacterDimensions().frameWidth+2)*2
     local y = screenHeight - spacePerPlayer
     local livesCount = self:livesPerGame()
     for i=1,livesCount do

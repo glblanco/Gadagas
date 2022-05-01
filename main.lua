@@ -32,7 +32,7 @@ function love.load()
     requireLibraries()
 
     control = Control()
-    resources = ResourcesSkin2()
+    resources = ResourcesSkin1()
     uuidGenerator = UUIDGenerator()
     game = Game()
     

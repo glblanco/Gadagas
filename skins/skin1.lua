@@ -7,14 +7,16 @@ function ResourcesSkin1:new()
 end
 
 function ResourcesSkin1:getBulletFrames()
-    local frame_width = self.bulletFrameWidth
-    local frame_height = self.bulletFrameHeight
+    local bulletDimensions = self:getBulletDimensions()
+    local characterDimensions = self:getCharacterDimensions()
+    local frame_width = bulletDimensions.frameWidth
+    local frame_height = bulletDimensions.frameHeight
     local aframes = {}
     for spriteRow=1,3 do
         for spriteColumn=1,3 do
             table.insert(aframes, 
                 love.graphics.newQuad(
-                        (2 * (self.characterFrameWidth+2) * 8) + 1 + (spriteColumn-1) * (frame_width+2), 
+                        (2 * (characterDimensions.frameWidth+2) * 8) + 1 + (spriteColumn-1) * (frame_width+2), 
                         (6.5*(frame_height+2)+1) + (spriteRow-1) * (frame_height+2),
                         frame_width, frame_height, 
                         self.width, self.height))
@@ -28,8 +30,9 @@ function ResourcesSkin1:getBulletFrameLookingUp()
 end
 
 function ResourcesSkin1:getCharacterFrames( spriteInfo )
-    local frame_width = self.characterFrameWidth
-    local frame_height = self.characterFrameHeight
+    local characterDimensions = self:getCharacterDimensions()
+    local frame_width = characterDimensions.frameWidth
+    local frame_height = characterDimensions.frameHeight
     local aframes = {}
     for spriteColumn=0,spriteInfo.maxFrames-1 do
         table.insert(aframes, 
@@ -52,13 +55,15 @@ function ResourcesSkin1:getHoverFramesIds( character )
 end    
 
 function ResourcesSkin1:getEnemyExplosionFrames()
-    local frame_width = self.explosionFrameWidth
-    local frame_height = self.explosionFrameHeight
+    local explosionDimensions = self:getExplosionDimensions()
+    local characterDimensions = self:getCharacterDimensions()
+    local frame_width = explosionDimensions.frameWidth
+    local frame_height = explosionDimensions.frameHeight
     local aframes = {}
     for spriteColumn=1,5 do
         table.insert(aframes, 
                 love.graphics.newQuad(
-                        (2 * (self.characterFrameWidth+2) * 8) + 1 + (spriteColumn-1) * (frame_width+2), 
+                        (2 * (characterDimensions.frameWidth+2) * 8) + 1 + (spriteColumn-1) * (frame_width+2), 
                         1 ,
                         frame_width, frame_height, 
                         self.width, self.height))
@@ -67,13 +72,15 @@ function ResourcesSkin1:getEnemyExplosionFrames()
 end
 
 function ResourcesSkin1:getPlayerExplosionFrames()
-    local frame_width = self.explosionFrameWidth
-    local frame_height = self.explosionFrameHeight
+    local explosionDimensions = self:getExplosionDimensions()
+    local characterDimensions = self:getCharacterDimensions()
+    local frame_width = explosionDimensions.frameWidth
+    local frame_height = explosionDimensions.frameHeight
     local aframes = {}
     for spriteColumn=1,4 do
         table.insert(aframes, 
                 love.graphics.newQuad(
-                        (1 * (self.characterFrameWidth+2) * 8) + 1 + (spriteColumn-1) * (frame_width+2), 
+                        (1 * (characterDimensions.frameWidth+2) * 8) + 1 + (spriteColumn-1) * (frame_width+2), 
                         1 ,
                         frame_width, frame_height, 
                         self.width, self.height))

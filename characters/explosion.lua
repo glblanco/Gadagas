@@ -19,14 +19,16 @@ end
 
 EnemyExplosion = Explosion:extend()
 function EnemyExplosion:new( x, y )
+    local explosionDimensions = resources:getExplosionDimensions()
     EnemyExplosion.super.new( self, x, y, 
-            resources.explosionWidth, resources.explosionHeight, resources.explosionScale, 
+            explosionDimensions.width, explosionDimensions.height, explosionDimensions.scale, 
             resources:getEnemyExplosionFrames() )  
 end
 
 PlayerExplosion = Explosion:extend()
 function PlayerExplosion:new( x, y )
+    local explosionDimensions = resources:getExplosionDimensions()
     PlayerExplosion.super.new( self, x, y, 
-            resources.explosionWidth, resources.explosionHeight, resources.explosionScale, 
+            explosionDimensions.width, explosionDimensions.height, explosionDimensions.scale, 
             resources:getPlayerExplosionFrames() )  
 end

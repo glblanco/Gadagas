@@ -6,8 +6,9 @@ function ResourcesSkin2:new()
 end
 
 function ResourcesSkin2:getBulletFrames()
-    local frame_width = self.bulletFrameWidth
-    local frame_height = self.bulletFrameHeight
+    local bulletDimensions = self:getBulletDimensions()
+    local frame_width = bulletDimensions.frameWidth
+    local frame_height = bulletDimensions.frameHeight
     local aframes = {}
     table.insert(aframes, 
         love.graphics.newQuad(
@@ -23,8 +24,9 @@ function ResourcesSkin2:getBulletFrameLookingUp()
 end
 
 function ResourcesSkin2:getCharacterFrames( spriteInfo )
-    local frame_width = self.characterFrameWidth
-    local frame_height = self.characterFrameHeight
+    local characterDimensions = self:getCharacterDimensions()
+    local frame_width = characterDimensions.frameWidth
+    local frame_height = characterDimensions.frameHeight
     local aframes = {}
     local start = 0
     
@@ -53,8 +55,9 @@ function ResourcesSkin2:getHoverFramesIds( character )
 end    
 
 function ResourcesSkin2:getEnemyExplosionFrames()
-    local frame_width = self.explosionFrameWidth
-    local frame_height = self.explosionFrameHeight
+    local explosionDimensions = self:getExplosionDimensions()
+    local frame_width = explosionDimensions.frameWidth
+    local frame_height = explosionDimensions.frameHeight
     local aframes = {}
     local startX = {}
     table.insert(startX,186)
@@ -74,13 +77,14 @@ function ResourcesSkin2:getEnemyExplosionFrames()
 end
 
 function ResourcesSkin2:getPlayerExplosionFrames()
-    local frame_width = self.explosionFrameWidth
-    local frame_height = self.explosionFrameHeight
+    local explosionDimensions = self:getExplosionDimensions()
+    local frame_width = explosionDimensions.frameWidth
+    local frame_height = explosionDimensions.frameHeight
     local aframes = {}
     for spriteColumn=0,3 do
         table.insert(aframes, 
             love.graphics.newQuad(
-                193 + (spriteColumn * (self.explosionFrameWidth + 8)), 
+                193 + (spriteColumn * (explosionDimensions.frameWidth + 8)), 
                 54  ,
                 frame_width, frame_height, 
                 self.width, self.height))

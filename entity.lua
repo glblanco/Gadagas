@@ -21,7 +21,7 @@ end
 function Entity:draw()
     if self.visible then
         setMainColor()
-        love.graphics.draw(resources.image, self.frames[self.currentFrame], 
+        love.graphics.draw(resources:getImage(), self.frames[self.currentFrame], 
                 self.x,
                 self.y,
                 self.orientation,

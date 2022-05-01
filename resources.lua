@@ -6,30 +6,36 @@ function SpriteInfo:new( row, column, maxFrames, frameLookingUp )
     self.frameLookingUp = frameLookingUp        -- which frame is looking up
 end
 
-Resources = Object:extend()
+EntityDimensions = Object:extend()
+function EntityDimensions:new(frameWidth,frameHeight,scale,width,height)
+    self.frameWidth = frameWidth
+    self.frameHeight = frameHeight
+    self.scale = scale
+    self.width = width 
+    self.height = height
+end
 
+Resources = Object:extend()
 function Resources:new( image )
     self.image = love.graphics.newImage(image)
     self.width = self.image:getWidth()
     self.height = self.image:getHeight() 
+end
 
-    self.bulletFrameWidth = 16
-    self.bulletFrameHeight = 16
-    self.bulletScale = 2
-    self.bulletWidth = self.bulletScale * self.bulletFrameWidth
-    self.bulletHeight = self.bulletScale * self.bulletFrameHeight
+function Resources:getImage()
+    return self.image
+end
 
-    self.characterFrameWidth = 16
-    self.characterFrameHeight = 16
-    self.characterScale = 2
-    self.characterWidth = self.characterScale * self.characterFrameWidth
-    self.characterHeight = self.characterScale * self.characterFrameHeight
+function Resources:getBulletDimensions()
+    return EntityDimensions(16,16,2,2*16,2*16)
+end
 
-    self.explosionFrameWidth = 32
-    self.explosionFrameHeight = 32
-    self.explosionScale = 2    
-    self.explosionWidth = self.explosionScale * self.explosionFrameWidth
-    self.explosionHeight = self.explosionScale* self.explosionFrameHeight
+function Resources:getCharacterDimensions()
+    return EntityDimensions(16,16,2,2*16,2*16)
+end
+
+function Resources:getExplosionDimensions()
+    return EntityDimensions(32,32,2,2*32,2*32)
 end
 
 function Resources:getBulletFrames()
