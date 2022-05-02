@@ -106,7 +106,11 @@ function GameView:drawDebugData()
             love.graphics.print("pause: " .. (self.game.pause.board:getMessage()),10,380)   
         end
         if self.game:currentLevel() then
-            love.graphics.print("current level complete: " .. (self.game:currentLevel().complete and "true" or "false"),10,425)   
+            local level = self.game:currentLevel()
+            love.graphics.print("current level: " .. level.name .. 
+                        " active: " .. ( level.active and "true" or "false" ) .. 
+                        " complete: " .. (level.complete and "true" or "false"),
+                        10,425)   
         end
         love.graphics.print("levels: " .. (#self.game.levels),10,440)   
         love.graphics.print("game over: " .. (self.game:isOver() and "true" or "false"),10,455)        

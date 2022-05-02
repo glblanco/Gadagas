@@ -42,7 +42,6 @@ end
 
 function Game:initializeLevels()
     table.insert(self.levels, Level1(game, "Level 1"))
-    table.insert(self.levels, Level1(game, "Level 2"))
 end
 
 function Game:update(dt)
