@@ -30,4 +30,8 @@ https://grumpygamer.com/puzzle_dependency_charts#:~:text=A%20Puzzle%20Dependency
 1. ~~make sprites transparent~~
 2. ~~make bullet BB smaller~~
 3. ~~verify collisions~~ 
-4. make levels serializable and editable (json)
+4. make levels serializable and editable (json) - http://dkolf.de/src/dkjson-lua.fsl/home
+
+## Andrea's requests
+1. make player die if it collides with an enemy
+
