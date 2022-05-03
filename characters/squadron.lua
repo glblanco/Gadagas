@@ -169,3 +169,73 @@ function A3Squadron:chooseEnemyForAttack()
 end 
 
 
+ConfigurableSquadron = Squadron:extend()
+function ConfigurableSquadron:new( pattern, grid, speed )
+    ConfigurableSquadron.super.new( self )    
+    self.grid = grid
+    for i,config in ipairs(pattern) do
+        local enemyType = config[1]
+        local delay     = config[2]
+        local path      = config[3]
+        local row       = config[4]
+        local col       = config[5]
+        local enemy     = nil
+        if enemyType then
+            if enemyType == "red" then
+                enemy = RedEnemy(0, 0, speed, BezierAndSnapToGridFlightPlan(path,false,grid,row,col,delay))
+            elseif enemyType == "yellow" then
+                enemy = YellowEnemy(0, 0, speed, BezierAndSnapToGridFlightPlan(path,false,grid,row,col,delay))
+            elseif enemyType == "blue" then
+                enemy = BlueEnemy(0, 0, speed, BezierAndSnapToGridFlightPlan(path,false,grid,row,col,delay))
+            else
+                enemy = GreenEnemy(0, 0, speed, BezierAndSnapToGridFlightPlan(path,false,grid,row,col,delay))
+            end
+            table.insert(self.enemies, enemy)
+        end
+    end
+end
+function ConfigurableSquadron:update( dt )
+    ConfigurableSquadron.super.update( self, dt )    
+    -- send an enemy to attack the player 
+    if self:shouldAttack(dt) then
+        local enemy = self:chooseEnemyForAttack()
+        if enemy then 
+            local row, col = self.grid:getCellOccupiedBy(enemy)
+            if row > 0 and col > 0 then
+                flightPlan = KamikazeFlightPlan(enemy,self.grid)
+                self.grid:setCharacterAt(row,col,nil) 
+                enemy.flightPlan = flightPlan
+                enemy.attackPlan = AttackPlan()
+                enemy.currentFrame = enemy.frameLookingUp
+            end
+        end 
+    end 
+end
+function ConfigurableSquadron:shouldAttack( dt ) 
+    return #self:activeEnemies() == #self:activeEnemiesInGrid()
+end   
+function ConfigurableSquadron:activeEnemies()
+    local activeEnemies = {}
+    for i=1,#self.enemies do
+        local enemy = self.enemies[i]
+        if enemy.active then
+            table.insert(activeEnemies, enemy)  
+        end 
+    end
+    return activeEnemies
+end
+function ConfigurableSquadron:activeEnemiesInGrid()
+    local activeEnemies = {}
+    for i=1,#self.enemies do
+        local enemy = self.enemies[i]
+        if enemy.active and self.grid:includes(enemy) then
+            table.insert(activeEnemies, enemy)  
+        end 
+    end
+    return activeEnemies
+end
+function ConfigurableSquadron:chooseEnemyForAttack() 
+    local activeEnemies = self:activeEnemiesInGrid()
+    local chosenAttacker = activeEnemies[ math.random( 1, #activeEnemies ) ] 
+    return chosenAttacker
+end 
