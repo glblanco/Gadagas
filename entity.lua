@@ -29,7 +29,7 @@ function Entity:draw()
                 self.scale,
                 self.width/(2*self.scale),
                 self.height/(2*self.scale)) 
-        if debug then
+        if debugMode then
             -- draw bounding box
             setDebugColor()
             love.graphics.rectangle( "line", self.x - self.width/2, self.y - self.height/2, self.width, self.height )

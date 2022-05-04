@@ -85,7 +85,7 @@ function Enemy:draw()
     Enemy.super.draw(self)
     if self.visible then
         if self.flightPlan then
-            if debug then
+            if debugMode then
                 self.flightPlan:drawDebugData(self)
             end
         end

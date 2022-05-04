@@ -132,7 +132,7 @@ end
 function HoverGrid:draw()
     setMainColor()
     -- the drawing of enemies is currently handled by the squadron
-    if debug then
+    if debugMode then
         self:drawDebugData()
     end
 end 

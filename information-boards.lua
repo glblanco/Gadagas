@@ -5,7 +5,7 @@ end
 function Board:draw( x, y, textWidth, textHeight, scale )
     setTextColor()
     love.graphics.print( self:getMessage(), x, y, 0, scale, scale )
-    if debug then
+    if debugMode then
         setDebugColor()
         love.graphics.rectangle( "line", x, y, textWidth, textHeight )
     end

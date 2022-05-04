@@ -27,7 +27,7 @@ function GameView:drawPlayers()
     for i,player in ipairs(self.game.lives) do
         setMainColor()
         player:draw()
-        if debug then
+        if debugMode then
             setDebugColor()
             love.graphics.print("player " .. i .. -- " ->  x:" .. player.x .. " y:" .. player.y .. 
                                 " w:" .. player.width .. " h: " .. player.height .. 
@@ -44,7 +44,7 @@ function GameView:drawEnemies()
     for i,enemy in ipairs(self.game.enemies) do
         setMainColor()
         enemy:draw()
-        if debug then
+        if debugMode then
             setDebugColor()
             if not enemy:isSquadron() then
                 love.graphics.print("enemy " .. i .. -- "[" .. enemy.uuid .. "] " ..
@@ -68,7 +68,7 @@ function GameView:drawExplosions()
     for i,explosion in ipairs(self.game.explosions) do
         setMainColor()
         explosion:draw()
-        if debug then
+        if debugMode then
             setDebugColor()
             love.graphics.print("explosion " .. i .. " ->  x:" .. explosion.x .. " y:" .. explosion.y .. " w:" .. explosion.width .. " h: " .. explosion.height, 10, 15*i + 100)
         end  
@@ -79,7 +79,7 @@ function GameView:drawBullets()
     for i,bullet in ipairs(self.game.playerBullets) do
         setMainColor()
         bullet:draw()
-        if debug then
+        if debugMode then
             setDebugColor()
             love.graphics.print("player bullet " .. i .. " ->  x:" .. bullet.x .. " y:" .. bullet.y .. " w:" .. bullet.width .. " h: " .. bullet.height, 10, 15*i + 100)
         end  
@@ -87,7 +87,7 @@ function GameView:drawBullets()
     for i,bullet in ipairs(self.game.enemyBullets) do
         setMainColor()
         bullet:draw()
-        if debug then
+        if debugMode then
             setDebugColor()
             love.graphics.print("enemy bullet " .. i .. " ->  x:" .. bullet.x .. " y:" .. bullet.y .. " w:" .. bullet.width .. " h: " .. bullet.height, 10, 15*i + 300)
         end  
@@ -99,7 +99,7 @@ function GameView:drawScore()
 end
 
 function GameView:drawDebugData()
-    if debug then
+    if debugMode then
         setDebugColor()
         if self.game:isPaused() then
             love.graphics.print("pause delay: " .. (self.game.pause.delay),10,365)   
@@ -120,6 +120,9 @@ function GameView:drawDebugData()
         love.graphics.print("lives: " .. (#self.game.lives),10,515)
         love.graphics.print("enemies: " .. (#self.game.enemies),10,530)
         love.graphics.print("explosions: " .. (#self.game.explosions),10,545)
+
+        local current_dir=debug.getinfo(1).short_src
+        love.graphics.print("cd: "..current_dir,400,400)
 
         for i,level in ipairs(self.game.levels) do
             love.graphics.print("level " .. i .. " name:" .. level.name .. " active:" .. (level.active and "true" or "false ") .." complete:" .. (level.complete and "true" or "false "),10,200+i*15)
