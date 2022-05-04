@@ -121,9 +121,6 @@ function GameView:drawDebugData()
         love.graphics.print("enemies: " .. (#self.game.enemies),10,530)
         love.graphics.print("explosions: " .. (#self.game.explosions),10,545)
 
-        local current_dir=debug.getinfo(1).short_src
-        love.graphics.print("cd: "..current_dir,400,400)
-
         for i,level in ipairs(self.game.levels) do
             love.graphics.print("level " .. i .. " name:" .. level.name .. " active:" .. (level.active and "true" or "false ") .." complete:" .. (level.complete and "true" or "false "),10,200+i*15)
         end
