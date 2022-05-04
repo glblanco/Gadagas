@@ -88,7 +88,7 @@ function ConfigurableLevel:activate()
     self.game:addObject(grid)
     -- add squadrons to the level
     for i,squadConfig in ipairs(self.config) do
-        local squadron = ConfigurableSquadron(squadConfig,grid,120)   
+        local squadron = ConfigurableSquadron(squadConfig,grid)   
         table.insert(self.squadrons,squadron)
     end   
 end
@@ -104,51 +104,95 @@ function Level1:new( game, name, timeStep )
     local trajectory3 = {100,0, 200,80, 350,100, 500,250, 1000,400, 500,500, 350,400, 350,100}
     local mirroredTrajectory3 = mirrorVertically( trajectory3 )        
     local pattern1 = {
-            {"blue",0.5,trajectory1,2,3}, 
-            {"red",1,trajectory1,2,4}, 
-            {"yellow",1.5,trajectory1,2,5}, 
-            {"yellow",1.5,mirroredTrajectory1,2,11}, 
-            {"red",1,mirroredTrajectory1,2,12},
-            {"green",0.5,mirroredTrajectory1,2,13},
-            {"blue",2,trajectory1,3,3}, 
-            {"red",2.5,trajectory1,3,4}, 
-            {"yellow",3,trajectory1,3,5}, 
-            {"yellow",3,mirroredTrajectory1,3,11}, 
-            {"red",2.5,mirroredTrajectory1,3,12}, 
-            {"green",2,mirroredTrajectory1,3,13}
+            ["order"] = 1,
+            ["speed"] = 120,
+            ["trajectory"] = trajectory1,
+            ["mirroredTrajectory"] = mirroredTrajectory1,
+            ["squadron"] = {
+                { enemyType = "blue",   startTime = 0.5,    path = "trajectory",         gridX = 2, gridY = 3  }, 
+                { enemyType = "red",    startTime = 1,      path = "trajectory",         gridX = 2, gridY = 4  }, 
+                { enemyType = "yellow", startTime = 1.5,    path = "trajectory",         gridX = 2, gridY = 5  }, 
+                { enemyType = "yellow", startTime = 1.5,    path = "mirroredTrajectory", gridX = 2, gridY = 11 }, 
+                { enemyType = "red",    startTime = 1,      path = "mirroredTrajectory", gridX = 2, gridY = 12 },
+                { enemyType = "green",  startTime = 0.5,    path = "mirroredTrajectory", gridX = 2, gridY = 13 },
+                { enemyType = "blue",   startTime = 2,      path = "trajectory",         gridX = 3, gridY = 3  }, 
+                { enemyType = "red",    startTime = 2.5,    path = "trajectory",         gridX = 3, gridY = 4  }, 
+                { enemyType = "yellow", startTime = 3,      path = "trajectory",         gridX = 3, gridY = 5  }, 
+                { enemyType = "yellow", startTime = 3,      path = "mirroredTrajectory", gridX = 3, gridY = 11 }, 
+                { enemyType = "red",    startTime = 2.5,    path = "mirroredTrajectory", gridX = 3, gridY = 12 }, 
+                { enemyType = "green",  startTime = 2,      path = "mirroredTrajectory", gridX = 3, gridY = 13 }
+            }
         }
     local pattern2 = {
-            {"red",0.5,trajectory2,1,2}, 
-            {"red",1,trajectory2,1,3}, 
-            {"red",1.5,trajectory2,1,4}, 
-            {"yellow",1.5,mirroredTrajectory2,1,12}, 
-            {"yellow",1,mirroredTrajectory2,1,13}, 
-            {"yellow",0.5,mirroredTrajectory2,1,14},
-            {"red",2,trajectory2,1,5}, 
-            {"red",2.5,trajectory2,1,6}, 
-            {"red",3,trajectory2,1,7}, 
-            {"yellow",3,mirroredTrajectory2,1,9}, 
-            {"yellow",2.5,mirroredTrajectory2,1,10}, 
-            {"yellow",2,mirroredTrajectory2,1,11}
+            ["order"] = 2,
+            ["speed"] = 130,
+            ["trajectory2"] = trajectory2,
+            ["mirroredTrajectory2"] = mirroredTrajectory2,
+            ["squadron"] = {        
+                { enemyType = "red",    startTime = 0.5,    path = "trajectory2",         gridX = 1, gridY = 2 }, 
+                { enemyType = "red",    startTime = 1,      path = "trajectory2",         gridX = 1, gridY = 3 }, 
+                { enemyType = "red",    startTime = 1.5,    path = "trajectory2",         gridX = 1, gridY = 4 }, 
+                { enemyType = "yellow", startTime = 1.5,    path = "mirroredTrajectory2", gridX = 1, gridY = 12}, 
+                { enemyType = "yellow", startTime = 1,      path = "mirroredTrajectory2", gridX = 1, gridY = 13}, 
+                { enemyType = "yellow", startTime = 0.5,    path = "mirroredTrajectory2", gridX = 1, gridY = 14},
+                { enemyType = "red",    startTime = 2,      path = "trajectory2",         gridX = 1, gridY = 5 }, 
+                { enemyType = "red",    startTime = 2.5,    path = "trajectory2",         gridX = 1, gridY = 6 }, 
+                { enemyType = "red",    startTime = 3,      path = "trajectory2",         gridX = 1, gridY = 7 }, 
+                { enemyType = "yellow", startTime = 3,      path = "mirroredTrajectory2", gridX = 1, gridY = 9 }, 
+                { enemyType = "yellow", startTime = 2.5,    path = "mirroredTrajectory2", gridX = 1, gridY = 10}, 
+                { enemyType = "yellow", startTime = 2,      path = "mirroredTrajectory2", gridX = 1, gridY = 11}
+            }
         }            
     local pattern3 = {
-            {"blue",0.5,trajectory3,4,4}, 
-            {"blue",1,trajectory3,4,5}, 
-            {"blue",1.5,trajectory3,4,6},
-            {"green",1.5,mirroredTrajectory3,4,10}, 
-            {"green",1,mirroredTrajectory3,4,11}, 
-            {"green",0.5,mirroredTrajectory3,4,12},
-            {"blue",2,trajectory3,5,4}, 
-            {"blue",2.5,trajectory3,5,5}, 
-            {"blue",3,trajectory3,5,6},
-            {"green",3,mirroredTrajectory3,5,10}, 
-            {"green",2.5,mirroredTrajectory3,5,11}, 
-            {"green",2,mirroredTrajectory3,5,12}
+            ["order"] = 3,
+            ["speed"] = 140,
+            ["trajectory3"] = trajectory3,
+            ["mirroredTrajectory3"] = mirroredTrajectory3,
+            ["squadron"] = {               
+                { enemyType = "blue",    startTime = 0.5,   path = "trajectory3",         gridX = 4, gridY = 4 }, 
+                { enemyType = "blue",    startTime = 1,     path = "trajectory3",         gridX = 4, gridY = 5 }, 
+                { enemyType = "blue",    startTime = 1.5,   path = "trajectory3",         gridX = 4, gridY = 6 },
+                { enemyType = "green",   startTime = 1.5,   path = "mirroredTrajectory3", gridX = 4, gridY = 10}, 
+                { enemyType = "green",   startTime = 1,     path = "mirroredTrajectory3", gridX = 4, gridY = 11}, 
+                { enemyType = "green",   startTime = 0.5,   path = "mirroredTrajectory3", gridX = 4, gridY = 12},
+                { enemyType = "blue",    startTime = 2,     path = "trajectory3",         gridX = 5, gridY = 4 }, 
+                { enemyType = "blue",    startTime = 2.5,   path = "trajectory3",         gridX = 5, gridY = 5 }, 
+                { enemyType = "blue",    startTime = 3,     path = "trajectory3",         gridX = 5, gridY = 6 },
+                { enemyType = "green",   startTime = 3,     path = "mirroredTrajectory3", gridX = 5, gridY = 10}, 
+                { enemyType = "green",   startTime = 2.5,   path = "mirroredTrajectory3", gridX = 5, gridY = 11}, 
+                { enemyType = "green",   startTime = 2,     path = "mirroredTrajectory3", gridX = 5, gridY = 12}
+            }
         }
     local patterns = {}
     table.insert(patterns,pattern1)
     table.insert(patterns,pattern2)
     table.insert(patterns,pattern3)
+
     Level1.super.new( self, game, name, patterns, timeStep )
 end
+
+JsonLevel = ConfigurableLevel:extend()
+function JsonLevel:new( game, name, file, timeStep ) 
+    JsonLevel.super.new( self, game, name, nil, timeStep )
+    self.file = file
+end
+function JsonLevel:activate()
+    -- add the grid
+    local grid = HoverGrid(10,15)
+    self.game:addObject(grid)
+    self.config = self:readConfigFromFile()
+    JsonLevel.super.activate(self)    
+end
+function JsonLevel:readConfigFromFile()
+    -- read json from file
+    local afile = io.open(self.file, "r")
+    io.input(afile)
+    jsonStr = io.read("*all")
+    io.close(afile)
+    -- transform the json into a table with the configurations
+    local json = require("external/dkjson")
+    local aconfig = json.decode(jsonStr)
+    return aconfig
+end
+
 

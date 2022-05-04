@@ -1,0 +1,279 @@
+[
+    {
+      "order": 1,
+      "trajectory": 		[ 100, 0, 200, 80, 350, 100, 500, 250, 1000, 400, 500, 500, 350, 400, 350, 100 ],
+      "mirroredTrajectory": [ 700, 0, 600, 80, 450, 100, 300, 250, -200, 400, 300, 500, 450, 400, 450, 100 ],
+      "speed": 120,  
+      "squadron": [
+        {
+          "enemyType": "blue",
+          "startTime": 0.5,
+          "path": "trajectory",
+          "gridX": 2,
+          "gridY": 3
+        },
+        {
+          "enemyType": "red",
+          "startTime": 1,
+          "path": "trajectory",
+          "gridX": 2,
+          "gridY": 4
+        },
+        {
+          "enemyType": "yellow",
+          "startTime": 1.5,
+          "path": "trajectory",
+          "gridX": 2,
+          "gridY": 5
+        },
+        {
+          "enemyType": "yellow",
+          "startTime": 1.5,
+          "path": "mirroredTrajectory",      
+          "gridX": 2,
+          "gridY": 11
+        },
+        {
+          "enemyType": "red",
+          "startTime": 1,
+          "path": "mirroredTrajectory",      
+          "gridX": 2,
+          "gridY": 12
+        },
+        {
+          "enemyType": "green",
+          "startTime": 0.5,
+          "path": "mirroredTrajectory",      
+          "gridX": 2,
+          "gridY": 13
+        },
+        {
+          "enemyType": "blue",    	
+          "startTime": 2,
+          "path": "trajectory",      
+          "gridX": 3,
+          "gridY": 3
+        },
+        {
+          "enemyType": "red",    	
+          "startTime": 2.5,
+          "path": "trajectory",      
+          "gridX": 3,
+          "gridY": 4
+        },
+        {
+          "enemyType": "yellow",    	
+          "startTime": 3,
+          "path": "trajectory",      
+          "gridX": 3,
+          "gridY": 5
+        },
+        {
+          "enemyType": "yellow",
+          "startTime": 3,
+          "path": "mirroredTrajectory",      
+          "gridX": 3,
+          "gridY": 11
+        },
+        {
+          "enemyType": "red",
+          "startTime": 2.5,
+          "path": "mirroredTrajectory",      
+          "gridX": 3,
+          "gridY": 12
+        },
+        {
+          "enemyType": "green",    	
+          "startTime": 2,
+          "path": "mirroredTrajectory",      
+          "gridX": 3,
+          "gridY": 13
+        }
+      ]
+    },
+    {
+      "order": 2,
+      "trajectory2":         [   0, 600, 100, 500, 200, 450, 300, 400, 400, 350, 450, 200, 450, 100, 450, 0 ],
+      "mirroredTrajectory2": [ 800, 600, 700, 500, 600, 450, 500, 400, 400, 350, 350, 200, 350, 100, 350, 0 ],
+      "speed": 130,
+      "squadron": [
+        {
+          "startTime": 0.5,
+          "gridX": 1,
+          "enemyType": "red",
+          "gridY": 2,
+          "path": "trajectory2"
+        },
+        {
+          "startTime": 1,
+          "gridX": 1,
+          "enemyType": "red",
+          "gridY": 3,
+          "path": "trajectory2"
+        },
+        {
+          "startTime": 1.5,
+          "gridX": 1,
+          "enemyType": "red",
+          "gridY": 4,
+          "path": "trajectory2"
+        },
+        {
+          "startTime": 1.5,
+          "gridX": 1,
+          "enemyType": "yellow",
+          "gridY": 12,
+          "path": "mirroredTrajectory2"
+        },
+        {
+          "startTime": 1,
+          "gridX": 1,
+          "enemyType": "yellow",
+          "gridY": 13,
+          "path": "mirroredTrajectory2"
+        },
+        {
+          "startTime": 0.5,
+          "gridX": 1,
+          "enemyType": "yellow",
+          "gridY": 14,
+          "path": "mirroredTrajectory2"
+        },
+        {
+          "startTime": 2,
+          "gridX": 1,
+          "enemyType": "red",
+          "gridY": 5,
+          "path": "trajectory2"
+        },
+        {
+          "startTime": 2.5,
+          "gridX": 1,
+          "enemyType": "red",
+          "gridY": 6,
+          "path": "trajectory2"
+        },
+        {
+          "startTime": 3,
+          "gridX": 1,
+          "enemyType": "red",
+          "gridY": 7,
+          "path": "trajectory2"
+        },
+        {
+          "startTime": 3,
+          "gridX": 1,
+          "enemyType": "yellow",
+          "gridY": 9,
+          "path": "mirroredTrajectory2"
+        },
+        {
+          "startTime": 2.5,
+          "gridX": 1,
+          "enemyType": "yellow",
+          "gridY": 10,
+          "path": "mirroredTrajectory2"
+        },
+        {
+          "startTime": 2,
+          "gridX": 1,
+          "enemyType": "yellow",
+          "gridY": 11,
+          "path": "mirroredTrajectory2"
+        }
+      ]
+    },
+    {
+      "order": 3,
+      "mirroredTrajectory3": [ 700, 0, 600, 80, 450, 100, 300, 250, -200, 400, 300, 500, 450, 400, 450, 100 ],
+      "trajectory3":         [ 100, 0, 200, 80, 350, 100, 500, 250, 1000, 400, 500, 500, 350, 400, 350, 100 ],
+      "speed": 140,
+      "squadron": [
+        {
+          "startTime": 0.5,
+          "gridX": 4,
+          "enemyType": "blue",
+          "gridY": 4,
+          "path": "trajectory3"
+        },
+        {
+          "startTime": 1,
+          "gridX": 4,
+          "enemyType": "blue",
+          "gridY": 5,
+          "path": "trajectory3"
+        },
+        {
+          "startTime": 1.5,
+          "gridX": 4,
+          "enemyType": "blue",
+          "gridY": 6,
+          "path": "trajectory3"
+        },
+        {
+          "startTime": 1.5,
+          "gridX": 4,
+          "enemyType": "green",
+          "gridY": 10,
+          "path": "mirroredTrajectory3"
+        },
+        {
+          "startTime": 1,
+          "gridX": 4,
+          "enemyType": "green",
+          "gridY": 11,
+          "path": "mirroredTrajectory3"
+        },
+        {
+          "startTime": 0.5,
+          "gridX": 4,
+          "enemyType": "green",
+          "gridY": 12,
+          "path": "mirroredTrajectory3"
+        },
+        {
+          "startTime": 2,
+          "gridX": 5,
+          "enemyType": "blue",
+          "gridY": 4,
+          "path": "trajectory3"
+        },
+        {
+          "startTime": 2.5,
+          "gridX": 5,
+          "enemyType": "blue",
+          "gridY": 5,
+          "path": "trajectory3"
+        },
+        {
+          "startTime": 3,
+          "gridX": 5,
+          "enemyType": "blue",
+          "gridY": 6,
+          "path": "trajectory3"
+        },
+        {
+          "startTime": 3,
+          "gridX": 5,
+          "enemyType": "green",
+          "gridY": 10,
+          "path": "mirroredTrajectory3"
+        },
+        {
+          "startTime": 2.5,
+          "gridX": 5,
+          "enemyType": "green",
+          "gridY": 11,
+          "path": "mirroredTrajectory3"
+        },
+        {
+          "startTime": 2,
+          "gridX": 5,
+          "enemyType": "green",
+          "gridY": 12,
+          "path": "mirroredTrajectory3"
+        }
+      ]
+    }
+]
+

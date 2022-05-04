@@ -35,7 +35,7 @@ function love.load()
     resources = ResourcesSkin2()
     uuidGenerator = UUIDGenerator()
     game = Game()
-    
+
     debug = false
     
 end

@@ -41,7 +41,9 @@ function Game:initializeLives()
 end
 
 function Game:initializeLevels()
-    table.insert(self.levels, Level1(game, "Level 1", 10))
+    table.insert(self.levels, Level1(game, "Level 1", 10))    
+    table.insert(self.levels, JsonLevel(game, "Json Level", 
+            "/Users/agustina/Documents/lua/gadagas/Gadagas/levels/level1.json", 10))
 end
 
 function Game:update(dt)

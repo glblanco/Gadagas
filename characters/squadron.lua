@@ -170,15 +170,16 @@ end
 
 
 ConfigurableSquadron = Squadron:extend()
-function ConfigurableSquadron:new( pattern, grid, speed )
+function ConfigurableSquadron:new( pattern, grid )
     ConfigurableSquadron.super.new( self )    
     self.grid = grid
-    for i,config in ipairs(pattern) do
-        local enemyType = config[1]
-        local delay     = config[2]
-        local path      = config[3]
-        local row       = config[4]
-        local col       = config[5]
+    local speed = pattern["speed"]
+    for i,config in ipairs(pattern["squadron"]) do
+        local enemyType = config["enemyType"]
+        local delay     = config["startTime"]
+        local path      = pattern[config["path"]]
+        local row       = config["gridX"]
+        local col       = config["gridY"]
         local enemy     = nil
         if enemyType then
             if enemyType == "red" then
