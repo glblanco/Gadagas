@@ -75,6 +75,7 @@ function Game:update(dt)
         self:updateList(self.levels,dt,false) 
         -- Update explosions (regardless of pauses)
         self:updateList(self.explosions,dt,true)
+
         -- Update the rest of the game objects, removing them if not active any more
         if not self:isPaused() then
             self:updateList(self.lives,dt,false)
@@ -82,6 +83,17 @@ function Game:update(dt)
             self:updateList(self.playerBullets,dt,true)
             self:updateList(self.enemyBullets,dt,true)
             self:updateList(self.objects,dt,true)     
+
+            -- Check for collisions between characters
+            for i, squadron in ipairs(self.enemies) do 
+                local activeEnemies = squadron:getActiveEnemies()
+                for j, enemy in ipairs(activeEnemies) do
+                    if player:collides(enemy) then
+                        player:die()
+                        enemy:die() -- TODO this should not score points
+                    end
+                end
+            end                       
         end
 
         -- If the game is paused, update the pause

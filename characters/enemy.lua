@@ -96,6 +96,14 @@ function Enemy:isSquadron()
     return false
 end
 
+function Enemy:getActiveEnemies()
+    local enemies = {}
+    if self.active then
+        table.insert( enemies, self )
+    end
+    return enemies
+end    
+
 function Enemy:die()
     self.active = false
     self.visible = false

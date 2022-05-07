@@ -24,6 +24,16 @@ function Squadron:isSquadron()
     return true
 end
 
+function Squadron:getActiveEnemies()
+    local ret = {}
+    for i,enemy in ipairs(self.enemies) do
+        if enemy.active then
+            table.insert( ret, enemy )
+        end
+    end
+    return ret
+end    
+
 function Squadron:isDead()
     local ret = true
     for i,enemy in ipairs(self.enemies) do
