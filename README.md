@@ -21,7 +21,7 @@ https://grumpygamer.com/puzzle_dependency_charts#:~:text=A%20Puzzle%20Dependency
 6. ~~Consume lives~~
 7. ~~Keep score - Impacts~~
 8. ~~Add levels~~
-9. Menu
+9. ~~Menu~~
 10. High scores
 11. Add sound
 12. Package & Deploy
