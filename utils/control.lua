@@ -29,11 +29,15 @@ function Control:bindControlsToActions()
     self.control:bind("shoot", { 
         "press space",
         "press tab",
-        "press return",
         "press MMB",
+        "press return"
     })
-    self.control:bind("test", "press t")
-    -- self.control:bind("start", "press any")
+    self.control:bind("start", { 
+        "press any"
+    })
+    self.control:bind("pause", {
+        "press p"
+    })
 end
 
 function Control:moveLeft()
@@ -48,6 +52,10 @@ function Control:shoot()
     return self.control.shoot 
 end
 
-function Control:test()
-    return self.control.test 
+function Control:pause()
+    return self.control.pause 
+end
+
+function Control:start()
+    return self.control.start 
 end

@@ -48,11 +48,30 @@ end
 
 function Game:update(dt)
         
-    -- Starte the game 
+    -- Start the game if user pressed a key
     if not self.started then
-        game:start()
+        if control:start() then
+            game:start()
+        end
     end
 
+    -- If teh game ispaused, update the pause timer
+    if self:isPaused() then
+        self.pause:update(dt) 
+        if self:userRequestedPauseElapsed() then
+            self:resume()
+        end   
+        if self:gameOverPauseElapsed() then
+            self:resume()
+        end           
+    else
+        -- Check if the game was manually paused
+        if control:pause() then
+            self.pause = UserRequestedPause()
+        end               
+    end    
+
+    -- If the game is ongoing, update the characters
     if not self:isOver() then
 
         local player = self:currentPlayer()
@@ -74,11 +93,13 @@ function Game:update(dt)
 
         -- Update levels (regardless of pauses)
         self:updateList(self.levels,dt,false) 
+
         -- Update explosions (regardless of pauses)
         self:updateList(self.explosions,dt,true)
 
         -- Update the rest of the game objects, removing them if not active any more
         if not self:isPaused() then
+
             self:updateList(self.lives,dt,false)
             self:updateList(self.enemies,dt,true) 
             self:updateList(self.playerBullets,dt,true)
@@ -95,14 +116,16 @@ function Game:update(dt)
                     end
                 end
             end                       
+
         end
 
-        -- If the game is paused, update the pause
-        if self:isPaused() then
-            self.pause:update(dt) 
+        -- Pause if the game ended
+        if self:isOver() then
+            self.pause = GameOverPause()
         end
 
     end
+
 end
 
 function Game:addEnemy( enemy )
@@ -154,6 +177,18 @@ end
 function Game:playerKilledPauseElapsed()
     return self.pause 
         and self.pause:is( PlayerKilledPause ) 
+        and self.pause:elapsed()
+end
+
+function Game:userRequestedPauseElapsed()
+    return self.pause 
+        and self.pause:is( UserRequestedPause ) 
+        and self.pause:elapsed()
+end
+
+function Game:gameOverPauseElapsed()
+    return self.pause 
+        and self.pause:is( GameOverPause ) 
         and self.pause:elapsed()
 end
 

@@ -49,6 +49,23 @@ function ScoreBoard:draw()
     ScoreBoard.super.draw( self, x, y, textWidth, textHeight, scale )
 end
 
+
+
+MenuBoard = FlickeringBoard:extend()
+function MenuBoard:new()
+    MenuBoard.super.new(self,"Press any key to start")
+end
+function MenuBoard:draw()
+    local textWidth = string.len(self.message)*12
+    local textHeight = 30
+    local x = love.graphics.getWidth()/2 - textWidth/2
+    local y = love.graphics.getHeight()*0.40
+    local scale = 2
+    ScoreBoard.super.draw( self, x, y, textWidth, textHeight, scale )
+end
+
+
+
 GameOverBoard = FlickeringBoard:extend()
 function GameOverBoard:new()
     GameOverBoard.super.new(self, "Game Over")
@@ -87,3 +104,5 @@ function PauseBoard:draw()
     local y = love.graphics.getHeight()*0.7/2
     GameOverBoard.super.draw( self, x, y, self.textWidth, self.textHeight, scale )
 end
+
+

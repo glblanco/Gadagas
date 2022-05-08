@@ -4,7 +4,8 @@ function GameView:new()
     self.game = nil
     self.scoreBoard      = ScoreBoard()
     self.gameOverBoard   = GameOverBoard()
-    self.winnerBoard     = WinnerBoard()    
+    self.winnerBoard     = WinnerBoard()   
+    self.menuBoard       = MenuBoard() 
 end
 
 function GameView:setGame( game )
@@ -12,14 +13,22 @@ function GameView:setGame( game )
 end
 
 function GameView:draw()
-    self:drawPlayers()
-    self:drawEnemies()
-    self:drawObjects()
-    self:drawExplosions()
-    self:drawBullets()
-    self:drawScore()
-    self:drawDebugData()
-    self:drawMessages()
+    if self.game.started then
+        self:drawPlayers()
+        self:drawEnemies()
+        self:drawObjects()
+        self:drawExplosions()
+        self:drawBullets()
+        self:drawScore()
+        self:drawDebugData()
+        self:drawMessages()
+    else 
+        self:drawMenu()
+    end
+end
+
+function GameView:drawMenu()
+    self.menuBoard:draw()
 end
 
 function GameView:drawPlayers()

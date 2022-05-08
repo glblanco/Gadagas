@@ -42,6 +42,11 @@ end
 
 function love.update(dt)
     game:update(dt)
+    if game:isOver() and not game:isPaused() then
+        if control:start() then
+            game = Game()
+        end
+    end
     control:update(dt)
 end
 

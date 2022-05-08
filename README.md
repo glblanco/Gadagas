@@ -35,3 +35,5 @@ https://grumpygamer.com/puzzle_dependency_charts#:~:text=A%20Puzzle%20Dependency
 ## Andrea's requests
 1. ~~make player die if it collides with an enemy~~
 
+## Agus's requests
+1. add starts in the sky
