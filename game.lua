@@ -41,8 +41,9 @@ function Game:initializeLives()
 end
 
 function Game:initializeLevels()
-    -- table.insert(self.levels, Level1(game, "Level 1", 10))    
-    table.insert(self.levels, JsonLevel(game, "Json Level", "levels/level1.json", 10))
+    table.insert(self.levels, JsonLevel(game, "Json Level",   "levels/level1.json", 10))
+    table.insert(self.levels, JsonLevel(game, "Red Level",    "levels/level2.json", 10))
+    table.insert(self.levels, JsonLevel(game, "Level 3",      "levels/level3.json", 10))
 end
 
 function Game:update(dt)
