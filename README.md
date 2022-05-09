@@ -36,4 +36,5 @@ https://grumpygamer.com/puzzle_dependency_charts#:~:text=A%20Puzzle%20Dependency
 1. ~~make player die if it collides with an enemy~~
 
 ## Agus's requests
-1. add stars in the sky
+1. ~~add stars in the sky~~
+2. keep statistics (q shot, q hits, hit ratio)

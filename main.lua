@@ -9,6 +9,7 @@ function requireLibraries()
     require "events"
     require "information-boards"
     require "resources"  
+    require "starfield"  
     require "skins/skin1"    
     require "skins/skin2"    
     require "utils/control"
@@ -36,6 +37,7 @@ function love.load()
     uuidGenerator = UUIDGenerator()
     game = Game()
 
+    loadStarfield()
     debugMode = false
     
 end
@@ -47,10 +49,12 @@ function love.update(dt)
             game = Game()
         end
     end
+    updateStarfield(dt)
     control:update(dt)
 end
 
 function love.draw() 
+    drawStarfield()
     game:draw()
 end
 
