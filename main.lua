@@ -1,6 +1,9 @@
 function requireLibraries()
     -- First require classic, since we use it to create our classes.
-    Object = require "external/classic"
+    Object    = require "external/classic"
+    Starfield = require "external/starfield"
+    Lynput    = require "external/lynput"     
+    DKJson    = require "external/dkjson" 
     require "game"
     require "game-view"
     require "entity"

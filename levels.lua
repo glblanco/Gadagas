@@ -187,8 +187,7 @@ function JsonLevel:readConfigFromFile()
     -- read json from file
     local jsonStr = love.filesystem.read(self.file)
     -- transform the json into a table with the configurations
-    local json = require("external/dkjson")
-    local aconfig = json.decode(jsonStr)
+    local aconfig = DKJson.decode(jsonStr)
     return aconfig
 end
 

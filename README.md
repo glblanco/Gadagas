@@ -24,7 +24,7 @@ https://grumpygamer.com/puzzle_dependency_charts#:~:text=A%20Puzzle%20Dependency
 9. ~~Menu~~
 10. High scores
 11. Add sound
-12. Package & Deploy
+12. Package & Deploy https://schellingb.github.io/LoveWebBuilder/
 
 ## Chena's requests
 1. ~~make sprites transparent~~
@@ -38,3 +38,6 @@ https://grumpygamer.com/puzzle_dependency_charts#:~:text=A%20Puzzle%20Dependency
 ## Agus's requests
 1. ~~add stars in the sky~~
 2. keep statistics (q shot, q hits, hit ratio)
+
+
+sudo apachectl start/stop

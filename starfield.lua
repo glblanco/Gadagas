@@ -1,7 +1,6 @@
 
 function loadStarfield()
-    starfield = require 'external/starfield'
-    sf = starfield:new(1000)
+    sf = Starfield:new(1000)
     sf:load()
 end
 
