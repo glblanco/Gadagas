@@ -38,7 +38,7 @@ https://grumpygamer.com/puzzle_dependency_charts#:~:text=A%20Puzzle%20Dependency
 ## Agus's requests
 1. ~~add stars in the sky~~
 2. keep statistics (q shot, q hits, hit ratio)
-3. write a simple control handler that can be deployed as js
+3. ~~write a simple control handler that can be deployed as js~~
 
 
 sudo apachectl start/stop
