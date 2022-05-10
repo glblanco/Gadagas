@@ -5,7 +5,7 @@ function loadStarfield()
 end
 
 function updateStarfield(dt)
-    local x, y = 0, 1 
+    local x, y = 0, 2 
     sf:update(dt, x ,y)
 end
 

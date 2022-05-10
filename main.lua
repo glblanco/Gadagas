@@ -1,9 +1,12 @@
 function requireLibraries()
     -- First require classic, since we use it to create our classes.
     Object    = require "external/classic"
-    Starfield = require "external/starfield"
-    Lynput    = require "external/lynput"     
+    Starfield = require "external/starfield"    
     DKJson    = require "external/dkjson" 
+    --Lynput    = require "external/lynput"    
+    require "utils/control"     
+    require "utils/simple-control"    
+    require "utils/uuid-generator"    
     require "game"
     require "game-view"
     require "entity"
@@ -15,8 +18,6 @@ function requireLibraries()
     require "starfield"  
     require "skins/skin1"    
     require "skins/skin2"    
-    require "utils/control"
-    require "utils/uuid-generator"
     require "characters/character"
     require "characters/player"
     require "characters/enemy"
@@ -35,7 +36,7 @@ function love.load()
     
     requireLibraries()
 
-    control = Control()
+    control = SimpleControl()
     resources = ResourcesSkin2()
     uuidGenerator = UUIDGenerator()
     game = Game()
@@ -76,3 +77,4 @@ end
 function raise( event )
     event:action( game )
 end    
+
