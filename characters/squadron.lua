@@ -247,6 +247,10 @@ function ConfigurableSquadron:activeEnemiesInGrid()
 end
 function ConfigurableSquadron:chooseEnemyForAttack() 
     local activeEnemies = self:activeEnemiesInGrid()
-    local chosenAttacker = activeEnemies[ math.random( 1, #activeEnemies ) ] 
+    local chosenAttacker = nil
+    local num = #activeEnemies    
+    if num and num >= 1 then
+        chosenAttacker = activeEnemies[ math.random( 1, num ) ] 
+    end
     return chosenAttacker
 end 
