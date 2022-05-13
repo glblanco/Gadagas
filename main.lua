@@ -9,6 +9,7 @@ function requireLibraries()
     require "utils/uuid-generator"    
     require "game"
     require "game-view"
+    require "game-stats"    
     require "entity"
     require "pause"
     require "levels"

@@ -11,7 +11,7 @@ function Game:new()
     self.levels         = {}
         
     self.pause           = nil
-    self.score           = 0
+    self.stats           = GameStats()
     self.view            = GameView()
     self.started         = false
 
@@ -41,9 +41,9 @@ function Game:initializeLives()
 end
 
 function Game:initializeLevels()
-    table.insert(self.levels, JsonLevel(game, "Json Level",   "levels/level1.json", 10))
-    table.insert(self.levels, JsonLevel(game, "Red Level",    "levels/level2.json", 10))
-    table.insert(self.levels, JsonLevel(game, "Level 3",      "levels/level3.json", 10))
+    table.insert(self.levels, JsonLevel(game, "Level 1", "levels/level1.json", 10))
+    table.insert(self.levels, JsonLevel(game, "Level 2", "levels/level2.json", 10))
+    table.insert(self.levels, JsonLevel(game, "Level 3", "levels/level3.json", 10))
 end
 
 function Game:update(dt)
@@ -55,7 +55,7 @@ function Game:update(dt)
         end
     end
 
-    -- If teh game ispaused, update the pause timer
+    -- If the game ispaused, update the pause timer
     if self:isPaused() then
         self.pause:update(dt) 
         if self:userRequestedPauseElapsed() then
@@ -137,6 +137,7 @@ function Game:addObject( object )
 end
 
 function Game:addPlayerBullet( object )
+    self.stats:bulletShot()
     table.insert(self.playerBullets, object)
 end
 
@@ -200,8 +201,8 @@ function Game:handlePlayerKilledEvent()
 end
 
 function Game:handleEnemyKilledEvent( enemy )
-    self.score = self.score + 100 -- TODO maybe different enemies have different values
-    self.view:updateScore(self.score)
+    self.stats:enemyKilled( enemy )
+    self.view:updateScore(self.stats.score)
 end
 
 function Game:handleLevelCompletedEvent()

@@ -61,7 +61,7 @@ function MenuBoard:draw()
     local x = love.graphics.getWidth()/2 - textWidth/2
     local y = love.graphics.getHeight()*0.40
     local scale = 2
-    ScoreBoard.super.draw( self, x, y, textWidth, textHeight, scale )
+    MenuBoard.super.draw( self, x, y, textWidth, textHeight, scale )
 end
 
 
@@ -89,7 +89,7 @@ function WinnerBoard:draw()
     local textHeight = 30
     local x = love.graphics.getWidth()/2 - textWidth/2
     local y = love.graphics.getHeight()*0.7/2
-    GameOverBoard.super.draw( self, x, y, textWidth, textHeight, scale )
+    WinnerBoard.super.draw( self, x, y, textWidth, textHeight, scale )
 end
 
 PauseBoard = FlickeringBoard:extend()
@@ -102,7 +102,26 @@ function PauseBoard:draw()
     local scale = 2
     local x = love.graphics.getWidth()/2 - self.textWidth/2
     local y = love.graphics.getHeight()*0.7/2
-    GameOverBoard.super.draw( self, x, y, self.textWidth, self.textHeight, scale )
+    PauseBoard.super.draw( self, x, y, self.textWidth, self.textHeight, scale )
 end
 
-
+StatsBoard = Board:extend()
+function StatsBoard:new()
+    StatsBoard.super.new(self,"")
+    self.textWidth = 210
+    self.textHeight = 15
+end
+function StatsBoard:draw()
+    local scale = 1
+    local x = love.graphics.getWidth()/2 - self.textWidth/2
+    local y = 10
+    local shots = game.stats.shots
+    if shots == 0 then
+        shots = 1
+    end
+    local tab = "     "
+    self.message =  "Shots: " .. game.stats.shots .. tab ..
+                    "Hits: " .. game.stats.hits .. tab .. 
+                    "Hit Ratio: ".. math.floor(100*game.stats.hits/shots)/100 .."%"
+    StatsBoard.super.draw( self, x, y, self.textWidth, self.textHeight, scale )
+end

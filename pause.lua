@@ -24,7 +24,7 @@ end
 
 LevelCompletedPause = Pause:extend()
 function LevelCompletedPause:new(message)
-    LevelCompletedPause.super.new(self,message,130,30)
+    LevelCompletedPause.super.new(self,message,90,30)
 end    
 function LevelCompletedPause:elapsed()
     return self.delay > 3

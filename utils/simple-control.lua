@@ -92,7 +92,41 @@ function love.keypressed(key)
 end
 
 function love.mousepressed( x, y, button, istouch, presses )
-    local action = mapMouseButton(button)
+    if istouch then
+        table.insert(control.actions,"shoot")
+    else
+        local action = mapMouseButton(button)
+        if action then
+            table.insert(control.actions,action)
+        end
+    end
+end
+
+function love.mousemoved( x, y, dx, dy, istouch )
+    --if istouch then
+        action = nil
+        if dx > 0 then
+            action = "moveRight"
+        elseif dx < 0 then
+            action = "moveLeft"
+        end
+        if action then
+            table.insert(control.actions,action)
+        end
+    --end
+end
+
+function love.touchpressed( id, x, y, dx, dy, pressure )
+    table.insert(control.actions,"shoot")
+end
+
+function love.touchmoved( id, x, y, dx, dy, pressure )
+    action = nil
+    if dx > 0 then
+        action = "moveRight"
+    elseif dx < 0 then
+        action = "moveLeft"
+    end
     if action then
         table.insert(control.actions,action)
     end
