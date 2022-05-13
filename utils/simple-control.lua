@@ -92,7 +92,7 @@ function love.keypressed(key)
 end
 
 function love.mousepressed( x, y, button, istouch, presses )
-    if istouch then
+    if presses > 0 then
         table.insert(control.actions,"shoot")
     else
         local action = mapMouseButton(button)
