@@ -13,8 +13,10 @@ function Game:new()
     self.pause           = nil
     self.stats           = GameStats()
     self.view            = GameView()
+    self.soundFX         = SoundFX()
     self.started         = false
 
+    self.soundFX:startThemeSong()
 end
 
 function Game:livesPerGame()
@@ -27,6 +29,7 @@ function Game:start()
     self:activateNextPlayer()
     self:activateNextLevel()
     self.started = true
+    self.soundFX:stopThemeSong()    
 end    
 
 function Game:initializeLives()
@@ -139,6 +142,7 @@ end
 function Game:addPlayerBullet( object )
     self.stats:bulletShot()
     table.insert(self.playerBullets, object)
+    if self.soundFX then self.soundFX:shoot() end
 end
 
 function Game:addEnemyBullet( object )
@@ -198,6 +202,7 @@ function Game:handlePlayerKilledEvent()
     if lives > 0 then
         self.pause = PlayerKilledPause( (self:livesPerGame() - self:livesRemaining()) .. " UP" )
     end
+    self.soundFX:killPlayer()
 end
 
 function Game:handleEnemyKilledEvent( enemy )
@@ -211,6 +216,7 @@ function Game:handleLevelCompletedEvent()
         local nextLevel = self.levels[2]
         self.pause = LevelCompletedPause( nextLevel.name ) 
     end
+    self.soundFX:startLevel()
     self.enemies = {}
     self.objects = {}
 end    

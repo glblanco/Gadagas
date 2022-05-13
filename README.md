@@ -23,7 +23,7 @@ https://grumpygamer.com/puzzle_dependency_charts#:~:text=A%20Puzzle%20Dependency
 8. ~~Add levels~~
 9. ~~Menu~~
 10. High scores
-11. Add sound
+11. ~~Add sound~~
 12. Package & Deploy https://schellingb.github.io/LoveWebBuilder/
 
 ## Chena's requests
@@ -43,5 +43,3 @@ https://grumpygamer.com/puzzle_dependency_charts#:~:text=A%20Puzzle%20Dependency
 5. ~~center level notifications~~
 
 
-sudo apachectl start/stop
-/Library/WebServer/Documents
