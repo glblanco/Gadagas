@@ -41,5 +41,6 @@ https://grumpygamer.com/puzzle_dependency_charts#:~:text=A%20Puzzle%20Dependency
 3. ~~write a simple control handler that can be deployed as js~~
 4. ~~add pad support~~
 5. ~~center level notifications~~
+6. make game work on cellphones - touchscreen
 
 
