@@ -24,6 +24,11 @@ function SimpleControl:shoot()
     return self:received("shoot")
 end
 
+function SimpleControl:toggleSound()
+    return self:received("toggleSound")
+end
+
+
 function SimpleControl:received( action )
     ret = false
     for i,item in ipairs(self.actions) do
@@ -50,7 +55,9 @@ function mapKey( key )
         ret = "shoot"
     elseif key == "p" then
         ret = "pause"
-    else
+    elseif key == "s" then
+        ret = "toggleSound"
+    else    
         ret = "start"
     end
     return ret

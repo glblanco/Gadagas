@@ -28,8 +28,7 @@ function Game:start()
     self:initializeLevels()
     self:activateNextPlayer()
     self:activateNextLevel()
-    self.started = true
-    self.soundFX:stopThemeSong()    
+    self.started = true  
 end    
 
 function Game:initializeLives()
@@ -56,6 +55,11 @@ function Game:update(dt)
         if control:start() then
             game:start()
         end
+    end
+
+    -- Check if sound was turned on/off
+    if control:toggleSound() then
+        self.soundFX:toggleSound()
     end
 
     -- If the game ispaused, update the pause timer
@@ -147,6 +151,7 @@ end
 
 function Game:addEnemyBullet( object )
     table.insert(self.enemyBullets, object)
+    if self.soundFX then self.soundFX:shoot() end    
 end
 
 function Game:addExplosion( object )

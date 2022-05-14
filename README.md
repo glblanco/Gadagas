@@ -24,7 +24,7 @@ https://grumpygamer.com/puzzle_dependency_charts#:~:text=A%20Puzzle%20Dependency
 9. ~~Menu~~
 10. High scores
 11. ~~Add sound~~
-12. Package & Deploy https://schellingb.github.io/LoveWebBuilder/
+12. Package & Deploy https://schellingb.github.io/LoveWebBuilder/ https://github.com/Davidobot/love.js
 
 ## Chena's requests
 1. ~~make sprites transparent~~

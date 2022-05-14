@@ -37,6 +37,9 @@ function LynputControl:bindControlsToActions()
     self.control:bind("pause", {
         "press p"
     })
+    self.control:bind("toggleSound", {
+        "press s"
+    })
 end
 
 function LynputControl:moveLeft()
@@ -57,4 +60,8 @@ end
 
 function LynputControl:start()
     return self.control.start 
+end
+
+function LynputControl:toggleSound()
+    return self.control.toggleSound 
 end

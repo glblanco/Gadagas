@@ -27,3 +27,7 @@ end
 function Control:start()
     return true
 end
+
+function Control:toggleSound()
+    return false
+end
