@@ -51,7 +51,7 @@ end
 
 
 
-MenuBoard = FlickeringBoard:extend()
+MenuBoard = Board:extend()
 function MenuBoard:new()
     MenuBoard.super.new(self,"Press any key to start")
 end
@@ -62,6 +62,11 @@ function MenuBoard:draw()
     local y = love.graphics.getHeight()*0.40
     local scale = 2
     MenuBoard.super.draw( self, x, y, textWidth, textHeight, scale )
+
+    setTextColor()
+    scale = 1.5
+    love.graphics.print( "S - Toggle Sound", x + 20, y + 40, 0, scale, scale )    
+    love.graphics.print( "P - Pause",        x + 20, y + 70, 0, scale, scale )        
 end
 
 
