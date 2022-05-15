@@ -43,15 +43,13 @@ function love.load()
     resources = ResourcesSkin2()
     uuidGenerator = UUIDGenerator()
     game = Game()
+    highscores = HighScoreManager()
 
     loadStarfield()
+    highscores:read()
+    
     debugMode = false
     
-    highScoreManager = HighScoreManager()
-    highScoreManager:read()
-    highScoreManager:add("AGU",100)
-    highScoreManager:write()
-
 end
 
 function love.update(dt)
