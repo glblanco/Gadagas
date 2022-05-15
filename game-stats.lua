@@ -12,5 +12,5 @@ end
 
 function GameStats:enemyKilled( enemy )
     self.hits  = self.hits + 1
-    self.score = self.score + 100  -- TODO maybe different enemies have different values
+    self.score = self.score + enemy.speed
 end
