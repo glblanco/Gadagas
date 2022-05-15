@@ -71,7 +71,7 @@ function Player:shoot()
     raise(PlayerShotBulletEvent(bullet))
 end    
 
-function Player:die()
+function Player:die( byBullet )
     self.active = false
     self.visible = false 
     self:explode()

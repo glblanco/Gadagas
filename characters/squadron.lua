@@ -191,15 +191,17 @@ function ConfigurableSquadron:new( pattern, grid )
         local row       = config["gridX"]
         local col       = config["gridY"]
         local enemy     = nil
+        local startX = -20
+        local startY = -20
         if enemyType then
             if enemyType == "red" then
-                enemy = RedEnemy(0, 0, speed, BezierAndSnapToGridFlightPlan(path,false,grid,row,col,delay))
+                enemy = RedEnemy(startX, startY, speed, BezierAndSnapToGridFlightPlan(path,false,grid,row,col,delay))
             elseif enemyType == "yellow" then
-                enemy = YellowEnemy(0, 0, speed, BezierAndSnapToGridFlightPlan(path,false,grid,row,col,delay))
+                enemy = YellowEnemy(startX, startY, speed, BezierAndSnapToGridFlightPlan(path,false,grid,row,col,delay))
             elseif enemyType == "blue" then
-                enemy = BlueEnemy(0, 0, speed, BezierAndSnapToGridFlightPlan(path,false,grid,row,col,delay))
+                enemy = BlueEnemy(startX, startY, speed, BezierAndSnapToGridFlightPlan(path,false,grid,row,col,delay))
             else
-                enemy = GreenEnemy(0, 0, speed, BezierAndSnapToGridFlightPlan(path,false,grid,row,col,delay))
+                enemy = GreenEnemy(startX, startY, speed, BezierAndSnapToGridFlightPlan(path,false,grid,row,col,delay))
             end
             table.insert(self.enemies, enemy)
         end

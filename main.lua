@@ -18,6 +18,7 @@ function requireLibraries()
     require "information-boards"
     require "resources"  
     require "starfield"  
+    require "highscores/highscores"  
     require "skins/skin1"    
     require "skins/skin2"    
     require "characters/character"
@@ -46,6 +47,11 @@ function love.load()
     loadStarfield()
     debugMode = false
     
+    highScoreManager = HighScoreManager()
+    highScoreManager:read()
+    highScoreManager:add("AGU",100)
+    highScoreManager:write()
+
 end
 
 function love.update(dt)

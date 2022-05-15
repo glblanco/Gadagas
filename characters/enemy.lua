@@ -104,11 +104,13 @@ function Enemy:getActiveEnemies()
     return enemies
 end    
 
-function Enemy:die()
+function Enemy:die( byBullet )
     self.active = false
     self.visible = false
     self:explode()
-    raise( EnemyKilledEvent(self) )
+    if byBullet then
+        raise( EnemyKilledEvent(self) )
+    end
 end
 
 function Enemy:explode()

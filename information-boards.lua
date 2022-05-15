@@ -113,8 +113,12 @@ end
 StatsBoard = Board:extend()
 function StatsBoard:new()
     StatsBoard.super.new(self,"")
+    self.stats = nil
     self.textWidth = 210
     self.textHeight = 15
+end
+function StatsBoard:setStats(stats)
+    self.stats = stats
 end
 function StatsBoard:draw()
     local scale = 1
@@ -125,8 +129,23 @@ function StatsBoard:draw()
         shots = 1
     end
     local tab = "     "
-    self.message =  "Shots: " .. game.stats.shots .. tab ..
-                    "Hits: " .. game.stats.hits .. tab .. 
-                    "Hit Ratio: ".. math.floor(100*game.stats.hits/shots)/100 .."%"
+    self.message =  "Shots: " .. self.stats.shots .. tab ..
+                    "Hits: " .. self.stats.hits .. tab .. 
+                    "Hit Ratio: ".. math.floor(100*self.stats.hits/shots) .."%"
     StatsBoard.super.draw( self, x, y, self.textWidth, self.textHeight, scale )
+end
+
+HighScoreBoard = Board:extend()
+function HighScoreBoard:new( highScores )
+    HighScoreBoard.super.new(self,"")
+    self.highScores = highScores
+end
+function HighScoreBoard:draw()
+    local scale = 1
+    local xRank = 40
+    local xScore = 100
+    local xName = 150
+    local y = 10
+    
+   
 end

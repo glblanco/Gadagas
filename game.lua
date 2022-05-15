@@ -118,8 +118,8 @@ function Game:update(dt)
                 local activeEnemies = squadron:getActiveEnemies()
                 for j, enemy in ipairs(activeEnemies) do
                     if player:collides(enemy) then
-                        player:die()
-                        enemy:die() -- TODO this should not score points
+                        player:die(false)
+                        enemy:die(false) 
                     end
                 end
             end                       

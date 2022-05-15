@@ -37,6 +37,6 @@ function Character:update(dt)
     -- subclasses should implement  
 end
 
-function Character:die()
+function Character:die( byBullet )
     -- to be implemented by subclasses
 end

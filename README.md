@@ -22,7 +22,7 @@ https://grumpygamer.com/puzzle_dependency_charts#:~:text=A%20Puzzle%20Dependency
 7. ~~Keep score - Impacts~~
 8. ~~Add levels~~
 9. ~~Menu~~
-10. High scores
+10. High scores https://stackoverflow.com/questions/40188287/aws-lambda-function-write-to-s3
 11. ~~Add sound~~
 12. Package & Deploy https://schellingb.github.io/LoveWebBuilder/ https://github.com/Davidobot/love.js
 

@@ -11,6 +11,7 @@ end
 
 function GameView:setGame( game )
     self.game = game
+    self.statsBoard.stats = game.stats
 end
 
 function GameView:draw()
@@ -140,6 +141,9 @@ function GameView:drawDebugData()
             love.graphics.print("level " .. i .. " name:" .. level.name .. " active:" .. (level.active and "true" or "false ") .." complete:" .. (level.complete and "true" or "false "),10,200+i*15)
         end
     end
+
+    --love.graphics.print(highScoreManager:scoresAsJson(),10,10)
+    
 end
 
 function GameView:drawMessages()

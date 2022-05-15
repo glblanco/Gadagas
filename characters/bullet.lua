@@ -27,18 +27,18 @@ function Bullet:update(dt)
     end 
     --If the bullet is out of the screen
     if (self.y < -self.height/2) or (self.y > ( love.graphics.getHeight() + self.height/2 )) then
-        self.die(self)
+        self:die(false)
     end
 end
 
-function Bullet:die()
+function Bullet:die(byBullet)
     self.active = false
     self.visible = false
 end 
 
 function Bullet:hit(target)
     if self.active and target.active then
-        self.die(self)
-        target.die(target)
+        self:die(false)
+        target:die(true)
     end
 end
