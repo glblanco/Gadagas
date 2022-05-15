@@ -47,16 +47,23 @@ function love.load()
 
     loadStarfield()
     highscores:read()
-    
+    highscores:reset()
+
     debugMode = false
-    
+    handledHighScore = false
 end
 
 function love.update(dt)
     game:update(dt)
     if game:isOver() and not game:isPaused() then
+        if not handledHighScore and highscores:isHighScore(game.stats.score) then
+            handledHighScore = true
+            highscores:add("MAD",game.stats.score)
+            highscores:write()
+        end  
         if control:start() then
             game = Game()
+            handledHighScore = false
         end
     end
     updateStarfield(dt)

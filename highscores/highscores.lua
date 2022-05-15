@@ -35,7 +35,7 @@ end
 
 function HighScoreManager:isHighScore( score )
     local min = self:minScore()
-    return score > min
+    return score > 0 and ( score > min or #self.scores < self.max )
 end
 
 function HighScoreManager:read()

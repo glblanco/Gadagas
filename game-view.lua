@@ -142,6 +142,7 @@ function GameView:drawDebugData()
         end
     end
 
+    --love.graphics.print(highscores:scoresAsJson(),10,50)
     
 end
 
