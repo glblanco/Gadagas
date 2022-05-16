@@ -43,6 +43,6 @@ function GameOverPause:new()
     GameOverPause.super.new(self,"",1,1)
 end    
 function GameOverPause:elapsed()
-    return self.delay > 3
+    return self.delay > 5
 end    
 

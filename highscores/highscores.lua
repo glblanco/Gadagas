@@ -58,12 +58,49 @@ function HighScoreManager:write()
     love.filesystem.write(self.file,self:scoresAsJson())
 end
 
+---
 
 HighScore = Object:extend()
+
 function HighScore:new( owner, score )
     self.owner = owner
     self.score = score
 end
 
+---
 
+HighScoreForm = Object:extend()
 
+function HighScoreForm:new( stats )
+    self.manager = HighScoreManager()
+    self.manager:read()
+    self.stats = stats
+    if self.manager:isHighScore(self.stats.score) then
+        self.manager:add("MAD",self.stats.score)
+        self.manager:write()
+    end
+    self.count = 0
+end
+
+function HighScoreForm:update(dt)
+    self.count = self.count + dt
+end
+
+function HighScoreForm:draw()
+    setTextColor()
+    local col1X = 290
+    local col2X = 340
+    local col3X = 430
+    local startY = 120
+    local scale = 2
+    love.graphics.print("High Scores", col1X, startY, 0, 2.6, 2.6)
+    for i,score in ipairs(self.manager.scores) do
+        love.graphics.print(i,col1X,startY+i*30+25, 0, scale, scale)
+        love.graphics.print(score.owner,col2X,startY+i*30+25, 0, scale, scale )
+        love.graphics.print(score.score,col3X,startY+i*30+25, 0, scale, scale )
+    end
+end
+
+function HighScoreForm:shouldStopDisplay()
+    return self.count > 15
+end

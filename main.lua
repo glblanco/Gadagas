@@ -43,36 +43,44 @@ function love.load()
     resources = ResourcesSkin2()
     uuidGenerator = UUIDGenerator()
     game = Game()
-    highscores = HighScoreManager()
+    highscores = nil 
 
     loadStarfield()
-    highscores:read()
-    highscores:reset()
-
+    
     debugMode = false
-    handledHighScore = false
+    activeScreen = "GAME"
 end
 
 function love.update(dt)
-    game:update(dt)
-    if game:isOver() and not game:isPaused() then
-        if not handledHighScore and highscores:isHighScore(game.stats.score) then
-            handledHighScore = true
-            highscores:add("MAD",game.stats.score)
-            highscores:write()
-        end  
-        if control:start() then
-            game = Game()
-            handledHighScore = false
+    
+    if activeScreen == "GAME" then
+        game:update(dt)
+        if game.started and game:isOver() and not game:isPaused() then
+            highscores = HighScoreForm(game.stats)
+            activeScreen = "HIGHSCORE"
         end
     end
+    
+    if activeScreen == "HIGHSCORE" then
+        highscores:update(dt)
+        if highscores:shouldStopDisplay() then
+            game = Game()
+            activeScreen = "GAME"
+        end
+    end
+    
     updateStarfield(dt)
     control:update(dt)
 end
 
 function love.draw() 
     drawStarfield()
-    game:draw()
+
+    if activeScreen == "GAME" then
+        game:draw()
+    elseif activeScreen == "HIGHSCORE" then
+        highscores:draw()
+    end
 end
 
 function setTextColor()
