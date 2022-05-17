@@ -18,7 +18,8 @@ function requireLibraries()
     require "information-boards"
     require "resources"  
     require "starfield"  
-    require "highscores/highscores"  
+    require "highscores/highscore-manager"  
+    require "highscores/highscore-form"  
     require "skins/skin1"    
     require "skins/skin2"    
     require "characters/character"
@@ -40,10 +41,13 @@ function love.load()
     requireLibraries()
 
     control = SimpleControl()
+
     resources = ResourcesSkin2()
     uuidGenerator = UUIDGenerator()
     game = Game()
-    highscores = nil 
+    
+    highscoreManager = HighScoreManager()
+    highscoreForm = nil
 
     loadStarfield()
     
@@ -56,14 +60,14 @@ function love.update(dt)
     if activeScreen == "GAME" then
         game:update(dt)
         if game.started and game:isOver() and not game:isPaused() then
-            highscores = HighScoreForm(game.stats)
+            highscoreForm = HighScoreForm(game.stats)
             activeScreen = "HIGHSCORE"
         end
     end
     
     if activeScreen == "HIGHSCORE" then
-        highscores:update(dt)
-        if highscores:shouldStopDisplay() then
+        highscoreForm:update(dt)
+        if highscoreForm:shouldStopDisplay() then
             game = Game()
             activeScreen = "GAME"
         end
@@ -79,7 +83,7 @@ function love.draw()
     if activeScreen == "GAME" then
         game:draw()
     elseif activeScreen == "HIGHSCORE" then
-        highscores:draw()
+        highscoreForm:draw()
     end
 end
 

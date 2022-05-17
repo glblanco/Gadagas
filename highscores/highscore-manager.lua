@@ -6,16 +6,23 @@ function HighScoreManager:new()
     self.file = 'highscores.json'
 end
 
-function HighScoreManager:add( owner, score )
-    local aScore = tonumber(score)
-    if self:isHighScore(aScore) then
-        local highscore = HighScore(owner,aScore)
+function HighScoreManager:add( highscore )
+    if self:isHighScore(highscore.score) then
         table.insert(self.scores,highscore)
         table.sort(self.scores, function (hs1, hs2) return tonumber(hs1.score) > tonumber(hs2.score) end )
         if #self.scores > self.max then
             for i=self.max+1,#self.scores do
                 table.remove(self.scores,i)
             end
+        end
+    end
+end
+
+function HighScoreManager:replace( tempScore, actualScore )
+    for i,score in ipairs(self.scores) do
+        if score == tempScore then
+            self.scores[i] = actualScore
+            break
         end
     end
 end
@@ -67,40 +74,3 @@ function HighScore:new( owner, score )
     self.score = score
 end
 
----
-
-HighScoreForm = Object:extend()
-
-function HighScoreForm:new( stats )
-    self.manager = HighScoreManager()
-    self.manager:read()
-    self.stats = stats
-    if self.manager:isHighScore(self.stats.score) then
-        self.manager:add("MAD",self.stats.score)
-        self.manager:write()
-    end
-    self.count = 0
-end
-
-function HighScoreForm:update(dt)
-    self.count = self.count + dt
-end
-
-function HighScoreForm:draw()
-    setTextColor()
-    local col1X = 290
-    local col2X = 340
-    local col3X = 430
-    local startY = 120
-    local scale = 2
-    love.graphics.print("High Scores", col1X, startY, 0, 2.6, 2.6)
-    for i,score in ipairs(self.manager.scores) do
-        love.graphics.print(i,col1X,startY+i*30+25, 0, scale, scale)
-        love.graphics.print(score.owner,col2X,startY+i*30+25, 0, scale, scale )
-        love.graphics.print(score.score,col3X,startY+i*30+25, 0, scale, scale )
-    end
-end
-
-function HighScoreForm:shouldStopDisplay()
-    return self.count > 15
-end

@@ -20,6 +20,26 @@ function SimpleControl:moveRight()
             love.mouse.isDown(reverseMapMouseButton("moveRight"))
 end
 
+function SimpleControl:clickLeft()
+    return self:received("moveLeft") or 
+            love.mouse.isDown(reverseMapMouseButton("moveLeft"))
+end
+
+function SimpleControl:clickRight()
+    return self:received("moveRight") or 
+            love.mouse.isDown(reverseMapMouseButton("moveRight"))
+end
+
+function SimpleControl:clickDown()
+    return self:received("moveDown") 
+            -- love.keyboard.isDown("down") 
+end
+
+function SimpleControl:clickUp()
+    return self:received("moveUp") 
+            -- love.keyboard.isDown("up") 
+end
+
 function SimpleControl:shoot()
     return self:received("shoot")
 end
@@ -57,6 +77,14 @@ function mapKey( key )
         ret = "pause"
     elseif key == "s" then
         ret = "toggleSound"
+    elseif key == "right" then
+        ret = "moveRight"        
+    elseif key == "left" then
+        ret = "moveLeft"       
+    elseif key == "up" then
+        ret = "moveUp"       
+    elseif key == "down" then
+        ret = "moveDown"        
     else    
         ret = "start"
     end
@@ -133,6 +161,11 @@ function love.touchmoved( id, x, y, dx, dy, pressure )
         action = "moveRight"
     elseif dx < 0 then
         action = "moveLeft"
+    end
+    if dy > 0 then
+        action = "moveUp"
+    elseif dy < 0 then
+        action = "moveDown"
     end
     if action then
         table.insert(control.actions,action)

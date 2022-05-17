@@ -25,6 +25,18 @@ function LynputControl:bindControlsToActions()
         "press RMB",
         "0:100 G_LEFTSTICK_X"        
     })
+    self.control:bind("moveDown", { 
+        "hold down",
+        "press down",
+        "press RMB",
+        "0:100 G_LEFTSTICK_X"        
+    })
+    self.control:bind("moveUp", { 
+        "hold up",
+        "press up",
+        "press LMB",
+        "-100:0 G_LEFTSTICK_X"
+    })    
     self.control:bind("shoot", { 
         "press space",
         "press tab",
@@ -48,6 +60,22 @@ end
 
 function LynputControl:moveRight()
     return self.control.moveRight or love.keyboard.isDown("right")
+end
+
+function LynputControl:clickLeft()
+    return self.control.moveLeft 
+end
+
+function LynputControl:clickRight()
+    return self.control.moveRight 
+end
+
+function LynputControl:clickUp()
+    return self.control.moveUp
+end
+
+function LynputControl:clickDown()
+    return self.control.moveDown
 end
 
 function LynputControl:shoot()

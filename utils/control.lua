@@ -16,6 +16,22 @@ function Control:moveRight()
     return false
 end
 
+function Control:clickLeft()
+    return false
+end
+
+function Control:clickRight()
+    return false
+end
+
+function Control:clickDown()
+    return false
+end
+
+function Control:clickUp()
+    return false
+end
+
 function Control:shoot()
     return false
 end

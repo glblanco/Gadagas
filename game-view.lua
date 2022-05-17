@@ -141,8 +141,6 @@ function GameView:drawDebugData()
             love.graphics.print("level " .. i .. " name:" .. level.name .. " active:" .. (level.active and "true" or "false ") .." complete:" .. (level.complete and "true" or "false "),10,200+i*15)
         end
     end
-
-    --love.graphics.print(highscores:scoresAsJson(),10,50)
     
 end
 
