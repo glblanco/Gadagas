@@ -135,6 +135,10 @@ function Game:update(dt)
 
 end
 
+function Game:release()
+    self.soundFX:stopThemeSong()
+end
+
 function Game:addEnemy( enemy )
     table.insert(self.enemies, enemy)
 end

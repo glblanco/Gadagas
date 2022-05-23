@@ -24,7 +24,11 @@ https://grumpygamer.com/puzzle_dependency_charts#:~:text=A%20Puzzle%20Dependency
 9. ~~Menu~~
 10. High scores https://stackoverflow.com/questions/40188287/aws-lambda-function-write-to-s3
 11. ~~Add sound~~
-12. Package & Deploy https://schellingb.github.io/LoveWebBuilder/ https://github.com/Davidobot/love.js
+12. Package & Deploy 
+    js: https://schellingb.github.io/LoveWebBuilder/ 
+        https://github.com/Davidobot/love.js
+    android: https://www.youtube.com/watch?v=TAZo-pin4nE&list=RDCMUClb2YpbTlw1uLMc32Kdomgg&index=2
+    ios: https://www.youtube.com/watch?v=MsYanwcU42E
 
 ## Chena's requests
 1. ~~make sprites transparent~~
@@ -34,6 +38,7 @@ https://grumpygamer.com/puzzle_dependency_charts#:~:text=A%20Puzzle%20Dependency
 
 ## Andrea's requests
 1. ~~make player die if it collides with an enemy~~
+2. more levels
 
 ## Agus's requests
 1. ~~add stars in the sky~~

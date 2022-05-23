@@ -4,7 +4,7 @@ function SoundFX:new()
     self.shot  = love.audio.newSource("resources/Firing_Sound_Effect.mp3", "static")
     self.level = love.audio.newSource("resources/Level_Start_Sound_Effect.mp3", "static")  
     self.kill  = love.audio.newSource("resources/Coin_Sound_Effect.mp3", "static")    
-    self.song  = love.audio.newSource("resources/Theme_Song.mp3", "stream")      
+    self.song  = love.audio.newSource("resources/Theme_Song.mp3", "static")      
     self.soundOn = true  
 end
 

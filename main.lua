@@ -68,6 +68,7 @@ function love.update(dt)
     if activeScreen == "HIGHSCORE" then
         highscoreForm:update(dt)
         if highscoreForm:shouldStopDisplay() then
+            game:release()
             game = Game()
             activeScreen = "GAME"
         end

@@ -10,24 +10,24 @@ end
 
 function SimpleControl:moveLeft()
     return self:received("moveLeft") or 
-            love.keyboard.isDown("left") or 
-            love.mouse.isDown(reverseMapMouseButton("moveLeft"))
+            love.keyboard.isDown("left") --or 
+            --love.mouse.isDown(reverseMapMouseButton("moveLeft"))
 end
 
 function SimpleControl:moveRight()
     return self:received("moveRight") or 
-            love.keyboard.isDown("right") or 
-            love.mouse.isDown(reverseMapMouseButton("moveRight"))
+            love.keyboard.isDown("right") --or 
+            --love.mouse.isDown(reverseMapMouseButton("moveRight"))
 end
 
 function SimpleControl:clickLeft()
-    return self:received("moveLeft") or 
-            love.mouse.isDown(reverseMapMouseButton("moveLeft"))
+    return self:received("moveLeft") --or 
+            --love.mouse.isDown(reverseMapMouseButton("moveLeft"))
 end
 
 function SimpleControl:clickRight()
-    return self:received("moveRight") or 
-            love.mouse.isDown(reverseMapMouseButton("moveRight"))
+    return self:received("moveRight") --or 
+            --love.mouse.isDown(reverseMapMouseButton("moveRight"))
 end
 
 function SimpleControl:clickDown()
@@ -126,48 +126,75 @@ function love.keypressed(key)
     end
 end
 
-function love.mousepressed( x, y, button, istouch, presses )
-    if presses > 0 then
-        table.insert(control.actions,"shoot")
-    else
-        local action = mapMouseButton(button)
+function reactToMousePress(x,y)
+    local action = nil
+    local player = game:currentPlayer()
+    if player then
+        if ( ( player.x - 30 )  <= x ) and ( x <= (player.x + 30) ) then
+            action = "shoot"
+        elseif player.x < x then
+            action = "moveRight"
+        elseif player.x > x then
+            action = "moveLeft"
+        end 
         if action then
             table.insert(control.actions,action)
         end
+    else
+        table.insert(control.actions,"start")
     end
+end
+
+function love.mousepressed( x, y, button, istouch, presses )
+    
+    --if istouch then
+        --if presses > 0 then
+            reactToMousePress(x,y)
+        --end
+    --else
+        --if presses > 0 then
+            --table.insert(control.actions,"shoot")
+        -- else
+        --    local action = mapMouseButton(button)
+        --    if action then
+        --        table.insert(control.actions,action)
+        --    end
+        --end
+    --end
 end
 
 function love.mousemoved( x, y, dx, dy, istouch )
     --if istouch then
-        action = nil
-        if dx > 0 then
-            action = "moveRight"
-        elseif dx < 0 then
-            action = "moveLeft"
-        end
-        if action then
-            table.insert(control.actions,action)
-        end
+    --    action = nil
+    --    if dx > 0 then
+    --        action = "moveRight"
+    --    elseif dx < 0 then
+    --        action = "moveLeft"
+    --    end
+    --    if action then
+    --        table.insert(control.actions,action)
+    --    end
     --end
 end
 
 function love.touchpressed( id, x, y, dx, dy, pressure )
-    table.insert(control.actions,"shoot")
+    --table.insert(control.actions,"shoot")
+    reactToMousePress(x,y)
 end
 
 function love.touchmoved( id, x, y, dx, dy, pressure )
-    action = nil
-    if dx > 0 then
-        action = "moveRight"
-    elseif dx < 0 then
-        action = "moveLeft"
-    end
-    if dy > 0 then
-        action = "moveUp"
-    elseif dy < 0 then
-        action = "moveDown"
-    end
-    if action then
-        table.insert(control.actions,action)
-    end
+    --action = nil
+    --if dx > 0 then
+    --    action = "moveRight"
+    --elseif dx < 0 then
+    --    action = "moveLeft"
+    --end
+    --if dy > 0 then
+    --    action = "moveUp"
+    --elseif dy < 0 then
+    --    action = "moveDown"
+    --end
+    --if action then
+    --    table.insert(control.actions,action)
+    --end
 end
